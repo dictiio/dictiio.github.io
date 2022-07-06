@@ -1,15 +1,5 @@
 let health = 100;
 
-function hit() {
-    health = health/2
-    if(health <= 1) {
-        alert("Game Over!");
-    }
-    else {
-        alert(health);
-    }
-};
-
 window.onload = function() {
     var canvas = document.getElementById('canvas-one');
     var context = canvas.getContext("2d");
@@ -27,5 +17,17 @@ window.onload = function() {
     context.font = "24px Tahoma";
     context.fillText("HELLO WORLD", 75, 125);
 
+};
+
+function hit() {
+    var canvas = document.getElementById('canvas-one');
+    var context = canvas.getContext("2d");
+    health = health/2
+    if(health <= 1) {
+        alert("Game Over!");
+    }
+    else {
+        context.fillText(health, 75, 125);
+    }
 };
 
