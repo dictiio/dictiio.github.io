@@ -276,6 +276,7 @@ function lose(){
     const loseCountdown = document.getElementById("losecountdown");
     const screen = document.getElementById("screen");
     let i = 3;
+    loseCountdown.innerHTML = 3;
     function countdown(){
         let count = setTimeout(function(){
             if(i <= 0){
