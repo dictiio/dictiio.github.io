@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agence Horizon | Inscription</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            font-family: 'Poppins';
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        body {
+            background-image: url(img/landscape.png);
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            background-size: cover;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        #logo {
+            width: 75px;
+            filter: invert();
+            cursor: pointer;
+        }
+
+        .logo {
+            width: 75px;
+            height: 75px;
+        }
+
+        #logocounter {
+            color: #fcdf03;
+            font-size: 0.01rem;
+            position: relative;
+            top: -30px;
+        }
+
+        .title {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color:#475cbb;
+            color: #fff;
+            border-radius: 10px 10px 0px 0px;
+            padding: 25px 80px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .inputfield{
+
+            font-size: 1rem;
+            padding: 5px;
+            width: 300px;
+
+            background-color: #fafafa;
+
+    
+            border-radius: 5px;
+            border: 1px black solid;
+
+        }
+
+        .inputfield:focus{
+            border: 1px #869cff solid;
+            box-shadow: 0 0 5px 2px #a3b4ff;
+            outline: none;
+        }
+
+        .inputbtn {
+            color: #b3bdec;
+            background-color: #3a51b8;
+            text-transform: uppercase;
+            padding: 10px;
+            font-size: 1.1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            border: 2px black solid;
+            width: 50%;
+        }
+
+        .inputbtn:active {
+            color: #3a51b8;
+            background-color: #b3bdec
+        }
+        
+        .inputlabel {
+            font-size: 1.1rem;
+            align-self: normal;
+            padding-left: 5px;
+
+        }
+
+        .showpw{
+            align-self: normal;
+            margin-bottom: 10px;
+        }
+
+        .error {
+            align-self: normal;
+            font-size: 0.9rem;
+            color: #f36161;
+            font-style: italic;
+
+        }
+
+        #welcome {
+            width: 250px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    
+
+    <div class="container">
+
+        <div class="title">
+            <div class="logo">
+                <img src="img/logo.png" id="logo">
+            </div>
+            <h6 id="logocounter"> </h6>
+            
+            <h1>Agence Horizon</h1>
+            <h3>Créer un compte</h3>
+        </div>
+        
+        <form>
+            <label class="inputlabel" for="username">Nom d'utilisateur</label>
+            <input class="inputfield" type="text" id="username" autocomplete="off">
+            <span class="error" id="usernameerror"></span><br>
+        
+            <label class="inputlabel" for="password" >Mot de passe <span style="font-size: 0.9rem;">(8 caractères min.)</span></label>
+            <input class="inputfield" type="password" id="password" autocomplete="off">
+            <span class="error" id="passworderror"></span>
+
+            <div class="showpw">
+                <input type="checkbox" id="passwordcheck" onclick="showPassword('password')" autocomplete="off">
+                <label for="passwordcheck">Afficher</label>
+            </div>
+            
+            
+            <label class="inputlabel" for="confirmpassword">Confirmez votre mot de passe</label>
+            <input class="inputfield" type="password" id="confirmpassword" autocomplete="off">
+            <span class="error" id="confirmpassworderror"></span>
+
+            <div class="showpw">
+                <input type="checkbox" id="confirmpasswordcheck" onclick="showPassword('confirmpassword')" autocomplete="off">
+                <label for="confirmpasswordcheck">Afficher</label>
+            </div>
+        
+            <input class="inputbtn" type="button" value="S'inscrire" id="signupbtn">
+            <h4 id="welcome"></h6>
+        </form>
+        
+    </div>
+
+    <script>
+        const signupBtn = document.getElementById("signupbtn");
+        const usernameBox = document.getElementById("username");
+        const passwordBox = document.getElementById("password");
+        const confirmPasswordBox = document.getElementById("confirmpassword");
+
+        function getEmptyFields(){
+
+            const fieldsToCheck = [usernameBox, passwordBox, confirmPasswordBox];
+            const emptyFields = fieldsToCheck.filter((field) => field.value.length == 0);
+
+            return emptyFields;
+
+
+        }
+
+        function showPassword(id){
+
+            const input = document.getElementById(id)
+            if(input.type === "password"){
+                input.type = "text";
+            } else {
+                input.type = "password"; 
+            }
+
+        }
+
+        function resetErrors(){
+
+            const ids = ["username", "password", "confirmpassword"]
+            ids.forEach((id) => {
+                document.getElementById(`${id}error`).innerHTML = ""
+                document.getElementById(id).style.border = "1px solid black";
+                document.getElementById(id).style.boxShadow = "none";
+            })
+            
+        }
+
+        function displayError(id, msg){
+
+            document.getElementById(`${id}error`).innerHTML = "✗ " + msg;
+
+            document.getElementById(id).style.border = "1px solid #f36161";
+            document.getElementById(id).style.boxShadow = "0 0 5px 2px #f09e9e";
+
+        }
+
+        signupBtn.onclick = () => {
+            
+            resetErrors();
+            const emptyFields = getEmptyFields();
+
+            let valid = true;
+
+            if(passwordBox.value !== confirmPasswordBox.value){
+                displayError("confirmpassword", "Mots de passe différents.")
+                valid = false;
+            }
+
+            if(passwordBox.value.length < 8){
+                displayError("password", "Doit comporter au moins 8 caractères.")
+                valid = false;
+            }
+
+            emptyFields.forEach((field) => {
+                displayError(`${field.id}`, "Ce champ est vide.")
+                valid = false;
+            })
+
+            if(valid){
+                console.log(valid);
+                signupBtn.style.visibility = "hidden";
+                document.getElementById("welcome").innerHTML = `Bienvenue ${usernameBox.value}! Redirection en cours...`
+                
+                setTimeout(function(){
+                    window.location.href="confirm.html";
+                }, 1500)
+                
+            }
+
+        }
+
+        // easter egg
+
+        const logo = document.getElementById("logo");
+        let logoClickCount = 0;
+
+        logo.onclick = () => {
+            logoClickCount++;
+            if(logoClickCount == 5){
+                document.getElementById("logocounter").style.transform = "scale(70)";
+                logo.style.filter = "invert(83%) sepia(33%) saturate(2757%) hue-rotate(3deg) brightness(109%) contrast(98%)";
+            }
+            if(logoClickCount >= 5){
+                document.getElementById("logocounter").innerHTML = (logoClickCount - 5);
+            }
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agence Horizon | Confirmation</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Poppins';
+        }
+
+        .title {
+            background-image: linear-gradient(#b5bddf, #fff);
+            height: 93vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-left: 50px;
+
+            background-size: cover;
+        }
+
+        .title h1 {
+            font-size: 2.5rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            width: 400px;
+            padding-left: 30px;
+
+        }
+
+        #logo {
+            width: 40px;
+        }
+
+        .logo h3 {
+            color: #000;
+            padding-left: 10px;
+            font-size: 1rem;
+        }
+
+        ul {
+            list-style-type: none;
+            height: 7vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        ul li {
+            display: inline-block;
+            margin: 0px 20px;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        ul li:hover{
+            background-color: #d5daeb;
+        }
+
+        header {
+            display: flex;
+            flex-direction: wrap;
+            justify-content:space-between;
+        }
+
+        #welcomeimg {
+            width: 400px;
+            border-radius: 25px;
+        }
+        #discoverbtn{
+            display: inline;
+            background-color: #384479;
+            color: #fff;
+            padding: 8px 18px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px;
+            text-decoration: none;
+        }
+
+        #discoverbtn:hover{
+            transform: scale(1.1)
+        }
+        .description {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .desc img {
+            height: 300px;
+            border-radius: 25px;
+        }
+        .leftdesc img {
+            margin: 100px;
+        }
+
+        .rightdesc h4 {
+            margin: 100px;
+        }
+
+        .desc h4 {
+            display: inline-block;
+            width: 30vw;
+        }
+
+        .desc {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 90vw;
+        }
+        
+        footer {
+            padding: 40px;
+        }
+
+
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="logo">
+            <img src="img/logo.png" id="logo">
+            <h3>Agence Horizon</h3>
+        </div>
+        <ul>
+            <li>À propos</li>
+            <li>Destinations</li>
+            <li>Tarifs</li>
+        </ul>
+    </header>
+
+    <div class="title">
+
+        <h1>Inscription terminée!</h1>
+        <h3>Découvrez maintenant l'Agence Horizon.</h3>
+
+        <a id="discoverbtn" href="#description">Cliquez ici</a>
+
+        
+    </div>
+
+    <hr>
+
+    <div id="description" id="description">
+        <div class="desc leftdesc">
+            <img src="img/waves.gif" id="destinationimg">
+            <h4>L'Agence Horizon est présente partout à travers le monde. Canada, France, États-Unis... retrouvez-nous dans tous les continents!</h4>
+        </div>
+        <div class="desc rightdesc">
+            <h4>Notre objectif est d'offrir les tarifs les plus faibles et le meilleur service possible pour nos clients.</h4>
+            <img src="img/lake.gif">
+        </div>
+        <div class="desc leftdesc">
+            <img src="img/sea.gif">
+            <h4>Notre équipe est à l'écoute de nos clients. Si vous n'êtes pas satisfaits de votre expérience de voyage, obtenez un remboursement complet!</h4>
+        </div>
+    </div>
+
+    <hr>
+
+    <footer>
+        &copy; Agence Horizon — 2023
+    </footer>
+
+</body>
+</html>
