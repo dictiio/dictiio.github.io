@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bomb Defuse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="bg" class="background"></div>
+        
+    <div class="menu gui" id="menu">
+        <div class="menucontainer">
+            <div class="titlecontainer">
+                <h1>Bomb Defuse</h1>
+                <h3>Guess the number game</h3>
+            </div>
+            <div class="startcontainer">
+                <button id="start">Press to start</button>
+            </div>
+            
+            <div class="difficultycontainer">
+                <h3>Select a difficulty</h3>
+                <div class="difficulty">
+                    <button id="easy">Easy</button>
+                    <button id="medium">Medium</button>
+                    <button id="hard">Hard</button>
+                </div>
+            </div>
+            
+        </div>
+        
+
+        <button id="howtoplaybtn"><img class="icon" src="icons/bomb-solid.svg"></i> How To Play</button>
+
+    </div>
+
+    <div class="howtoplay gui">
+        <div class="howtoplaycontainer">
+
+            <img src="images/defuse.png" width="500px" style="border-radius: 5px;">
+            <p>Your goal is to defuse the bomb before you run out of time. To do so, you will have to guess a randomly chosen number between 1 and 100.</p>
+            <p>Based on the chosen difficulty level, you'll be allocated a specific timeframe to complete the task. Additionnally, every incorrect answer will deduct a few seconds from the timer.</p>
+            <p>After each incorrect guess, a helpful hint will be provided, indicating whether the target number is higher or lower than your current guess.</p>
+            <p><strong>Good luck!</strong></p>
+            <img src="icons/xmark-solid.svg" id="exithowtoplay">
+        </div>
+    </div>
+
+    <div class="game gui" id="game">
+        <div class="gamecontainer" id="screen">
+            <div class="screengui" id="defusescreen">
+                <div class="guesscontainer gamesection">
+                    <h3>Guess the Number to Defuse the Bomb!</h3>
+                    <p id="numberrange">Must be between 1 and 100</p>
+                    <h1 id="randomnumber">000</h1>
+                    <p id="feedback">Higher!</p>
+                </div>
+                <div class="numpadcontainer gamesection">
+                    <div id="guessbox">ENTER NUMBER</div>
+                    <div class="numpad">
+                        <button id="btn1" value="1">1</button>
+                        <button id="btn2" value="2">2</button>
+                        <button id="btn3" value="3">3</button>
+                        <button id="btn4" value="4">4</button>
+                        <button id="btn5" value="5">5</button>
+                        <button id="btn6" value="6">6</button>
+                        <button id="btn7" value="7">7</button>
+                        <button id="btn8" value="8">8</button>
+                        <button id="btn9" value="9">9</button>
+                        
+                        <button id="btndel" value="delete">✕</button>
+                        <button id="btn0" value="0">0</button>
+                        <button id="btnent" value="enter">✔</button>
+                    </div>
+                </div>
+                <div class="bombcontainer gamesection">
+                    
+                    <div id="bartimerunder"><div id="bartimerover"></div></div>
+                    <img src="icons/bomb-solid.svg">
+                </div>
+                <div class="timercontainer gamesection">
+                    <h3 id="timer">00:00</h3>
+                </div>
+            </div>
+            <div class="screengui" id="losescreen">
+                <h1>Game Over!</h1>
+                <p>The bomb will detonate in...</p>
+                <h3 id="losecountdown">3</h3>
+            </div>
+            <div class="screengui" id="leaderboardscreen">
+                <h3>Your time was...</h3>
+                <h1 id="timetoguess">00:00</h1>
+                <h3>Your Best Times</h3>
+                <h5>Difficulty: <span id="leaderboarddifficulty"></span></h5>
+                <div class="scores">
+                    <p>1- <span id="firstbest">None</span></p>
+                    <p>2- <span id="secondbest">None</span></p>
+                    <p>3- <span id="thirdbest">None</span></p>
+
+                </div>
+                <button id="playagain">PLAY AGAIN</button>
+            </div>
+            
+        </div>
+
+    </div>
+    <div class="whiteoverlay gui"></div>
+
+    <button id="audiobtn" value="on"><img class="icon" src="icons/volume-high-solid.svg"></button>
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
