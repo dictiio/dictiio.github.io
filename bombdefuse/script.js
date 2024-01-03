@@ -271,6 +271,8 @@ function lose(){
 
     playSound("sounds/alarm.mp3")
 
+    document.getElementById("answer").innerHTML = numberToGuess;
+
     const loseCountdown = document.getElementById("losecountdown");
     const screen = document.getElementById("screen");
     let i = 3;
@@ -281,7 +283,7 @@ function lose(){
                 clearTimeout(count);
             }
             loseCountdown.innerHTML = i;
-            playSound("sounds/tick.mp3")
+            if(i != 3) playSound("sounds/tick.mp3")
             i--;
             if(i >= 0){
                 countdown()
@@ -318,7 +320,7 @@ function lose(){
 
     }
 
-    countdown();
+    setTimeout(countdown, 2000);
     
     
     
