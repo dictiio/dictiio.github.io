@@ -271,7 +271,7 @@ function lose(){
 
     playSound("sounds/alarm.mp3")
 
-    console.log(document.getElementById("answer").innerHTML);
+    document.getElementById("answer").innerHTML = numberToGuess;
 
     const loseCountdown = document.getElementById("losecountdown");
     const screen = document.getElementById("screen");
