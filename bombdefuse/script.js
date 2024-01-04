@@ -1,15 +1,10 @@
 const audioButton = document.getElementById("audiobtn")
-function playSound(src){
-    if(audioButton.value == "on"){
-        const audio = new Audio(src);
-        audio.play()
-    }
-}
 
 let gameState = "MENU";
 let difficulty = "easy";
 let timer;
 let timerMax;
+let timeToGuess;
 
 let guess = "";
 let numberToGuess;
@@ -18,6 +13,13 @@ let timerInstance;
 
 let lobbyMusic = new sound("sounds/lobbymusic.mp3");
 let defuseMusic = new sound("sounds/defusemusic.mp3");
+
+function playSound(src){
+    if(audioButton.value == "on"){
+        const audio = new Audio(src);
+        audio.play()
+    }
+}
 
 function sound(src) {
     this.sound = document.createElement("audio");
@@ -231,12 +233,13 @@ function sendFeedback(msg){
     document.getElementById("feedback").innerHTML = msg;
 }
 
-let timeToGuess;
+
 
 function win(){
     timeToGuess = timerMax - timer - 1;
     gameState = "OVER";
     playSound("sounds/ding.mp3")
+    highscores.register(difficulty, timeToGuess);
     document.getElementById("randomnumber").innerHTML =  numberToGuess.toString().padStart(3, "0");
     clearTimeout(timerInstance);
     defuseMusic.pause();
@@ -244,7 +247,63 @@ function win(){
     setTimeout(displayLeaderboard, 3000)
 }
 
+let highscores = {
+    easy: [], 
+    medium: [], 
+    hard: [],
+    
+    retrieve : function(){
+        if(localStorage.getItem("hseasy") == null) localStorage.setItem("hseasy", JSON.stringify([]))
+        if(localStorage.getItem("hsmedium") == null) localStorage.setItem("hsmedium", JSON.stringify([]))
+        if(localStorage.getItem("hshard") == null) localStorage.setItem("hshard", JSON.stringify([]))
+        this.easy = JSON.parse(localStorage.getItem("hseasy"))
+        this.medium = JSON.parse(localStorage.getItem("hsmedium"))
+        this.hard = JSON.parse(localStorage.getItem("hshard"))
+    },
+    register : function(diff, time){
+        if(this.hasOwnProperty(diff)){
+            if(!(this[diff].includes(time))){
+                this[diff].push(time)
+                localStorage.setItem(`hs${diff}`, JSON.stringify(this[diff]))
+            }
+        } else {
+            console.error("Time could not be registered.")
+        }
+        
+    },
+    reset : function(){
+        this.easy = []
+        this.medium = []
+        this.hard = []
+        console.log("Cleared local storage.")
+        localStorage.clear();
+    },
 
+    saveAll : function(){
+        localStorage.setItem("hseasy", JSON.stringify(this.easy))
+        localStorage.setItem("hsmedium", JSON.stringify(this.medium))
+        localStorage.setItem("hshard", JSON.stringify(this.hard))
+    },
+
+    getSorted : function(diff){
+        let list;
+        if(this[diff]){
+            list = this[diff];
+
+            const sortedList = list;
+            sortedList.sort(function(a, b){return a-b})
+            return sortedList;
+        } else {
+            console.error("Could not find difficulty.")
+        }
+
+        
+
+    }
+}
+
+// highscores.reset();
+highscores.retrieve()
 
 function displayLeaderboard(){
     
@@ -255,8 +314,26 @@ function displayLeaderboard(){
     document.getElementById("timetoguess").innerHTML = convertSecondsToTimerString(timeToGuess);
     document.getElementById("leaderboarddifficulty").innerHTML = difficulty;
 
+    const sortedList = highscores.getSorted(`${difficulty}`);
+    console.log("Sorted list of best times: " + sortedList)
+    for(let i = 0; i < 3; i++){
+        if(sortedList[i] == null){
+            document.getElementById(`best${i+1}`).innerHTML = "None";
+        } else {
+            document.getElementById(`best${i+1}`).innerHTML = convertSecondsToTimerString(sortedList[i])
+            if(timeToGuess == sortedList[i]){
+                document.getElementById(`best${i+1}`).style.fontWeight = "bold";
+                document.getElementById(`best${i+1}`).innerHTML = convertSecondsToTimerString(sortedList[i])
+            }
+            
+        }
+        
+    }
+
 
 }
+
+
 
 document.getElementById("playagain").onclick = () => {resetGame();}
 
@@ -337,8 +414,12 @@ function resetGame(){
     document.getElementById("screen").style.transform = "translateY(0px)"
     document.getElementById("guessbox").innerHTML = "ENTER NUMBER";
     document.querySelector(".difficultycontainer").style.visibility = "visible";
+    document.getElementById("best1").style.fontWeight = "normal";
+    document.getElementById("best2").style.fontWeight = "normal";
+    document.getElementById("best3").style.fontWeight = "normal";
     clearTimeout(timerInstance)
     lobbyMusic.play();
+
 }
 
 var keyEnabledArray = Array(222).fill(true);
