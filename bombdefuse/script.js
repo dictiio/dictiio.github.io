@@ -52,9 +52,9 @@ function startGame(diff = "easy"){
     gameState = "ACTIVE";
     startGuessLoop();
     if(difficulty == "medium"){ // medium
-        timerMax = 180;
+        timerMax = 150;
     } else if (difficulty == "hard"){ // hard
-        timerMax = 120;
+        timerMax = 90;
     } else { // easy
         timerMax = 240;
     }
@@ -323,6 +323,7 @@ async function timeLossAnim(time = 0){
         lostTimeChild.style.transform = `translateY(${i*30}px)`
         await promise(50)
     }
+    lostTimeChild.remove();
 }
 
 function displayLeaderboard(){
@@ -372,8 +373,8 @@ function lose(){
 
     const loseCountdown = document.getElementById("losecountdown");
     const screen = document.getElementById("screen");
-    let i = 3;
-    loseCountdown.innerHTML = 3;
+    let i = 5;
+    loseCountdown.innerHTML = 5;
     function countdown(){
         let count = setTimeout(function(){
             if(i <= 0){
@@ -381,7 +382,7 @@ function lose(){
                 clearTimeout(count);
             }
             loseCountdown.innerHTML = i;
-            if(i != 3) playSound("sounds/tick.mp3")
+            if(i != 5) playSound("sounds/tick.mp3")
             i--;
             if(i >= 0){
                 countdown()
@@ -418,7 +419,7 @@ function lose(){
 
     }
 
-    setTimeout(countdown, 2000);
+    countdown();
     
     
     
