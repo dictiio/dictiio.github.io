@@ -39,7 +39,7 @@ function sound(src) {
     }
 }
 
-function startGame(diff){
+function startGame(diff = "easy"){
     lobbyMusic.pause();
     difficulty = diff;
     document.getElementById("game").style.visibility = "visible"
@@ -125,16 +125,19 @@ function startGuessLoop(){
 }
 
 function damage(){
+    let damage = 0;
     if(difficulty == "easy"){
-        timer -= 3;
+        damage = 3;
     } else if (difficulty == "medium"){
-        timer -= 5;
+        damage = 5;
     } else if (difficulty == "hard"){
-        timer -= 7;
+        damage = 7;
     }
+    timer -= damage;
     if(timer <= 0){
         timer = 0;
     }
+    timeLossAnim(damage);
     updateCounter();
 
 }
@@ -253,6 +256,7 @@ let highscores = {
     hard: [],
     
     retrieve : function(){
+        console.log("Retrieved local storage")
         if(localStorage.getItem("hseasy") == null) localStorage.setItem("hseasy", JSON.stringify([]))
         if(localStorage.getItem("hsmedium") == null) localStorage.setItem("hsmedium", JSON.stringify([]))
         if(localStorage.getItem("hshard") == null) localStorage.setItem("hshard", JSON.stringify([]))
@@ -304,6 +308,22 @@ let highscores = {
 
 // highscores.reset();
 highscores.retrieve()
+
+async function timeLossAnim(time = 0){
+    const lostTime = document.getElementById("losttime")
+
+    const lostTimeChild = lostTime.cloneNode(true);
+    lostTime.after(lostTimeChild);
+
+    lostTimeChild.innerHTML = `-${time}s`
+
+    for(let i = 0; i < 1; i += 0.1){
+        lostTimeChild.style.opacity = 1-i;
+        
+        lostTimeChild.style.transform = `translateY(${i*30}px)`
+        await promise(50)
+    }
+}
 
 function displayLeaderboard(){
     

@@ -351,9 +351,18 @@ html {
     align-items: center;
     justify-content: center;
     color: #fc1919;
+    position: relative;
 }
 .timercontainer h3 {
     font-size: 50px;
+}
+
+#losttime {
+    position: absolute;
+    right: 40px;
+    bottom: 10px;
+    font-size: 20px;
+    opacity: 0;
 }
 
 #losescreen {
