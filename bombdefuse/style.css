@@ -10,12 +10,12 @@ html {
     position: relative;
     background-image: url(images/menu.gif);
     background-size:cover;
-    height: 100vh;
+    height: 100dvh;
 }
 
 .gui {
     visibility: hidden;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     display: flex;
     flex-direction: column;
@@ -34,8 +34,10 @@ html {
 }
 
 .menucontainer {
-    width: 800px;
-    height: 800px;
+    width: 50vw;
+    min-width: 400px;
+    height: 40vw;
+    min-height: 700px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -48,28 +50,31 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     position: absolute;
-    top: 20px;
+    top: 2%;
 }
 
 .titlecontainer h1 {
     text-transform: uppercase;
-    font-size: 70px;
+    font-size: 4.5rem;
     -webkit-text-fill-color: rgba(255, 255, 255, 0);
     -webkit-text-stroke-width: 3px;
     -webkit-text-stroke-color: black;
     justify-self: flex-start;
+    text-align: center;
+    line-height: 4.3rem;
 
 }
 
 .titlecontainer h3 {
-    font-size: 25px;
-    margin-top: -15px;
+    font-size: 1.6rem;
+    margin-top: -1%;
 }
 
 .menu h3 {
     text-transform: uppercase;
-    
+    text-align: center;
 }
 
 
@@ -77,17 +82,17 @@ html {
 .difficulty {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    width: 400px;
-    margin: 20px;
+    gap: 1.5dvh;
+    margin: 1.5dvh;
 }
 
 .difficulty button, .startcontainer button {
-    width: 400px;
-    height: 75px;
+    width: 22vw;
+    min-width: 400px;
+    height: 8dvh;
     font-family: 'Orbitron';
     text-transform: uppercase;
-    font-size: 25px;
+    font-size: 1.5rem;
     border-radius: 25px 5px;
     border: 2px black solid;
     color: #fff;
@@ -116,8 +121,8 @@ html {
 }
 
 .icon {
-    height: 30px;
-    width: 30px;
+    height: 2em;
+    width: 2em;
 }
 
 #howtoplaybtn {
@@ -133,8 +138,8 @@ html {
     font-weight: bold;
     border-radius: 10px;
     position: absolute;
-    left: 2vh;
-    bottom: 2vh;
+    left: 2dvh;
+    bottom: 2dvh;
 }
 #howtoplaybtn img {
     margin-right: 8px; 
@@ -142,15 +147,17 @@ html {
 
 
 #audiobtn {
-    height: 65px;
-    width: 65px;
+    height: 3.5vw;
+    width: 3.5vw;
+    min-height: 50px;
+    min-width: 50px;
     border-radius: 50%;
     background-color: #ceecec;
     border: 2px solid black;
     cursor: pointer;
     position: absolute;
-    right: 2vh;
-    bottom: 2vh;
+    right: 2dvh;
+    bottom: 2dvh;
 }
 
 .howtoplay {
@@ -170,8 +177,9 @@ html {
 .howtoplaycontainer {
     background-color: #fff;
     border: 2px solid black;
-    height: 600px;
-    width: 900px;
+    height: 65dvh;
+    width: 47vw;
+    min-width: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -179,6 +187,7 @@ html {
     padding: 50px;
     border-radius: 25px;
     position: relative;
+    text-align: center;
 }
 
 .game {
@@ -189,16 +198,17 @@ html {
     border: 25px solid rgb(56, 56, 56);
     background-color: #000;
     border-radius: 15px;
-    width: 1100px;
-    height: 700px;
+    width: 58vw;
+    height: 75dvh;
     position: absolute;
+    min-width: 800px;
     
 }
 
 .screengui {
     width: 100%;
     height: 100%;
-    padding: 25px;
+    padding: 3%;
     position: absolute;
     visibility: hidden;
 }
@@ -208,7 +218,14 @@ html {
     grid-template-areas:
     'div div'
     'div div';
-    gap: 15px;
+    gap: 2%;
+    grid-template-areas:
+    'num num numpad'
+    'num num numpad'
+    'bar bar timer';
+    grid-template-columns: 1.3fr 1.3fr 1fr;
+    grid-template-rows: auto 1fr auto;
+
 }
 
 .gamesection {
@@ -218,49 +235,52 @@ html {
 }
 
 .guesscontainer {
-    width: 725px;
-    height: 450px;
+    grid-area: num;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: #3bf84b;
     position: relative;
+    
 }
 
 .guesscontainer h3{
     text-transform: uppercase;
     position: absolute;
-    top: 75px;
-    font-size: 20px;
+    top: 17%;
+    font-size: 1.3rem;
+    text-align: center;
     
 }
 
 #numberrange {
     position: absolute;
-    top: 110px;
+    top: 25%;
+    font-size: 1rem;
 }
 
 #feedback {
     position: absolute;
-    bottom: 50px;
-    font-size: 30px;
+    bottom: 10%;
+    font-size: 1.9rem;
     visibility: hidden;
 }
 
 #randomnumber {
-    font-size: 110px;
+    font-family: 'Orbitron', monospace;
+    font-size: 7rem;
     letter-spacing: 50px;
     text-indent: 50px;
 }
 
 .numpadcontainer {
-    height: 450px;
-    width: 260px;
-    padding: 30px 20px;
+    grid-area: numpad;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    padding: 7%;
 }
 
 .numpad button {
@@ -268,14 +288,13 @@ html {
     background-color: #000;
     cursor: pointer;
     border: 3px rgba(255, 255, 255, 0.192) solid;
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    font-size: 35px;
+    width: 3.2vw;
+    height: 3.2vw;
+    font-size: 2rem;
     text-align: center;
     border-radius: 5px;
     font-family: 'Orbitron';
-    font-weight: 800;
+    font-weight: bold;
 }
 
 .numpad button:active, .numpad button.active {
@@ -285,56 +304,60 @@ html {
 
 .numpad {
     display: grid;
-    grid-template-areas:
-    'button button button'
-    'button button button'
-    'button button button'
-    'button button button';
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0 auto;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 5%;
     color: #3bf84b;
+    width: 100%;
+    height: 70%;
 }
 
 #guessbox{
     color: #3bf84b;
     border: 4px rgba(255, 255, 255, 0.192) solid;
-    height: 75px;
+    height: 20%;
+    width: 100%;
     text-align: center;
-    line-height: 75px;
     margin-bottom: 20px;
     border-radius: 5px;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
 }
 
 .bombcontainer {
-    padding: 25px 15px;
     position: relative;
     height: 135px;
+    grid-area: bar;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
 }
 
 .bombcontainer img {
-    height:75px;
-    width:75px;
+    height:80px;
+    width:80px;
     position: absolute;
-    top: 20px;
-    left: 20px;
+    left: 4%;
+    top: 13%;
 }
 #bartimerunder {
     background-color: #0c0a2b;
-    width: 600px;
-    height: 40px;
+    width: 83%;
+    height: 40%;
     position: absolute;
-    top: 40px;
-    left: 65px;
     border-radius: 25px;
     
 }
 #bartimerover {
     background-color: #e2cc69;
-    width: 615px;
-    height: 40px;
+    width: 100%;
+    height: 100%;
     border-radius: 25px;
     background: repeating-linear-gradient(
     45deg,
@@ -352,16 +375,17 @@ html {
     justify-content: center;
     color: #fc1919;
     position: relative;
+    grid-area: timer;
 }
 .timercontainer h3 {
-    font-size: 50px;
+    font-size: 3.2rem;
 }
 
 #losttime {
     position: absolute;
-    right: 40px;
-    bottom: 10px;
-    font-size: 20px;
+    right: 15%;
+    bottom: 10%;
+    font-size: 1.5rem;
     opacity: 0;
 }
 
@@ -372,23 +396,22 @@ html {
     align-items: center;
     color: #fc1919;
     position: relative;
+    gap: 5%;
 }
 
 #losescreen h1 {
-    position: absolute;
-    top: 100px;
-    font-size: 50px;
+    font-size: 5rem;
     text-transform: uppercase;
+    text-align: center;
 }
 
 #losescreen p {
-    font-size: 30px;
-    margin-top: 40px;
+    font-size: 2rem;
+    text-align: center;
 }
 
 #losescreen h3{
-    font-size: 60px;
-    margin-top: 10px;
+    font-size: 4rem;
 }
 
 #leaderboardscreen {
@@ -397,30 +420,30 @@ html {
     justify-content: center;
     align-items: center;
     color: #3bf84b;
-    top: 0px;
+    top: 0;
 }
 
 #leaderboardscreen h3 {
-    font-size: 30px;
+    font-size: 2rem;
 }
 #leaderboardscreen h1 {
-    font-size: 70px;
-    margin-bottom: 80px;
+    font-size: 4.6rem;
+    margin-bottom: 10%;
 }
 #leaderboardscreen h5 {
-    font-size: 20px;
+    font-size: 1.3rem;
 }
 
 .scores{
     text-align: center;
-    font-size: 20px;
-    margin: 30px;
+    font-size: 1.3rem;
+    margin: 3%;
 }
 
 #playagain{
     font-family: "Orbitron";
-    padding: 10px 20px;
-    font-size: 20px;
+    padding: 1% 2%;
+    font-size: 1.3rem;
     color:#3bf84b;
     font-weight: bold;
     background-color:#000;
@@ -445,12 +468,33 @@ html {
     align-items: center;
     flex-direction: column;
     visibility: hidden;
+    width: 100%;
 }
 
-.howtoplaycontainer {
-    text-align: center;
-}
 .howtoplaycontainer p {
     margin: 10px
+}
+
+/* Media query for smaller screens */
+
+@media only screen and (max-width: 600px) {
+
+    .menucontainer {
+        height: 80dvh;
+    }
+
+    .titlecontainer h1{
+        font-size: 2.6rem;
+        -webkit-text-stroke-width: 2px;
+    }
+
+    .titlecontainer h3{
+        font-size: 1.2rem;
+    }
+
+    .difficulty button, .startcontainer button {
+        min-width: 300px;
+        font-size: 1.2rem;
+    }
 
 }
