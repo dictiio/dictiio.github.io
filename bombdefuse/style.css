@@ -201,7 +201,8 @@ html {
     width: 58vw;
     height: 75dvh;
     position: absolute;
-    min-width: 800px;
+    min-width: 900px;
+    min-height: 700px;
     
 }
 
@@ -289,7 +290,9 @@ html {
     cursor: pointer;
     border: 3px rgba(255, 255, 255, 0.192) solid;
     width: 3.2vw;
+    min-width: 50px;
     height: 3.2vw;
+    min-height: 50px;
     font-size: 2rem;
     text-align: center;
     border-radius: 5px;
