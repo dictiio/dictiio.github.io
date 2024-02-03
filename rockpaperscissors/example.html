@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            border: 2px black solid;
+            padding: 10px;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div onclick="pick('roche')">Roche</div>
+    <div onclick="pick('papier')">Papier</div>
+    <div onclick="pick('ciseaux')">Ciseaux</div>
+    <button onclick="verif()">Battle</button>
+
+    <script>
+        var choixJoueur; 
+        function verif(){
+            var choixOrdi = Math.ceil(Math.random()*3)
+            console.log(choixOrdi);
+        }
+
+        function pick(choice){
+            choixJoueur = choice;
+        }
+
+        <p>Intertitre pour les paragraphes 7, 8, 9 du 2e texte
+            V-F le 3e texte suggere que l'explicabilité de l'IA + important que la transparence
+            </p>
+    </script>
+</body>
+</html>
