@@ -143,7 +143,6 @@ const game = {
         computerButtons.forEach((btn => {
             btn.style.transform = "translateY(0px)"
             btn.style.backgroundColor = "#ffffff"
-            btn.classList.add("unpicked")
 
         }))
         this.score = 0;
