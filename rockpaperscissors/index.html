@@ -7,20 +7,23 @@
     <title>Rock Paper Scissors</title>
     <link rel="icon" type="image/x-icon" href="/images/paper.png">
     <link href="style.css" rel="stylesheet">
+
+    <!-- Imports -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Menu -->
     <div class="menu gui">
-        <div class="menucontainer">
+        <div class="menuContainer">
             <h1>Rock Paper Scissors</h1>
             <button id="menu-start">Start</button>
         </div>
         
     </div>
-    <div class="difficultymenu gui">
-        <div class="difficultycontainer">
+    <div class="difficultyMenu gui">
+        <div class="difficultyContainer">
             <h1>Rock Paper Scissors</h1>
             <h3>Pick a difficulty</h3>
             <div class="difficulty">
@@ -30,22 +33,23 @@
             </div>
         </div>
     </div>
+    <!-- Game -->
     <div class="game gui">
-        <div class="gamecontainer">
-            <div class="gamegui gamegui-start">
+        <div class="gameContainer">
+            <div class="gameGui gameGui-start">
                 <p>Game starts in...</p>
                 <h3>3</h3>
             </div>
-            <div class="gamegui gamegui-main">
-                <div class="gamesection optionsection">
+            <div class="gameGui gameGui-main">
+                <div class="gameSection optionSection">
                     <h3>Computer</h3>
-                    <div class="optioncontainer computeroptions">
+                    <div class="optionContainer computerOptions">
                         <button value="0" style="background-image: url('images/rock.png');"></button>
                         <button value="1" value="paper" style="background-image: url('images/paper.png');"></button>
                         <button value="2" style="background-image: url('images/scissors.png');"></button>
                     </div>
                     
-                    <div class="optioncontainer playeroptions">
+                    <div class="optionContainer playerOptions">
                         <button class="unpicked" value="0" style="background-image: url('images/rock.png');"></button>
                         <button class="unpicked" value="1" style="background-image: url('images/paper.png');"></button>
                         <button class="unpicked" value="2" style="background-image: url('images/scissors.png');"></button>
@@ -53,10 +57,10 @@
                     <h3>You</h3>
                     <p id="feedback"></p>
                 </div>
-                <div class="gamesection controlsection">
+                <div class="gameSection controlSection">
                     <div class="screen">
                         <p>Your Score: <span id="score"></span></p>
-                        <p>HP: <span id="health"></span>/<span id="maxhealth"></span></p>
+                        <p>HP: <span id="health"></span>/<span id="maxHealth"></span></p>
                     </div>
                     <div class="log">
                         <h3>Battles</h3>
@@ -64,21 +68,26 @@
                         <button>End Game</button>
                     </div>
                 </div>
+                <div class="gameSection barSection">
+                    <div class="streakbar"></div>
+                    <span id="multiplier">x1</span>
+                </div>
                 
 
                
                 
             </div>
-            <div class="gamegui gamegui-end">
+            <div class="gameGui gameGui-end">
                 <h3>Game Over!</h3>
-                <p>Battles: <span id="battlesamount"></span></p>
-                <p>Your Score: <span id="endscore"></span></p>
-                <button id="playagain">Play Again</button>
+                <p>Battles: <span id="battlesAmount"></span></p>
+                <p>Your Score: <span id="endScore"></span></p>
+                <button id="playAgain">Play Again</button>
             </div>
             
         </div>
     </div>
 
+    <!-- Script -->
     <script src="script.js"></script>
 </body>
 </html>

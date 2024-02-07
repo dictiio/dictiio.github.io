@@ -11,9 +11,10 @@
 body {
     background-image: url(images/background.gif);
     background-size: cover;
+    overflow: hidden;
 }
 
-/* GUIs */
+/* GUI */
 
 .gui {
     position: absolute;
@@ -25,13 +26,15 @@ body {
     justify-content: center;
 }
 
+/* Menu */
+
 .menu {
     visibility: visible;
     display: flex;
     
 }
 
-.menucontainer {
+.menuContainer {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,15 +42,15 @@ body {
 
 }
 
-.menucontainer h1, .difficultycontainer h1 {
+.menuContainer h1, .difficultyContainer h1 {
     font-size: 4rem;
     text-align: center;
     text-transform: uppercase;
     position: absolute;
-    top: 20vh;
+    top: 15vh;
 }
 
-.menucontainer button {
+.menuContainer button {
     width: 50vw;
     max-width: 350px;
     height: 70px;
@@ -60,20 +63,22 @@ body {
     cursor: pointer;
 }
 
-.menucontainer button:hover{
+.menuContainer button:hover{
     background-color: rgb(173, 170, 226);
     color: rgb(55, 52, 100);
     font-weight: 700;
 }
 
-.difficultycontainer {
+/* Difficulty */
+
+.difficultyContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.difficultycontainer h3 {
+.difficultyContainer h3 {
     font-size: 2rem;
     text-transform: uppercase;
 
@@ -109,18 +114,19 @@ body {
 .difficulty button:nth-child(3){
     background-color: #1b1b5a; 
 }
+
 /* Game GUIs */
 
-.gamecontainer {
-    width: 60vw;
-    height: 70vh;
+.gameContainer {
+    width: 1100px;
+    height: 700px;
     background-color: #fff;
     border: 2px solid black;
     border-radius: 25px;
     position: relative;
 }
 
-.gamegui {
+.gameGui {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -131,36 +137,152 @@ body {
     flex-direction: column;
 }
 
-.gamegui-main {
+/* Countdown Game GUI */
+
+.gameGui-start p{
+    font-size: 2rem;
+}
+
+.gameGui-start h3 {
+    font-size: 4rem;
+}
+
+/* Main Game GUI */
+
+.gameGui-main {
     display: grid;
     grid-template-areas:
-    'option control';
+    'option control'
+    'bar bar';
     align-items: center;
-    grid-template-columns: 1.6fr 1fr;
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-rows: 2fr 1fr;
     gap: 2em;
     padding: 2em;
+    position: relative;
+    
 }
 
-.controlsection {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-
-}
-
-.controlsection div {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border: 4px solid black;
-}
 .screen {
     flex: 1;
     margin-bottom: 10px;
     padding: 15px;
     font-size: 1.2rem;
 
+}
+
+.gameSection {
+    border: 4px solid black;
+}
+
+/* Option Section (Main GUI) */
+
+.optionSection {
+    grid-area: option;
+    padding: 2em;
+    height: 100%;
+    position: relative;
+}
+
+.optionSection h3 {
+    font-size: 1.5rem;
+    margin: 1rem;
+}
+
+#feedback {
+    position: absolute;
+    bottom: 2%;
+    font-size: 1.2rem;
+    opacity: 0;
+}
+
+.gameSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+}
+
+.optionContainer button {
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    background-color: #fff;
+    border: 2px solid black;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 65%;
+}
+
+
+.playerOptions {
+    margin-top: 175px;
+    cursor: pointer;
+}
+
+.unpicked:active{
+    filter: invert();
+}
+
+.goUpAnim{
+    animation: goUp 1s;
+}
+
+.goDownAnim{
+    animation: goDown 1s;
+}
+
+.opacityFadeout{
+    animation: opacityFadeOut 1.5s;
+}
+
+/* Control Section (Main GUI) */
+
+.controlSection {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.controlSection {
+    grid-area: control;
+    height: 100%;
+}
+
+.controlSection div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 4px solid black;
+}
+
+/* Log section (Main GUI) */
+
+.log ol li {
+    width: 100%;
+    position: relative;
+    padding: 3px;
+}
+
+.log ol li:nth-child(odd) {
+    background-color: #f7f7f7;
+}
+
+.log ol li:nth-child(even) {
+    background-color: #ebebeb;
+}
+
+.log ol .versus {
+    width: 70%;
+}
+
+.log ol .score {
+    position: absolute;
+    right: 3px;
+    font-weight: bold;
 }
 
 .log {
@@ -194,6 +316,7 @@ body {
     bottom: 5%;
     width: 80%;
     border: 2px solid black;
+    cursor: pointer;
 }
 
 .log button:active{
@@ -202,71 +325,71 @@ body {
     
 }
 
-.gamesection {
-    border: 4px solid black;
-}
+/* Streakbar */
 
-.optionsection {
-    grid-area: option;
-    padding: 2em;
-    height: 100%;
+.barSection {
+    grid-area: bar;
+    width: 100%;
     position: relative;
+    height: 50px;
 }
 
-.optionsection h3 {
-    font-size: 1.5rem;
-    margin: 1rem;
-}
-
-#feedback {
-    position: absolute;
-    bottom: 5%;
-    font-size: 1.5rem;
-    opacity: 0;
-}
-
-.controlsection {
-    grid-area: control;
+.streakbar {
+    width: 0%;
     height: 100%;
+    background-color: #000000;
+    transition: 1s width ease-in-out;
+    position: absolute;
+    left: 0;
+}
+
+#multiplier {
+    position: absolute;
+    right: 2%;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 
-.gamegui-start p{
+/* End Screen GUI */
+
+.gameGui-end {
+    position: absolute;
+    top: 0;
+}
+
+.gameGui-end h3 {
+    font-size: 4rem;
+    text-transform: uppercase;
+    position: absolute;
+    top: 20%
+}
+
+.gameGui-end p {
     font-size: 2rem;
 }
 
-.gamegui-start h3 {
-    font-size: 4rem;
-}
-
-.gamesection {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.optioncontainer button {
-    border-radius: 50%;
-    width: 90px;
-    height: 90px;
+.gameGui-end button {
+    text-transform: uppercase;
     background-color: #fff;
+    padding: 0.6rem 1rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 20%;
     border: 2px solid black;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 65%;
+    color: #000;
     cursor: pointer;
+
 }
 
-
-.playeroptions {
-    margin-top: 175px;
-    cursor: pointer;
+.gameGui-end  button:active{
+    filter:invert();
+    border: 2px solid #ffffff;
 }
 
-.unpicked:active{
-    filter: invert();
-}
+/* Keyframes */
 
 @keyframes leftToCenter{
     0%  {transform: translateX(0px)}
@@ -293,69 +416,4 @@ body {
     0% {opacity: 1}
     70% {opacity: 1}
     100% {opacity: 0}
-}
-
-.goupanim{
-    animation: goUp 1s;
-}
-
-.godownanim{
-    animation: goDown 1s;
-}
-
-.opacityfadeout{
-    animation: opacityFadeOut 1.5s;
-}
-
-.log ol li {
-    width: 100%;
-    position: relative;
-    padding: 3px;
-}
-
-.log ol li:nth-child(odd) {
-    background-color: #f7f7f7;
-}
-
-.log ol li:nth-child(even) {
-    background-color: #ebebeb;
-}
-
-.log ol .versus {
-    width: 70%;
-}
-
-.log ol .score {
-    position: absolute;
-    right: 3px;
-    font-weight: bold;
-}
-
-.gamegui-end h3 {
-    font-size: 4rem;
-    text-transform: uppercase;
-    position: absolute;
-    top: 20%
-}
-
-.gamegui-end p {
-    font-size: 2rem;
-}
-
-.gamegui-end button {
-    text-transform: uppercase;
-    background-color: #fff;
-    padding: 0.6rem 1rem;
-    font-size: 1.3rem;
-    font-weight: bold;
-    border-radius: 10px;
-    position: absolute;
-    bottom: 20%;
-    border: 2px solid black;
-
-}
-
-.gamegui-end  button:active{
-    filter:invert();
-    border: 2px solid #ffffff;
 }
