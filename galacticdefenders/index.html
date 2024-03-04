@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chute de mots</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="gameGui premenu">
+            <div class="menubg"></div>
+            <h1>
+                Galatic Defenders
+            </h1>
+            <button id="startButton" class="button"><span>Start</span></button>
+        </div>
+        <div class="gameGui menu hidden">
+            <div class="menubg"></div>
+            <h1>
+                Galatic Defenders
+            </h1>
+
+            <div class="difficultyContainer">
+                <button class="button" value="easy"><span>Easy</span></button>
+                <button class="button" value="medium"><span>Medium</span></button>
+                <button class="button" value="hard"><span>Hard</span></button>
+            </div>
+        </div>
+        <div class="gameGui game hidden">
+            
+            <div id="game">
+                
+                <div class="background"></div>
+                <div id="spaceship"></div>
+                <div class="meteorContainer"></div>
+                <div id="healthbar">
+                    <div id="healthbarInside"></div>
+                    <div id="healthbarText"></div>
+                    
+                </div>
+                <div class="infoContainer">
+                    <h3>Score: <span id="score">0</span></h3>
+                </div>
+                
+                
+                
+            </div>
+            
+           
+            <div class="control">
+                <input type="text" id="input" placeholder="Type here...">
+                
+            </div>
+            
+        </div>
+        <div class="gameGui end hidden">
+            <h1>Game Over!</h1>
+            <button class="button" id="playAgainButton"><span>Play Again</span></button>
+        </div>
+        
+    </div>
+
+    <script src="data/words.js"></script> 
+    <script src="index.js"></script>
+</body>
+</html>
