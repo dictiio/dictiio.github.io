@@ -382,13 +382,12 @@ body {
     cursor: pointer;
     top: 20px;
     left: 20px;
-    transition: top 0.2s, left 0.2s, filter 0.1s;
+    transition: transform 0.3s, filter 0.1s;
 }
 
 #menuButton:active{
     filter:brightness(0.7);
-    top: 21px;
-    left: 21px;
+    transform: translate(1px, 1px)
 }
 
 .shopContainer {
@@ -450,6 +449,7 @@ body {
 .itemsContainer {
     list-style-type: none;
     font-size: 1.3rem;
+    overflow: hidden;
 }
 
 .itemsContainer li {
@@ -457,14 +457,15 @@ body {
     height: 40px;
     line-height: 40px;
     padding-left: 10px;
-    transition: 0.2s all;
+    transition: 0.5s all;
     cursor: pointer;
 }
 
 .itemsContainer li:active, .itemsContainer li.active {
     color: #000;
     background-color: #fff;
-    font-weight: 800
+    font-weight: 800;
+    transform: translateX(10px)
 }
 
 .preview {
