@@ -32,6 +32,35 @@
                 <button class="button" value="medium"><span>Medium</span></button>
                 <button class="button" value="hard"><span>Hard</span></button>
             </div>
+            <button id="shopButton"></button>
+        </div>
+        <div class="gameGui shop hidden">
+            <div class="menubg"></div>
+            <h1>Store</h1>
+            <div class="coins"><img src="assets/images/coin.png"><span id="playerCoins">x150</span></div>
+            <button id="menuButton"></button>
+
+            <div class="shopContainer">
+
+                <div class="select">
+                    <div class="category">
+                        <button class="active" value="skins">Skins</button>
+                        <button value="perks">Perks</button>
+                    </div>
+                    <ul class="itemsContainer">
+
+                        
+                    </ul>
+                </div>
+
+                <div class="showcase">
+                    
+                    <div class="preview"><div class="price"><img src="assets/images/coin.png"><span id="shopPrice">x1500</span></div></div>
+                    <div class="description"></div>
+                    <button id="buy">Buy</button>
+                </div>
+            </div>
+            
         </div>
         <div class="gameGui game hidden">
             
@@ -40,13 +69,21 @@
                 <div class="background"></div>
                 <div id="spaceship"></div>
                 <div class="meteorContainer"></div>
-                <div id="healthbar">
-                    <div id="healthbarInside"></div>
-                    <div id="healthbarText"></div>
-                    
-                </div>
-                <div class="infoContainer">
-                    <h3>Score: <span id="score">0</span></h3>
+                
+                
+                <div class="hud">
+                    <div id="healthbar">
+                        <div id="healthbarInside"></div>
+                        <div id="healthbarText"></div>
+                        
+                    </div>
+                    <div id="bonusbar">
+                        <div id="bonusbarInside"></div>
+                        <div id="bonusbarText">Active Bonus: <span id="activeBonus">None</span></div>
+                    </div>
+                    <div class="infoContainer">
+                        <h3>Score: <span id="score">0</span></h3>
+                    </div>
                 </div>
                 
                 
@@ -56,18 +93,27 @@
            
             <div class="control">
                 <input type="text" id="input" placeholder="Type here...">
-                
             </div>
             
         </div>
         <div class="gameGui end hidden">
+            <div class="menubg"></div>
             <h1>Game Over!</h1>
+            <h3 class="finalScore">Your Score: <span id="endScore">0</span></h3>
+            <h3 class="finalCoins">Coins Gained: <span id="coinsGained">0</span></h3>
             <button class="button" id="playAgainButton"><span>Play Again</span></button>
         </div>
         
     </div>
-
     <script src="data/words.js"></script> 
-    <script src="index.js"></script>
+    <script src="data/shopItems.js"></script>
+    <script src="data/userData.js"></script>
+
+    <script src="shop.js"></script>
+    
+    <script src="fallingObject.js"></script> 
+    <script src="buttonListeners.js"></script> 
+    <script src="main.js"></script>
+    
 </body>
 </html>

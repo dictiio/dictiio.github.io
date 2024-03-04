@@ -8,6 +8,7 @@ const game = {
     maxwidth: 1200,
     damagePerHit: 10,
     velocityMultiplier: 1,
+    velocityIncreaseRate: 0,
     spawningRate: 1,
     start: function(difficulty){
         this.difficulty = difficulty
@@ -15,14 +16,17 @@ const game = {
             case "easy":
                 this.spawningRate = 2
                 this.velocityMultiplier = 1
+                this.velocityIncreaseRate = 0
                 break
             case "medium":
                 this.spawningRate = 1.5
                 this.velocityMultiplier = 1.5
+                this.velocityIncreaseRate = 0.003
                 break
             case "hard":
                 this.spawningRate = 1
                 this.velocityMultiplier = 2
+                this.velocityIncreaseRate = 0.01
                 break
         }
         spaceship.reset()
@@ -31,6 +35,7 @@ const game = {
         guiManager.display("game")
         meteorManager.startSpawning(this.spawningRate)
         inputBox.select()
+        spaceship.setSkin(userData.info.activeSkin)
         
     },
     damage: function(){
@@ -39,6 +44,12 @@ const game = {
     },
     end: function(){
         if(this.phase != "end"){
+            let addedCoins = Math.floor(game.score/10)
+            userDataManager.addCoins(addedCoins)
+
+            document.getElementById("endScore").innerHTML = game.score
+            document.getElementById("coinsGained").innerHTML = addedCoins
+
             this.setPhase("end")
             meteorManager.stopSpawning()
             guiManager.display("end")
@@ -51,11 +62,13 @@ const game = {
     restart: function(){
         this.phase = "waiting"
         this.difficulty = "easy"
-        this.score = 0
+        this.setScore(0)
         this.damagePerHit = 10
         this.velocityMultiplier = 1
+        this.velocityIncreaseRate = 0
         guiManager.display("menu")
         healthbar.reset()
+        bonusManager.clear()
 
     },
     setScore: function(score){
@@ -142,6 +155,9 @@ const spaceship = {
     reset: function(){
         this.xPos = game.maxwidth/2
         this.moveX(this.xPos)
+    },
+    setSkin: function(skin){
+        this.element.style.backgroundImage = `url(assets/images/skins/${skin}.png)`
     }
     
 }
@@ -228,7 +244,21 @@ class Laser {
                 laser.target.killAnim()
                 clearInterval(animation)
             }
+            if(laser.y < laser.target.yPos){
+                laser.target.killAnim()
+                clearInterval(animation)
+            }
         }, 1)
+
+        // safety
+        setTimeout(() => {
+            if(laser.target.div.innerHTML != ""){
+                laser.target.killAnim()
+                this.delete()
+                clearInterval(animation)
+            }
+            
+        }, 2000)
     }
 
     setPos(x, y){
@@ -243,159 +273,34 @@ class Laser {
     }
 }
 
-class FallingObject {
-    constructor(xPos, yPos, velocity, word){
-        this.xPos = xPos
-        this.yPos = yPos
-        this.velocity = velocity*game.velocityMultiplier
-        this.word = word
-        this.offset = 50
-        var anim;
-        
-
-        this.display()
-    }
-
-    setPos(x, y){
-        this.xPos = x
-        this.yPos = y
-        this.div.style.top = this.yPos-this.offset + "px"
-        this.div.style.left = this.xPos-this.offset + "px"
-    }
-
-    throwLaser(){
-        if(!this.div.classList.contains("destroyed")){
-            this.div.classList.add("destroyed")
-            console.log(game.maxheight-10-this.yPos)
-            
-
-            if(game.maxheight-10-this.yPos < 50){
-                this.killAnim()
-                soundManager.play("shoot")
-            } else {
-                setTimeout(() => {
-                    soundManager.play("shoot")
-                    this.laser = new Laser(spaceship.xPos, game.maxheight-10, this.xPos, this.yPos+(50*this.velocity), this)
-                    
-                }, 1000)
-                
-            }
-        }
-        
-        
-    }
-
-}
-
-class Meteor extends FallingObject {
-
-    display(){
-        this.div = document.createElement("div")
-        const content = document.createTextNode(this.word)
-        this.div.appendChild(content)
-        this.div.classList.add("meteor")
-
-        this.div.style.top = this.yPos-this.offset + "px"
-        this.div.style.left = this.xPos-this.offset + "px"
-
-
-
-        const gui = document.querySelector(".meteorContainer")
-        gui.appendChild(this.div)
-        this.fall()
-
-    }
-
-    fall(){
-        this.anim = setInterval(() => {
-            this.setPos(this.xPos, this.yPos+2*this.velocity)
-            if(this.yPos >= game.maxheight){
-                console.log("a")
-                if(this.laser != "undefined"){
-                    this.delete()
-                    if(!this.div.classList.contains("destroyed")){
-                        game.damage()
-                    }
-                    
-                }
-                clearInterval(this.anim)
-                
-            }
-            const array = [...document.querySelectorAll(".meteor")]
-            if(!array.includes(this.div)){
-                clearInterval(this.anim)
-                return
-            }
-        }, 30)
-    }
-
-    killAnim(){
-        try{
-            this.laser.delete()
-        } catch(e){}
-        game.addScore(this.word.length*10)
-        this.div.style.backgroundImage = "url(assets/images/destroyedmeteor.png)"
-        this.div.innerHTML = ""
-        clearInterval(this.anim)
-        setTimeout(() => {
-            
-            this.delete()
-        }, 1000)
-        
-    }
-
-    delete(){
-        this.div.remove()
-        meteorManager.delete(this)
-    }
-
-}
-
-class Bonus extends FallingObject {
-    constructor(xPos, yPos, velocity, word, type){
-        super(xPos)
-        super(yPos)
-        super(velocity)
-        super(word)
-        this.type = type
-    }
-
-    display(){
-        this.div = document.createElement("div")
-        const content = document.createTextNode(this.word)
-        this.div.appendChild(content)
-        this.div.classList.add("bonus")
-
-        this.div.style.top = this.yPos-this.offset + "px"
-        this.div.style.left = this.xPos-this.offset + "px"
-
-
-
-        const gui = document.querySelector(".meteorContainer")
-        gui.appendChild(this.div)
-        this.fall()
-
-    }
-
-}
-
 const meteorManager = {
     activeMeteors: [],
     velocityMin: 0.5,
     velocityMax: 1.5,
     spawning: null,
     spawnRandomMeteor : function(){
-        let randomWord = wordList[Math.floor(Math.random()*wordList.length)]
+        let randomWord;
+        do {
+            randomWord = wordList[Math.floor(Math.random() * wordList.length)];
+        } while (this.getActiveWordList().includes(randomWord));
+        
         let velocity = this.velocityMin + Math.random()*(this.velocityMax-this.velocityMin)
         let randomX = Math.floor(Math.random()*game.maxwidth)
 
         if(randomX <= 75) randomX = 75
         if(randomX >= game.maxwidth - 75) randomX = game.maxwidth-75
 
-        const meteor = new Meteor(randomX, -50, velocity, randomWord) 
-        this.activeMeteors.push(meteor)
-        console.log(meteor.word)
+        var meteor;
+        if(Math.random() >= 0.95){
+            meteor = new Bonus(randomX, -50, velocity, randomWord, "random") 
+        } else {
+            meteor = new Meteor(randomX, -50, velocity, randomWord) 
+        }
+        meteor.display()
 
+        game.velocityMultiplier += game.velocityIncreaseRate
+        
+        this.activeMeteors.push(meteor)
     },
     getActiveWordList : function(){
         return this.activeMeteors.map((meteor) => meteor.word)
@@ -419,6 +324,66 @@ const meteorManager = {
             this.activeMeteors[i].delete()
         }
     }
+}
+
+const bonusManager = {
+    activeBonus,
+    time: 1500,
+    bar: document.getElementById("bonusbarInside"),
+    text: document.getElementById("activeBonus"),
+    rates: {
+        velocityMultiplier: 1,
+        scoreMultiplier: 1
+    },
+    activate: function(bonus){
+        this.clear()
+        this.activeBonus = bonus
+        switch(bonus){
+            case "time":
+                bonusManager.rates.velocityMultiplier = 0.5
+                break;
+            case "score":
+                bonusManager.rates.scoreMultiplier = 2
+                break;
+        }
+        this.initializeBar()
+        this.barAnim()
+
+    },
+    setPercent: function(percent){
+        this.bar.style.width = percent + "%"
+    },
+    initializeBar: function(){
+        switch(this.activeBonus){
+            case "time":
+                this.bar.style.backgroundColor = "#6196A6"
+                this.text.innerHTML = "Time (2x Slower)"
+                break;
+            case "score":
+                this.bar.style.backgroundColor = "#F5DD61"
+                this.text.innerHTML = "Score (2x More)"
+                break;
+        }
+    },
+    barAnim: function(){
+        clearInterval(this.anim)
+        this.time = 1500
+        this.anim = setInterval(() =>{
+            this.time--
+            this.setPercent(this.time/1500*100)
+            if(this.time <= 0){
+                this.clear()
+            }
+        }, 10)
+    },
+    clear: function(){
+        clearInterval(this.anim)
+        this.time = 1500
+        this.text.innerHTML = "None"
+        bonusManager.rates.velocityMultiplier = 1
+        bonusManager.rates.scoreMultiplier = 1
+    }
+    
 }
 
 //game.start()
@@ -448,22 +413,3 @@ window.addEventListener("keydown", (e) => {
 
     }
 }) 
-
-document.getElementById("startButton").addEventListener("click", () => {
-    guiManager.display("menu")
-    soundManager.play("select")
-})
-
-document.querySelectorAll(".difficultyContainer button").forEach(btn => {
-    btn.addEventListener("click", () => {
-        game.start(btn.value)
-        soundManager.play("select")
-    })
-})
-
-document.getElementById("playAgainButton").addEventListener("click", () => {
-    game.restart()
-    soundManager.play("select")
-})
-
-
