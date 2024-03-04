@@ -264,21 +264,24 @@ class FallingObject {
     }
 
     throwLaser(){
-        this.div.classList.add("destroyed")
-        console.log(game.maxheight-10-this.yPos)
-        
-
-        if(game.maxheight-10-this.yPos < 50){
-            this.killAnim()
-            soundManager.play("shoot")
-        } else {
-            setTimeout(() => {
-                soundManager.play("shoot")
-                this.laser = new Laser(spaceship.xPos, game.maxheight-10, this.xPos, this.yPos+(50*this.velocity), this)
-                
-            }, 1000)
+        if(!this.div.classList.contains("destroyed")){
+            this.div.classList.add("destroyed")
+            console.log(game.maxheight-10-this.yPos)
             
+
+            if(game.maxheight-10-this.yPos < 50){
+                this.killAnim()
+                soundManager.play("shoot")
+            } else {
+                setTimeout(() => {
+                    soundManager.play("shoot")
+                    this.laser = new Laser(spaceship.xPos, game.maxheight-10, this.xPos, this.yPos+(50*this.velocity), this)
+                    
+                }, 1000)
+                
+            }
         }
+        
         
     }
 
