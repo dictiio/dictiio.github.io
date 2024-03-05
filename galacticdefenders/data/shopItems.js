@@ -23,6 +23,12 @@ const shopItems = {
             src: "assets/images/skins/ufo.png",
             price: 4000,
             description: "Become an alien and defend your galaxy!"
+        },
+        satellite: {
+            name: "Satellite",
+            src: "assets/images/skins/satellite.png",
+            price: 6000,
+            description: "Control a powerful satellite to protect the galaxy..."
         }
 
         

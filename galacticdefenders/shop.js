@@ -23,7 +23,7 @@ const shopManager = {
         showcasePreview.style.visibility = "hidden"
         this.currentCategory = "none"
         this.clearListeners()
-        
+        soundManager.play("click")
     },
     showcase: function(key, item, category){
         this.clearListeners()
@@ -45,6 +45,7 @@ const shopManager = {
                         userDataManager.setSkin(key)
                         this.showcase(key, item, category)
                     }
+                    soundManager.play("click2")
                     
                 }
             }
@@ -64,6 +65,7 @@ const shopManager = {
     },
     displayCategory: function(category){
         if(this.currentCategory != category){
+            soundManager.play("click")
             this.clearListeners()
             showcasePreview.style.backgroundImage = ""
             description.innerHTML = ""
@@ -83,6 +85,7 @@ const shopManager = {
                 li.innerHTML = i[1].name
                 categoryList.appendChild(li)
                 li.addEventListener("click", () => {
+                    soundManager.play("click")
                     categoryList.childNodes.forEach(c => {
                         if(c.classList) c.classList.remove("active")
                     })
@@ -103,7 +106,7 @@ const shopManager = {
             userData.owned[category].push(id)
             this.showcase(id, shopItems[category][id], category)
             userDataManager.removeCoins(price)
-            
+            soundManager.play("cash")
             this.updateCoins()
         }
     },

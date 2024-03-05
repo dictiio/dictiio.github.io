@@ -283,7 +283,7 @@ const meteorManager = {
         do {
             randomWord = wordList[Math.floor(Math.random() * wordList.length)];
         } while (this.getActiveWordList().includes(randomWord));
-        
+
         let velocity = this.velocityMin + Math.random()*(this.velocityMax-this.velocityMin)
         let randomX = Math.floor(Math.random()*game.maxwidth)
 
@@ -303,7 +303,7 @@ const meteorManager = {
         this.activeMeteors.push(meteor)
     },
     getActiveWordList : function(){
-        return this.activeMeteors.map((meteor) => meteor.word)
+        return this.activeMeteors.map((meteor) => meteor.word.toLowerCase())
     },
     delete: function(meteor){
         let index = this.activeMeteors.indexOf(meteor)
@@ -380,6 +380,7 @@ const bonusManager = {
         clearInterval(this.anim)
         this.time = 1500
         this.text.innerHTML = "None"
+        this.bar.style.width = "0%"
         bonusManager.rates.velocityMultiplier = 1
         bonusManager.rates.scoreMultiplier = 1
     }
