@@ -159,7 +159,7 @@ const spaceship = {
         this.moveX(this.xPos)
     },
     setSkin: function(skin){
-        this.element.style.backgroundImage = `url(assets/images/skins/${skin}.png)`
+        this.element.style.backgroundImage = `url(${shopItems.skins[skin].src})`
     }
     
 }

@@ -30,6 +30,12 @@ const shopItems = {
             price: 6000,
             description: "Control a powerful satellite to protect the galaxy..."
         },
+        defenderx: {
+            name: "Defender X",
+            src: "assets/images/skins/defenderx.gif",
+            price: 10000,
+            description: "One of the best defenders."
+        }
 
 
         
