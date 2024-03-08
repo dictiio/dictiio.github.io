@@ -30,7 +30,9 @@ const game = {
                 break
         }
         spaceship.reset()
-        healthbar.setMaxHealth(100)
+        perksManager.load()
+        console.log(perksManager)
+        healthbar.setMaxHealth(100*perksManager.healthMultiplier)
         this.setPhase("active")
         guiManager.display("game")
         meteorManager.startSpawning(this.spawningRate)
@@ -162,6 +164,8 @@ const spaceship = {
     
 }
 
+
+
 const soundManager = {
     file: "assets/sounds/",
     play: function(id){
@@ -291,7 +295,8 @@ const meteorManager = {
         if(randomX >= game.maxwidth - 75) randomX = game.maxwidth-75
 
         var meteor;
-        if(Math.random() >= 0.95){
+        let bonusChance = 0.025 * perksManager.bonusMultiplier
+        if(Math.random() <= bonusChance){
             meteor = new Bonus(randomX, -50, velocity, randomWord, "random") 
         } else {
             meteor = new Meteor(randomX, -50, velocity, randomWord) 
@@ -326,6 +331,25 @@ const meteorManager = {
     }
 }
 
+const perksManager = {
+    scoreMultiplier: 1,
+    bonusMultiplier: 1,
+    healthMultiplier: 1,
+    load: function(){
+        if(userData.info.activePerks.includes("scoremultiplier")){
+            this.scoreMultiplier = 2
+        }
+        if(userData.info.activePerks.includes("bonusmultiplier")){
+            this.bonusMultiplier = 2
+        }
+        if(userData.info.activePerks.includes("healthboost")){
+            this.healthMultiplier = 1.5
+        }
+    }
+}
+
+perksManager.load()
+
 const bonusManager = {
     activeBonus,
     time: 1500,
@@ -341,13 +365,24 @@ const bonusManager = {
         switch(bonus){
             case "time":
                 bonusManager.rates.velocityMultiplier = 0.5
+                this.initializeBar()
+                this.barAnim()
                 break;
             case "score":
                 bonusManager.rates.scoreMultiplier = 2
+                this.initializeBar()
+                this.barAnim()
+                break;
+            case "bomb":
+                meteorManager.activeMeteors.forEach(meteor => {
+                    if(!meteor.isBonus){
+                        meteor.throwLaser()
+                    }
+                    
+                })
                 break;
         }
-        this.initializeBar()
-        this.barAnim()
+        
 
     },
     setPercent: function(percent){

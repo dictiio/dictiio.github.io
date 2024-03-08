@@ -29,17 +29,30 @@ const shopItems = {
             src: "assets/images/skins/satellite.png",
             price: 6000,
             description: "Control a powerful satellite to protect the galaxy..."
-        }
+        },
+
 
         
     },
     perks: {
+        bonusmultiplier: {
+            name: "Bonus Multiplier",
+            src: "assets/images/powerup.png",
+            price: 5000,
+            description: "Get 2x more chance to get special meteors!",
+        },
+        healthboost: {
+            name: "Health Boost",
+            src: "assets/images/heart.png",
+            price: 10000,
+            description: "Start with 50% more health!"
+        },
         scoremultiplier: {
             name: "Score Multiplier",
             src: "assets/images/star.png",
-            price: 2000,
+            price: 20000,
             description: "Get 2x more score!",
-            id: "scoremultiplierperk"
         }
+        
     }
 }

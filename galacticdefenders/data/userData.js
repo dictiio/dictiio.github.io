@@ -4,7 +4,7 @@ let userData = {
         perks: []
     },
     info: {
-        coins: 0,
+        coins: 40000,
         activeSkin: "default",
         activePerks: []
     }
@@ -36,7 +36,13 @@ const userDataManager = {
     setSkin: function(skin){
         userData.info.activeSkin = skin
         this.save()
+    },
+    addPerk: function(perk){
+        userData.owned.perks.push(perk)
+        userData.info.activePerks.push(perk)
+        this.save()
     }
 }
 
+userDataManager.reset()
 userDataManager.retrieve()

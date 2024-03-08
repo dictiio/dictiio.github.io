@@ -92,7 +92,7 @@ class Meteor extends FallingObject {
         try{
             this.laser.delete()
         } catch(e){}
-        game.addScore(this.word.length*10*bonusManager.rates.scoreMultiplier)
+        game.addScore(this.word.length*10*bonusManager.rates.scoreMultiplier*perksManager.scoreMultiplier)
         this.div.style.backgroundImage = "url(assets/images/destroyedmeteor.png)"
         this.div.innerHTML = ""
         clearInterval(this.anim)
@@ -134,6 +134,9 @@ class Bonus extends FallingObject {
             case "score":
                 this.div.style.backgroundImage = "url(assets/images/star.png)"
                 break;
+            case "bomb":
+                this.div.style.backgroundImage = "url(assets/images/bomb.png)"
+                break;
         }
 
         const gui = document.querySelector(".meteorContainer")
@@ -143,14 +146,14 @@ class Bonus extends FallingObject {
     }
 
     getRandomBonus(){
-        let bonuses = ["time", "score"]
+        let bonuses = ["time", "score", "bomb"]
         let random = Math.floor(Math.random()*bonuses.length)
         return bonuses[random]
     }
 
     fall(){
         this.anim = setInterval(() => {
-            this.setPos(this.xPos, this.yPos+2*this.velocity)
+            this.setPos(this.xPos, this.yPos+2*this.velocity*game.velocityMultiplier*bonusManager.rates.velocityMultiplier)
             if(this.yPos >= game.maxheight){
                 if(this.laser != "undefined"){
                     this.delete()
@@ -179,7 +182,7 @@ class Bonus extends FallingObject {
         try{
             this.laser.delete()
         } catch(e){}
-        game.addScore(this.word.length*10)
+        game.addScore(this.word.length*10*bonusManager.rates.scoreMultiplier*perksManager.scoreMultiplier)
         this.div.style.backgroundImage = "url(assets/images/destroyedmeteor.png)"
         this.div.innerHTML = ""
         this.activate()

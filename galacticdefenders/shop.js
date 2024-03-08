@@ -36,13 +36,17 @@ const shopManager = {
             if(userData.info.activeSkin == key){
                 buyButton.innerHTML = "Selected"
             } else if (userData.info.activePerks.includes(key)) {
-                buyButton.innerHTML = "Selected"
+                buyButton.innerHTML = "Active"
             } else {
                 buyButton.innerHTML = "Select"
                 buyButton.onclick = () => {
                     
                     if(category == "skins") {
                         userDataManager.setSkin(key)
+                        this.showcase(key, item, category)
+                    }
+                    if(category == "perks") {
+                        userDataManager.addPerk(key)
                         this.showcase(key, item, category)
                     }
                     soundManager.play("click2")
