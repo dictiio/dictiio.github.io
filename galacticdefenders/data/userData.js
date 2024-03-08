@@ -4,7 +4,7 @@ let userData = {
         perks: []
     },
     info: {
-        coins: 40000,
+        coins: 0,
         activeSkin: "default",
         activePerks: []
     }
@@ -44,5 +44,4 @@ const userDataManager = {
     }
 }
 
-userDataManager.reset()
 userDataManager.retrieve()
