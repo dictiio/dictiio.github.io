@@ -449,3 +449,17 @@ window.addEventListener("keydown", (e) => {
 
     }
 }) 
+
+function updateSize(){
+    let height = window.innerHeight
+    let width = window.innerWidth
+
+    if(width > height){
+        let gameWidth = width*0.6
+        let transformFactor = gameWidth/1200
+        document.querySelector(".container").style.transform = `scale(${transformFactor})`
+    }
+}
+
+updateSize();
+window.addEventListener("resize", updateSize);
