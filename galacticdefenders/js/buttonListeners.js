@@ -22,3 +22,8 @@ document.getElementById("shopButton").addEventListener("click", () => {
 document.getElementById("menuButton").addEventListener("click", () => {
     shopManager.closeShop()
 })
+
+document.getElementById("endGame").addEventListener("click", () => {
+    game.end()
+    soundManager.play("select")
+})
