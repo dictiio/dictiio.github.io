@@ -1,3 +1,4 @@
+// Falling object class
 class FallingObject {
     constructor(xPos, yPos, velocity, word){
         this.xPos = xPos
@@ -9,7 +10,7 @@ class FallingObject {
         this.isBonus = false
         
     }
-
+    // sets position based on its center
     setPos(x, y){
         this.xPos = x
         this.yPos = y
@@ -17,10 +18,10 @@ class FallingObject {
         this.div.style.left = this.xPos-this.offset + "px"
     }
 
+    // throw laser from spaceship to falling object
     throwLaser(){
         if(!this.div.classList.contains("destroyed")){
             this.div.classList.add("destroyed")
-            console.log(game.maxheight-10-this.yPos)
             
 
             if(game.maxheight-10-this.yPos < 50){
@@ -41,8 +42,10 @@ class FallingObject {
 
 }
 
+// Meteor class
 class Meteor extends FallingObject {
 
+    // Displays meteor
     display(){
         this.div = document.createElement("div")
         const content = document.createTextNode(this.word)
@@ -60,11 +63,11 @@ class Meteor extends FallingObject {
 
     }
 
+    // Meteor fall animation
     fall(){
         this.anim = setInterval(() => {
             this.setPos(this.xPos, this.yPos+2*this.velocity*game.velocityMultiplier*bonusManager.rates.velocityMultiplier)
             if(this.yPos >= game.maxheight){
-                console.log("a")
                 if(this.laser != "undefined"){
                     this.delete()
                     if(!this.div.classList.contains("destroyed")){
@@ -83,11 +86,13 @@ class Meteor extends FallingObject {
         }, 30)
     }
 
+    // Delete meteor
     delete(){
         this.div.remove()
         meteorManager.delete(this)
     }
 
+    // Meteor kill animation
     killAnim(){
         try{
             this.laser.delete()
@@ -105,6 +110,7 @@ class Meteor extends FallingObject {
 
 }
 
+// Bonus class
 class Bonus extends FallingObject {
     constructor(xPos, yPos, velocity, word, type){
         super(xPos, yPos, velocity, word)
@@ -112,6 +118,7 @@ class Bonus extends FallingObject {
         this.isBonus = true
     }
 
+    // Displays bonus
     display(){
         this.div = document.createElement("div")
         const content = document.createTextNode(this.word)
@@ -124,9 +131,8 @@ class Bonus extends FallingObject {
         if(this.type == "random"){
             this.type = this.getRandomBonus()
         }
-        console.log(this.type)
 
-
+        // change image based on type
         switch(this.type){
             case "time":
                 this.div.style.backgroundImage = "url(assets/images/clock.png)"
@@ -145,12 +151,14 @@ class Bonus extends FallingObject {
 
     }
 
+    // Returns a random bonus meteor
     getRandomBonus(){
         let bonuses = ["time", "score", "bomb"]
         let random = Math.floor(Math.random()*bonuses.length)
         return bonuses[random]
     }
 
+    // Bonus fall animation
     fall(){
         this.anim = setInterval(() => {
             this.setPos(this.xPos, this.yPos+2*this.velocity*game.velocityMultiplier*bonusManager.rates.velocityMultiplier)
@@ -169,15 +177,18 @@ class Bonus extends FallingObject {
         }, 30)
     }
 
+    // Activate bonus type
     activate(){
         bonusManager.activate(this.type)
     }
 
+    // Delete bonus
     delete(){
         this.div.remove()
         meteorManager.delete(this)
     }
 
+    // Bonus kill animation
     killAnim(){
         try{
             this.laser.delete()

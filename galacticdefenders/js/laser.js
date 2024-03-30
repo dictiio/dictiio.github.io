@@ -1,3 +1,4 @@
+// Laser class
 class Laser {
     constructor(x1, y1, x2, y2, target){
         this.x1 = x1
@@ -16,6 +17,7 @@ class Laser {
         this.display()
     }
 
+    // Display laser
     display(){
         if(this.y1-this.y2 < 150){
             this.target.killAnim()
@@ -34,6 +36,7 @@ class Laser {
 
     }
 
+    // Laser animation
     anim(){
 
         const laser = this;
@@ -89,6 +92,7 @@ class Laser {
         }, 2000)
     }
 
+    // Sets position of laser based on its center
     setPos(x, y){
         this.x = x
         this.y = y
@@ -96,6 +100,7 @@ class Laser {
         this.div.style.top = y-this.offset + "px"
     }
 
+    // Deletes laser
     delete(){
         this.div.remove()
     }

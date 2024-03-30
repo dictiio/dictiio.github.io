@@ -8,6 +8,7 @@ const playerCoins = document.getElementById("playerCoins")
 
 const shopManager = {
     currentCategory: "none",
+    // Open shop GUI.
     openShop: function(){
         guiManager.display("shop")
         shopManager.displayCategory("skins")
@@ -15,6 +16,7 @@ const shopManager = {
         buttons[0].classList.add("active")
         this.updateCoins()
     },
+    // Closes shop GUI and displays menu.
     closeShop: function(){
         guiManager.display("menu")
         categoryList.innerHTML = ""
@@ -25,19 +27,25 @@ const shopManager = {
         this.clearListeners()
         soundManager.play("click")
     },
+    // Showcase item image and description.
     showcase: function(key, item, category){
         this.clearListeners()
         showcasePreview.style.backgroundImage = `url(${item.src})`
         description.innerHTML = item.description
         showcasePreview.style.visibility = "visible"
         priceTag.innerHTML = "x" + item.price
-        console.log({key, item, category})
+        // If players owns item
         if(userData.owned[category].includes(key)){
+            // If skin is currently active
             if(userData.info.activeSkin == key){
                 buyButton.innerHTML = "Selected"
-            } else if (userData.info.activePerks.includes(key)) {
+            }
+            // If perk is active
+            else if (userData.info.activePerks.includes(key)) {
                 buyButton.innerHTML = "Active"
-            } else {
+            } 
+            // If skin/perk is not active
+            else {
                 buyButton.innerHTML = "Select"
                 buyButton.onclick = () => {
                     
@@ -54,7 +62,7 @@ const shopManager = {
                 }
             }
             
-
+        // If player doesn't own item
         } else {
             buyButton.innerHTML = "Buy"
             buyButton.onclick = () => {
@@ -62,11 +70,13 @@ const shopManager = {
             }
         }
     },
+    // Clear buy button's listeners
     clearListeners: function(){
         const newBtn = buyButton.cloneNode(true)
         buyButton.parentNode.replaceChild(newBtn, buyButton)
         buyButton = document.getElementById("buy")
     },
+    // Displays a category and its items
     displayCategory: function(category){
         if(this.currentCategory != category){
             soundManager.play("click")
@@ -82,7 +92,6 @@ const shopManager = {
             })
             categoryList.innerHTML = ""
             const items = Object.entries(shopItems[category])
-            console.log(items)
             items.forEach((i) => {
                 const li = document.createElement("li")
                 
@@ -100,12 +109,13 @@ const shopManager = {
         }
         
     },
+    // Update coins amount
     updateCoins: function(){
         playerCoins.innerHTML = "x" + userData.info.coins
     },
+    // Buy items 
     buy: function(category, id){
         const price = shopItems[category][id].price
-        console.log(price)
         if(userData.info.coins >= price){
             userData.owned[category].push(id)
             this.showcase(id, shopItems[category][id], category)
@@ -114,12 +124,9 @@ const shopManager = {
             this.updateCoins()
         }
     },
-    select: function(id){
-
-    }
-    
 }
 
+// Category buttons listeners
 document.querySelectorAll(".category button").forEach(btn => {
     btn.onclick = () => {
         shopManager.displayCategory(btn.value)

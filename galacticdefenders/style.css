@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Orbitron';
+    user-select: none
 }
 
 html,
@@ -13,6 +14,7 @@ body {
     align-items: center;
     justify-content: center;
     background-color: #000;
+    overflow: hidden;
 }
 
 .gameGui {
@@ -26,7 +28,7 @@ body {
     transition: opacity 1s;
 }
 
-
+/* Menu */
 .menubg {
     background-image: url(assets/images/menuspace.gif);
     background-size:cover;
@@ -109,14 +111,35 @@ body {
 .container {
     position: relative;
     width: 1200px;
-    height: 900px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    min-height: 900px;
     overflow:hidden;
     border: 3px solid #fff;
 }
+
+
+#shopButton {
+    border: 4px solid #000000;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-image: url(assets/images/shoppingcart.png);
+    filter: invert();
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: 60% 80%;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    transition: 0.2s all
+}
+
+#shopButton:active {
+    border: 4px solid #ffffff;
+    filter: none;
+}
+
+/* Game */
 
 #game {
     width: 1200px;
@@ -134,6 +157,7 @@ body {
     background-size: 40%;
     opacity: 0.7;
     left: 0;
+
 }
 
 .meteorContainer {
@@ -157,7 +181,7 @@ body {
 
 .control {
     width: 100%;
-    height: 100px;
+    min-height: 100px;
     position: absolute;
     bottom: 0px;
     display: flex;
@@ -175,6 +199,7 @@ body {
     height: 50px;
     font-size: 1.2rem;
     position: absolute;
+    outline: none;
 }
 
 .hidden { 
@@ -260,7 +285,57 @@ body {
     text-transform: uppercase;
 }
 
+#bonusbar {
+    width: 400px;
+    height: 50px;
+    border: 4px #fff solid;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    color: #fff;
+    background-color: #000;
+    
+}
 
+#bonusbarInside {
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transition: background-color 1s ease-in-out;
+}
+
+#bonusbarText {
+    font-weight: 800;
+    font-size: 1.1rem;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding-left: 5px;
+    bottom: 80%;
+    text-transform: uppercase; 
+}
+
+#endGame {
+    position: absolute;
+    padding: 10px 25px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    border: 4px solid #fff;
+    background-color: #000;
+    color: #fff;
+    right: 20px;
+    cursor: pointer;
+    font-weight: 800;
+    transition: 0.2s all
+}
+
+#endGame:active{
+    background-color: #fff;
+    color: #000;
+}
+
+/* End GUI */
 
 .end h1 {
     font-size: 4rem;
@@ -288,56 +363,7 @@ body {
     top: 450px;
 }
 
-#bonusbar {
-    width: 400px;
-    height: 50px;
-    border: 4px #fff solid;
-    position: absolute;
-    left: 20px;
-    bottom: 20px;
-    color: #fff;
-    background-color: #000;
-}
-
-#bonusbarInside {
-    background-color: #000;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-}
-
-#bonusbarText {
-    font-weight: 800;
-    font-size: 1.1rem;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    padding-left: 5px;
-    bottom: 80%;
-    text-transform: uppercase; 
-}
-
-#shopButton {
-    border: 4px solid #000000;
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-image: url(assets/images/shoppingcart.png);
-    filter: invert();
-    background-size: 90%;
-    background-repeat: no-repeat;
-    background-position: 60% 80%;
-    bottom: 20px;
-    right: 20px;
-    cursor: pointer;
-    transition: 0.2s all
-}
-
-#shopButton:active {
-    border: 4px solid #ffffff;
-    filter: none;
-}
+/* Shop GUI */
 
 .shop h1 {
     font-size: 3rem;
@@ -434,7 +460,8 @@ body {
     font-size: 1.5rem;
     text-transform: uppercase;
     border: 1px solid #fff;
-    transition: 0.2s all
+    transition: 0.2s all;
+    cursor: pointer;
 }
 
 .category button:active, .category .active {
@@ -465,7 +492,7 @@ body {
     color: #000;
     background-color: #fff;
     font-weight: 800;
-    transform: translateX(10px)
+    transform: translateX(20px)
 }
 
 .preview {
@@ -528,21 +555,21 @@ body {
     font-size: 1.2rem;
 }
 
-#endGame {
-    position: absolute;
-    padding: 10px 25px;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    border: 4px solid #fff;
-    background-color: #000;
-    color: #fff;
-    right: 20px;
-    cursor: pointer;
-    font-weight: 800;
-    transition: 0.2s all
-}
+/* Sound Button */
 
-#endGame:active{
-    background-color: #fff;
-    color: #000;
+#soundButton {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 4px solid rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    background-image: url(assets/images/speaker.png);
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    filter: invert();
+    cursor: pointer;
 }
