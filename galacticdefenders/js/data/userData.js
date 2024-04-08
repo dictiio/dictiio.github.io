@@ -4,7 +4,7 @@ let userData = {
         perks: []
     },
     info: {
-        coins: 40000,
+        coins: 2000,
         activeSkin: "default",
         activePerks: []
     }

@@ -227,6 +227,7 @@ const soundManager = {
     audio: true,
     file: "assets/sounds/",
     backgroundMusic: null,
+    baseVolume: 1,
 
     // Play an audio file.
     play: function(id){
@@ -243,11 +244,12 @@ const soundManager = {
     // Unmute sounds
     unmute: function(){
         this.audio = true
-        this.backgroundMusic.play()
+        this.backgroundMusic.play(this.baseVolume)
     },
 
     // Plays a background music
     playBackgroundMusic : function(src, vol = 1){
+        this.baseVolume = vol
         try {this.backgroundMusic.pause()} catch(e){}
         this.backgroundMusic = new sound(src)
         this.backgroundMusic.play(vol)
