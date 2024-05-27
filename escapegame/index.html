@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Jersey+10&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>Prison Break</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="gui menu">
+            <h1>Prison Break</h1>
+            <input type="button" value="Jouer" id="playButton">
+        </div>
+        <div class="gui scene hidden">
+            <div class="gameScene gameScene-cell">
+                <div class="gameClickable" id="cell-frame"></div>
+            </div>
+            <div class="gameScene gameScene-frame hidden">
+                <div class="gameClickable" id="frame-screwdriver"></div>
+            </div>
+            <div class="gameScene gameScene-celldoor hidden">
+                <div class="gameClickable" id="celldoor-lock"></div>
+            </div>
+            <div class="gameScene gameScene-hallway hidden">
+                <div id="guard"></div>
+                <div class="gameClickable" id="hallway-door"></div>
+            </div>
+            <div class="gameScene gameScene-memory hidden">
+                <h3 id="memory-instructions">Répétez la séquence jouée pour débloquer la porte!</h3>
+                <div id="memory-pad">
+                    <button value="0"></button>
+                    <button value="1"></button>
+                    <button value="2"></button>
+                    <button value="3"></button>
+                    <button value="4"></button>
+                    <button value="5"></button>
+                    <button value="6"></button>
+                    <button value="7"></button>
+                    <button value="8"></button>
+                </div>
+            </div>
+            <div class="gameScene gameScene-cameras hidden">
+                <div class="gameClickable" id="cameras-computer"></div>
+                <div class="gameClickable" id="cameras-note"></div>
+                <div id="cameras-computerGui">
+                    <h3 id="cameras-instructions">Entrez le mot de passe pour désactiver les caméras :</h3>
+                    <input type="text" id="cameras-input" placeholder="Entrez le mot de passe ici">
+                    <button id="cameras-confirm">Confirmer</button>
+                </div>
+            </div>
+            <div class="gameScene gameScene-trapdoor hidden">
+                <div class="trapdoor-gridContainer">
+                    <div id="trapdoor-grid">
+                        <div class="gameClickable trapdoor-screw"></div>
+                        <div class="gameClickable trapdoor-screw"></div>
+                        <div class="gameClickable trapdoor-screw"></div>
+                        <div class="gameClickable trapdoor-screw"></div>
+                    </div>
+                </div>
+                
+                <h3>Appuyez sur Espace pour dévisser les vis</h3>
+            </div>
+            <div class="gameScene gameScene-ending hidden">
+                <div class="endingContainer">
+                    <h1>Prison Break</h1>
+                    <p>Création de Steven Truong (section 404)</p>
+                    
+                </div>
+                <button id="restart" onclick="location.reload()">Rejouer</button>
+            </div>
+        </div>
+        <div class="dialogueContainer">
+            <h3 id="dialogueTitle">Vous</h3>
+            <div id="dialogueBackground"></div>
+            <p id="dialogueText">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto saepe sed aut nesciunt natus fugiat? Reprehenderit consequuntur rerum dolores iste, rem, nemo officiis veniam asperiores minus sint, distinctio corrupti odio.</p>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
