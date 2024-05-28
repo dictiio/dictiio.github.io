@@ -477,7 +477,7 @@ const screwGame = {
     },
     
     setSelected: function(screw){
-        if(this.selectedScrew !== screw){
+        if(this.selectedScrew !== screw && screw.completion < 1){
             document.querySelector(".gameScene-trapdoor h3").style.opacity = 1
             if(this.selectedScrew !== null){
                 this.selectedScrew.button.style.borderColor = "black"
