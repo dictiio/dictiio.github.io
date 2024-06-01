@@ -38,13 +38,30 @@ const sceneManager = {
     display: function(id){
         if(this.ready){
             document.querySelector(`.gameScene-${this.current}`).classList.add("hidden")
-            console.log(document.querySelector(`.gameScene-${this.current}`).classList)
             document.querySelector(`.gameScene-${id}`).classList.remove("hidden")
-            console.log(document.querySelector(`.gameScene-${this.current}`).classList)
+            document.querySelector(`.gameScene-${id}`).style.opacity = 0
+            setTimeout(function(){
+                document.querySelector(`.gameScene-${id}`).style.opacity = 1
+                setTimeout(function(){
+                    sceneManager.triggerScene()
+                }, 500)
+                
+            }, 500)
+            
             this.current = id
-            this.triggerScene()
+            
         }
         
+    },
+    showHints: function(){
+        //console.log(document.querySelector(`.gameScene-${this.current}.hints`))
+        if(sceneManager.ready){
+            document.querySelector(`.gameScene-${this.current} .hints`).style.visibility = "visible"
+        }
+        
+    },
+    hideHints: function(){
+        document.querySelector(`.gameScene-${this.current} .hints`).style.visibility = "hidden"
     },
     triggerScene: function(){
         switch(this.current){
@@ -101,6 +118,7 @@ const sceneManager = {
                                         setTimeout(function(){
                                             lock.style.visibility = "hidden"
                                             document.querySelector(".gameScene-celldoor").style.backgroundImage = "url(assets/scenes/celldooropened.png)"
+                                            sceneManager.hideHints()
                                             dialogueManager.displayMessages([
                                                 {title: "Vous", text: "Et voilà! C'était plus facile que je le pensais...", wait: 2000}
                                             ])
@@ -139,7 +157,32 @@ const sceneManager = {
                 })
                 document.addEventListener("dialogueend", function(e) {
                     if (e.detail["id"] == "hallway-door")
+                        console.log(e.detail["id"])
                         document.getElementById("hallway-door").style.visibility = "visible"
+                        document.getElementById("hallway-closedDoor1").style.visibility = "visible"
+                        document.getElementById("hallway-closedDoor2").style.visibility = "visible"
+                        document.getElementById("hallway-door").onclick = () => {
+                            sceneManager.display("memory")
+                        }
+                        document.getElementById("hallway-closedDoor1").onclick = () => {
+                            if(sceneManager.ready){
+                                dialogueManager.displayMessages([
+                                    {title: "Vous", text: "Hmm... Cette porte est trop proche du garde.", wait: 2000}
+                                ])
+                                soundManager.play("doorclosing.mp3")
+                            }
+                            
+                        }
+
+                        document.getElementById("hallway-closedDoor2").onclick = () => {
+                            if(sceneManager.ready){
+                                dialogueManager.displayMessages([
+                                    {title: "Vous", text: "Hmm... Je ne pense pas pouvoir me rendre dans cette pièce.", wait: 2000}
+                                ])
+                                soundManager.play("doorclosing.mp3")
+                            }
+                            
+                        }
                 })
                 break;
             case "memory":
@@ -200,6 +243,7 @@ const sceneManager = {
                 
                 break;
             case "ending":
+                document.getElementById("hintButton").style.visibility = "hidden"
                 setTimeout(() => {
                     document.querySelector(".endingContainer").style.bottom = "400px"
                     setTimeout(() => {
@@ -228,7 +272,7 @@ const game = {
     start: function(){
         guiManager.display("scene")
         sceneManager.display("cell")
-        //sceneManager.display("trapdoor")
+        document.getElementById("hintButton").style.visibility = "visible"
     }
 }
 
@@ -316,9 +360,7 @@ document.getElementById("playButton").onclick = () => {
 
 
 
-document.getElementById("hallway-door").onclick = () => {
-    sceneManager.display("memory")
-}
+
 const memoryGame = {
     sequence: "",
     playerSequence: "",
@@ -452,17 +494,20 @@ const screwGame = {
                             document.querySelector(".gameScene-trapdoor h3").style.opacity = 0
                             setTimeout(() => {
                                 document.getElementById("trapdoor-grid").style.bottom = "-700px"
+                                soundManager.play("dooropening.mp3")
                                 setTimeout(() => {
                                     dialogueManager.displayMessages([
                                         {title: "Vous", text: "Enfin! J'ai réussi à faire tomber ce grillage.", wait: 1500},
                                         {title: "Vous", text: "Bon. Il ne me reste plus qu'une chose à faire... M'évader de cette FOUTUE prison!", wait: 2000}
                                     ])
                                     setTimeout(() => {
-                                        document.querySelector(".trapdoor-gridContainer").style.cursor = "pointer"
-                                        document.querySelector(".trapdoor-gridContainer").onclick = () => {
+                                        sceneManager.hideHints()
+                                        document.querySelector(".trapdoor-gridContainer").style.scale = 5
+                                        setTimeout(() =>{
                                             sceneManager.display("ending")
-                                        }
-                                    }, 4000)
+                                        }, 3000)
+                                        
+                                    }, 5000)
                                     
                                 }, 2000)
                             }, 1000)
@@ -489,3 +534,6 @@ const screwGame = {
     },
 }
 
+document.getElementById("hintButton").onclick = () => {
+    sceneManager.showHints()
+}

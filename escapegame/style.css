@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    user-select: none;
 }
 body:after{
     display:none;
@@ -24,6 +25,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background-color: #000;
 }
 .gui {
     width: 100%;
@@ -62,6 +64,21 @@ body {
         -3px 3px 0 #000,
         3px 3px 0 #000;
     top: 80px;
+}
+
+.menu h3 {
+    font-family: Poppins;
+    font-size: 1.5rem;
+    position: absolute;
+    bottom: 0px;
+    color: #fff;
+    background: radial-gradient(#00000086, #00000044);
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 20px 20px #00000050;
+
+    
 }
 #playButton {
     width: 300px;
@@ -116,6 +133,8 @@ body {
 .gameScene {
     width: 100%;
     height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out; 
     position: absolute;
     top: 0px;
     background-size: cover;
@@ -214,6 +233,25 @@ body {
     bottom: 10px;
     transform: perspective(15px) rotateY(-1deg);
     visibility: hidden;
+}
+
+#hallway-closedDoor1{
+    width: 110px;
+    height: 240px;
+    position: absolute;
+    top: 200px;
+    visibility: hidden;
+
+}
+
+#hallway-closedDoor2{
+    width: 60px;
+    height: 240px;
+    position: absolute;
+    top: 210px;
+    visibility: hidden;
+    right: 90px;
+
 }
 
 .gameScene-memory {
@@ -341,6 +379,8 @@ body {
     height: 400px;
     background-color:#07073b;
     border: 8px #020216 solid;
+    scale: 1;
+    transition: scale 3s ease-in-out
 }
 
 #trapdoor-grid {
@@ -450,4 +490,97 @@ body {
 #restart:active {
     background-color: #fff;
     color: #000;
+}
+
+#hintButton {
+    width: 75px;
+    height: 75px;
+    background-image: url(assets/lightbulb.png);
+    position: absolute;
+    background-size: contain;
+    border-radius: 50%;
+    border: 4px solid black;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    transition: box-shadow 0.5s ease-in-out;
+    visibility: hidden;
+}
+
+#hintButton:hover{
+    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.274);
+}
+
+#hintButton:active {
+    background-color: #000;
+    transition: box-shadow 0.2s ease-in-out;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.274);
+}
+
+.hints {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+}
+
+.hint-arrow {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    background-size: contain;
+}
+.hint-arrowLeft {
+    background-image: url(assets/arrows/arrow_left.png);
+    animation: MoveRightLeft 0.75s ease-in-out infinite;
+}
+.hint-arrowDown {
+    background-image: url(assets/arrows/arrow_down.png);
+    animation: MoveUpDown 0.75s ease-in-out infinite;
+}
+.hint-arrowUp {
+    background-image: url(assets/arrows/arrow_up.png);
+    animation: MoveDownUp 0.75s ease-in-out infinite;
+}
+.hint-arrowRight {
+    background-image: url(assets/arrows/arrow_right.png);
+    animation: MoveLeftRight 0.75s ease-in-out infinite;
+}
+
+@keyframes MoveUpDown {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-25px);
+    }
+  }
+
+
+@keyframes MoveDownUp {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(25px);
+    }
+}
+
+@keyframes MoveRightLeft {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(25px);
+    }
+}
+
+@keyframes MoveLeftRight {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-25px);
+    }
 }

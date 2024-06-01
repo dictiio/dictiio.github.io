@@ -9,26 +9,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Jersey+10&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <title>Prison Break</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="assets/icon.svg">
 </head>
 <body>
     <div class="container">
         <div class="gui menu">
             <h1>Prison Break</h1>
             <input type="button" value="Jouer" id="playButton">
+            <h3>Création de Steven Truong (section 404)</h3>
         </div>
         <div class="gui scene hidden">
             <div class="gameScene gameScene-cell">
                 <div class="gameClickable" id="cell-frame"></div>
+                <div class="hints">
+                    <div class="hint-arrow hint-arrowDown" style="top:120px;left:180px;"></div>
+                </div>
             </div>
             <div class="gameScene gameScene-frame hidden">
                 <div class="gameClickable" id="frame-screwdriver"></div>
+                <div class="hints"></div>
             </div>
             <div class="gameScene gameScene-celldoor hidden">
                 <div class="gameClickable" id="celldoor-lock"></div>
+                <div class="hints">
+                    <div class="hint-arrow hint-arrowDown" style="top:170px;right:240px;"></div>
+                </div>
             </div>
             <div class="gameScene gameScene-hallway hidden">
                 <div id="guard"></div>
                 <div class="gameClickable" id="hallway-door"></div>
+                <div class="gameClickable" id="hallway-closedDoor1"></div>
+                <div class="gameClickable" id="hallway-closedDoor2"></div>
+                <div class="hints">
+                    <div class="hint-arrow hint-arrowRight" style="top:300px;right:50px;"></div>
+                </div>
             </div>
             <div class="gameScene gameScene-memory hidden">
                 <h3 id="memory-instructions">Répétez la séquence jouée pour débloquer la porte!</h3>
@@ -43,10 +57,15 @@
                     <button value="7"></button>
                     <button value="8"></button>
                 </div>
+                <div class="hints"></div>
             </div>
             <div class="gameScene gameScene-cameras hidden">
                 <div class="gameClickable" id="cameras-computer"></div>
                 <div class="gameClickable" id="cameras-note"></div>
+                <div class="hints">
+                    <div class="hint-arrow hint-arrowDown" style="bottom:100px;right:170px;"></div>
+                    <div class="hint-arrow hint-arrowDown" style="bottom:250px;right:400px;"></div>
+                </div>
                 <div id="cameras-computerGui">
                     <h3 id="cameras-instructions">Entrez le mot de passe pour désactiver les caméras :</h3>
                     <input type="text" id="cameras-input" placeholder="Entrez le mot de passe ici">
@@ -64,6 +83,12 @@
                 </div>
                 
                 <h3>Appuyez sur Espace pour dévisser les vis</h3>
+                <div class="hints">
+                    <div class="hint-arrow hint-arrowRight" style="top:90px;left:160px;"></div>
+                    <div class="hint-arrow hint-arrowRight" style="bottom:90px;left:160px;"></div>
+                    <div class="hint-arrow hint-arrowLeft" style="top:90px;right:160px;"></div>
+                    <div class="hint-arrow hint-arrowLeft" style="bottom:90px;right:160px;"></div>
+                </div>
             </div>
             <div class="gameScene gameScene-ending hidden">
                 <div class="endingContainer">
@@ -79,6 +104,7 @@
             <div id="dialogueBackground"></div>
             <p id="dialogueText">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto saepe sed aut nesciunt natus fugiat? Reprehenderit consequuntur rerum dolores iste, rem, nemo officiis veniam asperiores minus sint, distinctio corrupti odio.</p>
         </div>
+        <button id="hintButton"></button>
     </div>
 
     <script src="index.js"></script>
