@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+20&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+
+    <title>Pong Game</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <canvas id="canvas"></canvas>
+
+    <div class="gameGui gameGui-menu">
+        <h1>Pong Game</h1>
+        <button class="menuButton" id="startButton">Start</button>
+        <button id="settingsButton">SET</button>
+    </div>
+
+    <div class="gameGui gameGui-settings hidden">
+        <h1>Settings</h1>
+        <ul>
+            <li class="setting">
+                <h3>Computer Mode</h3>
+                <div class="settingToggle settingValue-computer settingActive" data-setting="computer">
+                    <div class="settingToggleInside"></div>
+                </div>
+            </li>
+            
+        </ul>
+        <button id="menuButton">Back</button>
+    </div>
+
+    <div class="gameGui gameGui-active hidden">
+        <h3 id="winner">Player won</h3>
+        <h3 id="firstScore">0</h3>
+        <h3 id="secondScore">0</h3>
+    </div>
+    
+
+    <script src="main.js"></script>
+</body>
+</html>

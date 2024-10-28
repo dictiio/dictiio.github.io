@@ -1,0 +1,209 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: black;
+    
+}
+
+#canvas {
+    border: 2px solid black;
+    position: absolute;
+    display: block;
+    background-color: black;
+    border: 10px solid white;
+}
+
+.gameGui {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 1280px;
+    height: 720px;
+    border: 2px red solid;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+#winner {
+    position: absolute;
+    top: 10%;
+    font-size: 3em;
+    font-family: "Poppins", sans-serif;
+    visibility: hidden;
+    color: #fff;
+}
+
+#firstScore, #secondScore {
+    position: absolute;
+    top: 0.5%;
+    color: #fff;
+    font-size: 5rem;
+    line-height: 3rem;
+    font-family: "Poppins", sans-serif;
+}
+
+#firstScore {
+    left: 22%;
+}
+
+#secondScore {
+    right: 22%;
+}
+
+/* Game Gui Menu */
+
+.gameGui-menu h1 {
+    text-transform: uppercase;
+    letter-spacing: 1.5rem;
+    color: #fff;
+    font-size: 5rem;
+    font-family: "Jersey 20", sans-serif;
+    position: absolute;
+    top: 12%;
+
+}
+
+.gameGui-menu .menuButton {
+    font-family: "Jersey 20", sans-serif;
+    color: #fff;
+    background-color: #000;
+    border: 4px solid #fff;
+    text-transform: uppercase;
+    font-size: 3rem;
+    padding: 15px 120px;
+    cursor: pointer;
+}
+
+.gameGui-menu .menuButton:hover, #settingsButton:hover {
+    color: #000;
+    background-color: #fff;
+    transition: 0.3s ease-in-out all;
+}
+
+.gameGui-menu .menuButton:active, #settingsButton:active {
+    color: #fff;
+    background-color: #000;
+    cursor: pointer;
+    transition: 0.1s ease-in-out all;
+}
+
+#settingsButton {
+    position: absolute;
+    background-color: #000;
+    border: 4px solid #fff;
+    color: #fff;
+    font-family: "Jersey 20", sans-serif;
+    font-size: 2rem;
+    width: 75px;
+    height: 75px;
+    bottom: 15px;
+    left: 15px;
+    cursor: pointer;
+}
+
+
+.gameGui-settings h1 {
+    font-size: 3rem;
+    color: #fff;
+    font-family: "Jersey 20", sans-serif;
+    text-transform: uppercase;
+    position: absolute;
+    top: 4%;
+}
+
+.gameGui-settings ul {
+    border: 1px solid red;
+    width: 90%;
+    list-style-type: none;
+    padding: 0;
+}
+
+.gameGui-settings ul li {
+    width: 100%;
+    margin: 0;
+    padding: 0px 5px 0px 5px;
+}
+
+
+
+.setting {
+    width: 100%;
+    display: flex;
+    color: #fff;
+    font-family: "Jersey 20", sans-serif;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    padding: 0px 10px;
+    margin: 0;
+}
+
+.setting h3 {
+    font-size: 2rem;
+    margin: 0;
+    line-height: normal;
+    display: inline-block;
+}
+
+.settingToggle {
+    position: relative;
+    border: 3px #fff solid;
+    width: 70px;
+    height: 30px;
+    background-color: #000;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+}
+
+.settingToggleInside {
+    width: 23px;
+    height: 23px;
+    background-color: #e27070;
+    border-radius: 10px;
+    position: absolute;
+    left: 4px;
+    transition: 0.3s all ease-in-out;
+}
+
+.settingToggle.settingActive > div {
+    background-color: #60dd60;
+    transform: translateX(39px);
+    
+}
+
+#menuButton {
+    position: absolute;
+    background-color: #000;
+    border: 4px solid #fff;
+    color: #fff;
+    font-family: "Jersey 20", sans-serif;
+    font-size: 2rem;
+    width: 130px;
+    height: 50px;
+    bottom: 15px;
+    text-transform: uppercase;
+    left: 15px;
+    cursor: pointer;
+}
+
+#menuButton:hover {
+    background-color: #fff;
+    color: #000;
+    transition: 0.2s all ease-in-out
+}
