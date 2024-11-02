@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+20&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    
+    <link rel="icon" type="image/x-icon" href="assets/images/icon.png">
 
     <title>Pong Game</title>
 
@@ -20,21 +20,78 @@
     <div class="gameGui gameGui-menu">
         <h1>Pong Game</h1>
         <button class="menuButton" id="startButton">Start</button>
-        <button id="settingsButton">SET</button>
+        <button id="controlsButton">Controls</button>
+        <button id="settingsButton">Settings</button>
+    </div>
+
+    <div class="gameGui gameGui-controls hidden">
+        <h1>Controls</h1>
+        <p>Player 1: W to move up and S to move down</p>
+        <p>Player 2: Arrow Up to move up and Arrow Down to move down</p>
+        <button class="backToMenuButton">Back</button>
     </div>
 
     <div class="gameGui gameGui-settings hidden">
         <h1>Settings</h1>
         <ul>
             <li class="setting">
-                <h3>Computer Mode</h3>
+                <h3>Versus CPU</h3>
                 <div class="settingToggle settingValue-computer settingActive" data-setting="computer">
                     <div class="settingToggleInside"></div>
                 </div>
             </li>
+            <li class="setting">
+                <h3>Obstacle Mode</h3>
+                <div class="settingToggle settingValue-obstacle settingActive" data-setting="obstacle">
+                    <div class="settingToggleInside"></div>
+                </div>
+            </li>
+            <li class="setting">
+                <h3>Color</h3>
+                <div class="settingSelect" data-setting="color">
+                    <div class="settingSelectArrowLeft"></div>
+                    <div class="settingSelectText">white</div>
+                    <div class="settingSelectArrowRight"></div>
+                </div>
+            </li>
+            <li class="setting">
+                <h3>Score To Win</h3>
+                <div class="settingSelect" data-setting="winningScore">
+                    <div class="settingSelectArrowLeft"></div>
+                    <div class="settingSelectText">5</div>
+                    <div class="settingSelectArrowRight"></div>
+                </div>
+            
+            </li>
+            <li class="setting"> 
+                <h3>Bot Difficulty</h3>
+                <div class="settingSelect" data-setting="difficulty">
+                    <div class="settingSelectArrowLeft"></div>
+                    <div class="settingSelectText">easy</div>
+                    <div class="settingSelectArrowRight"></div>
+                </div>
+            </li>
+            <li class="setting">
+                <h3>Ball Speed</h3>
+                <div class="settingSelect" data-setting="ballSpeed">
+                    <div class="settingSelectArrowLeft"></div>
+                    <div class="settingSelectText">5</div>
+                    <div class="settingSelectArrowRight"></div>
+                </div>
+            
+            </li>
+            <li class="setting">
+                <h3>Paddle Size</h3>
+                <div class="settingSelect" data-setting="paddleSize">
+                    <div class="settingSelectArrowLeft"></div>
+                    <div class="settingSelectText">80</div>
+                    <div class="settingSelectArrowRight"></div>
+                </div>
+            </li>
+            
             
         </ul>
-        <button id="menuButton">Back</button>
+        <button class="backToMenuButton">Back</button>
     </div>
 
     <div class="gameGui gameGui-active hidden">
@@ -42,8 +99,20 @@
         <h3 id="firstScore">0</h3>
         <h3 id="secondScore">0</h3>
     </div>
+
+    <div class="gameGui gameGui-end hidden">
+        <h1>Game ended</h1>
+        <h3 id="endWinner">Player won</h3>
+        <h3 id="finalScore">Final Score: 0 to 0</h3>
+        <button id="endMenu">Back to menu</button>
+    </div>
+
+
     
 
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/buttonlisteners.js"></script>
+    
 </body>
 </html>
