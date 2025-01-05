@@ -15,7 +15,6 @@ function drawBackground() {
 
 backgroundImage.onload = function () {
   game.init();
-  game.pause()
 };
 
 const keysDown = {};
@@ -626,6 +625,15 @@ const game = {
 document.addEventListener("keydown", (e) => {
   console.log(e.keyCode);
   keysDown[e.keyCode] = true;
+
+  // Check for ESC Key
+    if (e.keyCode == 27) {
+        if (game.active) {
+        game.pause();
+        } else {
+        game.resume();
+        }
+    }
 });
 
 document.addEventListener("keyup", (e) => {
