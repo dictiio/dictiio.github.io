@@ -339,12 +339,14 @@ const game = {
   coins: [],
   coinCount: 0,
   active: false,
+  ended: true,
   distance: 0,
   animCount: 0,
 
   init: function () {
     this.frameCount = 0;
     this.active = true;
+    this.ended = false;
 
     const playerSprite = new Sprite(
       "assets/skins/AquaDrake.png", // Path to sprite sheet
@@ -365,7 +367,10 @@ const game = {
   },
 
   stop: function () {
+    if(this.ended) return; 
+
     this.active = false;
+    this.ended = true;
     console.log("Game stopped");
   },
 
@@ -627,14 +632,15 @@ document.addEventListener("keydown", (e) => {
   keysDown[e.keyCode] = true;
 
   // Check for ESC Key
-    if (e.keyCode == 27) {
+    if (e.keyCode == 27 && !game.ended) {
         if (game.active) {
-        game.pause();
+            game.pause();
         } else {
-        game.resume();
+            game.resume();
         }
     }
 });
+
 
 document.addEventListener("keyup", (e) => {
   delete keysDown[e.keyCode];
