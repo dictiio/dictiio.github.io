@@ -72,6 +72,10 @@ const guiManager = {
 	},
 };
 
+function getRandomInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 const game = {
 	frameCount: 0,
 	player: null,
@@ -92,6 +96,7 @@ const game = {
 	powerup: null,
     currentPowerup: null,
     lastPowerup: 0,
+    lastObstacleDistance: 0,
 
 	init: function () {
 		guiManager.display("active");
@@ -116,7 +121,7 @@ const game = {
 					sprite: playerSprite,
 				});
 				this.loop();
-				this.generateObstacle();
+				
 			});
 		};
 	},
@@ -174,7 +179,6 @@ const game = {
 			if (obstacle.isOffScreen()) {
 				this.obstacles.splice(index, 1); // Remove off-screen obstacle
 				console.log("Deleting obstacle");
-				this.generateObstacle();
 				console.log(this.obstacles);
 			}
 			if (this.laserEnabled && collision({ box1: this.player, box2: obstacle })) {
@@ -196,11 +200,15 @@ const game = {
 		});
 
 		// draw powerup
-		if (this.powerup != null) {
+		if (this.powerup != null && !this.ended) {
 			this.powerup.draw();
-			if (this.powerup.isOffScreen()) {
+            if (collision({ box1: this.player, box2: this.powerup })) {
+                this.activateRandomPowerUp();
+                this.powerup = null;
+            } else if (this.powerup.isOffScreen()) {
 				this.powerup = null;
 			}
+            
 		}
 
 		//draw player
@@ -268,7 +276,7 @@ const game = {
 			if (65 in keysDown) {
 				// A left
 				if (this.player.position.x > 0) {
-					this.player.velocity.x = -5;
+					this.player.velocity.x = -7;
 				}
 			}
 			if (68 in keysDown) {
@@ -316,13 +324,29 @@ const game = {
 		ctx.font = "24px Courier New";
 		ctx.fillText("Coins: " + this.coinCount, 10, 64);
 
+        if(this.currentPowerup != null){
+            const percentage = Math.round(((1000-(this.frameCount - this.lastPowerup))/1000) * 1000) / 10
+            ctx.fillText("Current Powerup: " + powerups[this.currentPowerup].name + " (" + percentage + "%)", 10, 96);
+        }
+
 		// distance
 		this.distance += (this.speed / 25) * this.mutlipliers.score;
 
-
+        console.log({current: this.frameCount, last: this.lastPowerup})
         // handle powerup
-        if(this.currentPowerup != null){
-            if(this.frameCount - this.lastPowerup > 1000){
+        function resetPowerups(){
+            game.mutlipliers.speed = 1;
+            game.player.shield = false;
+            game.mutlipliers.coins = 1;
+            game.mutlipliers.score = 1;
+            game.laserEnabled = true;
+            
+        }
+
+        resetPowerups()
+        if(this.currentPowerup != null && this.lastPowerup != 0){
+            if(this.frameCount - this.lastPowerup < 1000){
+                
                 const powerup = this.currentPowerup;
                 switch(powerup){
                     case "speed":
@@ -342,25 +366,34 @@ const game = {
                         break;
                 }
             } else {
-                this.mutlipliers.speed = 1;
-                this.player.shield = false;
-                this.mutlipliers.coins = 1;
-                this.mutlipliers.score = 1;
-                this.laserEnabled = true;
                 this.currentPowerup = null;
             }
         }
         
 
-		// generate obstacle
-		if (this.frameCount % 360 == 0) {
-			this.generatePowerUp();
-		}
-
 		if ((this.frameCount + 60) % 360 == 0) {
 			console.log("Creating row");
 			this.generateRandomCoinRow();
 		}
+
+        // generate powerups
+        if(this.frameCount % 1500 == 0){
+            if(this.powerup == null){
+                this.generatePowerUp();
+            }
+        }
+
+        if (this.frameCount % 150 == 0) {
+            this.generateObstacle();
+            this.lastObstacleDistance = Math.floor(this.distance / 50);
+        }
+
+        if(this.frameCount % 500 == 0){
+            if(this.powerup == null){
+                this.speed += 0.5;
+            }
+        }
+
 
 		if (this.active) {
 			requestAnimationFrame(() => {
@@ -376,7 +409,7 @@ const game = {
 		}
 	},
 
-	generateObstacle: function () {
+	generateObstacle: function (xPos = canvas.width) {
 		console.log("Generating new obstacle");
 		const width = 15; // Random width
 		const height = Math.random() * 100 + 250; // Random height
@@ -384,6 +417,7 @@ const game = {
 		const angle = Math.random() * 45 - 22.5; // Random angle between -22.5° and 22.5°
 		const vertical = Math.random() < 0.5; // Random boolean
 
+        const x = xPos;
 		let y = vertical
 			? Math.random() * (620 - height)
 			: Math.random() * (620 - width);
@@ -392,7 +426,7 @@ const game = {
 
 		this.obstacles.push(
 			new Obstacle({
-				position: { x: canvas.width, y: y },
+				position: { x: x, y: y },
 				width: width,
 				height: height,
 				angle: angle,
@@ -432,7 +466,7 @@ const game = {
 
 	generatePowerUp: function () {
 		this.powerup = new Collectable({
-			position: { x: canvas.width, y: Math.random() * 620 },
+			position: { x: canvas.width, y: getRandomInteger(80, 520) },
 			width: 48,
 			height: 48,
 			player: this.player,
@@ -446,6 +480,7 @@ const game = {
 
         this.currentPowerup = powerUp;
         this.lastPowerup = this.frameCount;
+        console.log(this.lastPowerup)
 
         this.displayPowerUp(powerUp);
     },
@@ -453,37 +488,11 @@ const game = {
     displayPowerUp: function(powerup){
         const powerupText = document.querySelector(".powerup");
 
-        const powerupsVisuals = {
-            speed: {
-                innerColor: "#73BAE6",
-                borderColor: "#55B5F0",
-                name: "2x Slow Down"
-            },
-            shield: {
-                innerColor: "#83f374",
-                borderColor: "#20db4f",
-                name: "Shield"
-            },
-            coins: {
-                innerColor: "#EEDE8B",
-                borderColor: "#E1CD69",
-                name: "2x Coins"
-            },
-            score: {
-                innerColor: "#E47BF0",
-                borderColor: "#D861E6",
-                name: "2x Score"
-            },
-            laser: {
-                innerColor: "#E66161",
-                borderColor: "#DF4C4C",
-                name: "No Lasers"
-            }
-        }
+        
         powerupText.style.left = 0;
-        powerupText.style.backgroundColor = powerupsVisuals[powerup].innerColor;
-        powerupText.style.borderColor = powerupsVisuals[powerup].borderColor;
-        powerupText.textContent = "Power Up: " + powerupsVisuals[powerup].name;
+        powerupText.style.backgroundColor = powerups[powerup].innerColor;
+        powerupText.style.borderColor = powerups[powerup].borderColor;
+        powerupText.textContent = "Power Up: " + powerups[powerup].name;
 
         setTimeout(() => {
             powerupText.style.left = "-100%";
@@ -491,6 +500,34 @@ const game = {
     }
 
 };
+
+const powerups = {
+    speed: {
+        innerColor: "#73BAE6",
+        borderColor: "#55B5F0",
+        name: "2x Slow Down"
+    },
+    shield: {
+        innerColor: "#83f374",
+        borderColor: "#20db4f",
+        name: "Shield"
+    },
+    coins: {
+        innerColor: "#EEDE8B",
+        borderColor: "#E1CD69",
+        name: "2x Coins"
+    },
+    score: {
+        innerColor: "#E47BF0",
+        borderColor: "#D861E6",
+        name: "2x Score"
+    },
+    laser: {
+        innerColor: "#E66161",
+        borderColor: "#DF4C4C",
+        name: "No Lasers"
+    }
+}
 
 document.addEventListener("keydown", (e) => {
 	console.log(e.keyCode);
