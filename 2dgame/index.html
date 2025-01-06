@@ -9,117 +9,29 @@
 			rel="stylesheet"
 		/>
 		<title>Document</title>
-		<style>
-			body {
-				margin: 0;
-				padding: 0;
-				background-color: white;
-				width: 100vw;
-				height: 100vh;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-
-			.gameContainer {
-				position: relative;
-				width: 1280px;
-				height: 720px;
-				border: 3px solid black;
-			}
-
-			.gameGui {
-				position: absolute;
-				bottom: 0px;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 2em;
-				color: #fff;
-			}
-
-			.hidden {
-				display: none;
-				visibility: hidden;
-			}
-
-			.gameGui-pause {
-				background-color: rgba(0, 0, 0, 0.5);
-			}
-
-			.gameGui-pause h1 {
-				font-family: "Jersey 20", sans-serif;
-				text-transform: uppercase;
-				letter-spacing: 0.2em;
-				position: absolute;
-				top: 25%;
-			}
-
-			.gameGui-pause button {
-				font-family: "Jersey 20", sans-serif;
-				background-color: #ffffff00;
-				text-transform: uppercase;
-				width: 350px;
-				height: 75px;
-				border: 4px solid #fff;
-				color: #fff;
-				padding: 10px 20px;
-				cursor: pointer;
-				font-size: 1em;
-				position: absolute;
-				top: 50%;
-				transition: 0.3s ease-in-out;
-				overflow: hidden;
-			}
-
-			.gameGui-pause button::before {
-				content: "→"; /* Arrow character */
-				position: absolute;
-				right: -60px; /* Position it outside the button initially */
-				transition: right 0.1s ease-in-out;
-				font-size: 0.8em; /* Adjust the size of the arrow */
-			}
-
-			.gameGui-pause button:hover {
-				background-color: #fff;
-				color: #000;
-			}
-
-			.gameGui-pause button:hover::before {
-				right: 10px; /* Move the arrow inside the button */
-			}
-
-			.gameGui-pause button:active {
-				background-color: #ffffff00;
-				color: #fff;
-			}
-
-			.gameGui-pause button:active::before {
-				right: -60px;
-			}
-
-			canvas {
-				margin: auto;
-				display: block;
-			}
-		</style>
+		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
 		<div class="gameContainer">
+
+            <div class="gameGui gameGui-start">
+				<h1>Endless Runner</h1>
+				<button class="mainButton" onclick="game.init()">Start</button>
+			</div>
+
 			<canvas id="canvas"></canvas>
 
-			<div class="gameGui gameGui-active"></div>
+			<div class="gameGui gameGui-active hidden">
+                <div class="powerup">Power Up: 2x Score</div>
+            </div>
 
 			<div class="gameGui gameGui-pause hidden">
 				<h1>Game Paused</h1>
-				<button onclick="game.resume()">Resume</button>
+				<button class="mainButton" onclick="game.resume()">Resume</button>
 			</div>
 		</div>
 
+        <script src="classes.js"></script>
 		<script src="main.js"></script>
 	</body>
 </html>
