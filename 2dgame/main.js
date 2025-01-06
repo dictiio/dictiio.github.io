@@ -246,12 +246,7 @@ const game = {
 		}
 
 		if (this.player.canControl) {
-			if (this.player.position.x <= 100) {
-				this.player.velocity.x = 0;
-				this.player.position.x = 100;
-			} else {
-				this.player.velocity.x = -game.getSpeed();
-			}
+            this.player.velocity.x = 0;
 
 			this.player.velocity.y = 0;
 			if (87 in keysDown) {
