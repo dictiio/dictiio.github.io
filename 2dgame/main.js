@@ -497,10 +497,6 @@ const game = {
 
 };
 
-
-
-game.init()
-
 document.addEventListener("keydown", (e) => {
 	console.log(e.keyCode);
 	keysDown[e.keyCode] = true;
