@@ -6,8 +6,6 @@ ctx.webkitImageSmoothingEnabled = false;
 
 const keysDown = {};
 
-canvas.width = 1280;
-canvas.height = 720;
 
 const laser = {
 	width: 40,
@@ -18,10 +16,10 @@ const laser = {
 	right: new Image(),
 	loadImages: function (callback) {
 		const images = [
-			"assets/toplaser.png",
-			"assets/bottomlaser.png",
-			"assets/leftlaser.png",
-			"assets/rightlaser.png",
+			"assets/images/toplaser.png",
+			"assets/images/bottomlaser.png",
+			"assets/images/leftlaser.png",
+			"assets/images/rightlaser.png",
 		];
 		const imageElements = [this.top, this.bottom, this.left, this.right];
 		let loadedCount = 0;
@@ -45,7 +43,7 @@ const laser = {
 
 let backgroundX = 0; // Starting x position of the background
 const backgroundImage = new Image();
-backgroundImage.src = "assets/background.png";
+backgroundImage.src = "assets/images/background.png";
 
 const imageWidth = 1280 * 2; // Image width (make sure it's twice the canvas width)
 const canvasWidth = canvas.width;
@@ -59,22 +57,7 @@ function collision({ box1, box2 }) {
 	);
 }
 
-const guiManager = {
-	current: "start",
-	// Afficher le menu et cacher le menu actuel
-	display: function (id) {
-		document
-			.querySelector(`.gameGui-${this.current}`)
-			.classList.add("hidden");
-		document.querySelector(`.gameGui-${id}`).classList.remove("hidden");
-		this.current = id;
-		console.log("Displaying " + id);
 
-        if(id == "start"){
-            game.drawIdleBackground();
-        }
-	},
-};
 
 function getRandomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -115,7 +98,7 @@ const game = {
 	powerup: null,
     currentPowerup: null,
     lastPowerup: 0,
-    lastObstacleDistance: 0,
+    shield: false,
 
 	init: function () {
 		guiManager.display("active");
@@ -125,7 +108,7 @@ const game = {
 		this.ended = false;
 
 		const playerSprite = new Sprite(
-			"assets/skins/AquaDrake.png", // Path to sprite sheet
+			"assets/images/skins/AquaDrake.png", // Path to sprite sheet
 			64,
 			64, // Frame width and height
 			4, // Total frames
@@ -150,8 +133,7 @@ const game = {
 
 		this.active = false;
 		this.ended = true;
-		
-        this.displayStats();
+
 	},
 
 	resume: function () {
@@ -192,7 +174,6 @@ const game = {
 		);
 
 		this.drawFloor();
-
 		// draw obstacles
 		this.obstacles.forEach((obstacle, index) => {
 			obstacle.draw();
@@ -201,9 +182,22 @@ const game = {
 				console.log("Deleting obstacle");
 				console.log(this.obstacles);
 			}
-			if (this.laserEnabled && collision({ box1: this.player, box2: obstacle })) {
-				console.log("collide");
-				this.playDeathAnimation();
+			if (!this.shield && collision({ box1: this.player, box2: obstacle })) {
+                // obstacle is a rocket
+                if(obstacle.type == "rocket"){
+                    this.playDeathAnimation();
+
+                // obstacle is a laser
+                } else if (obstacle.type === "laser") {
+                    // check if laser is enabled
+                    if (this.laserEnabled) {
+                        this.playDeathAnimation();
+                    }
+                } else {
+                    // Handle cases where the type is undefined or not recognized
+                    console.warn("Unknown obstacle type or type is undefined:", obstacle.type);
+                    // You can add additional handling here if needed
+                }
 			}
 		});
 
@@ -249,11 +243,12 @@ const game = {
 
 		ctx.drawImage(
 			backgroundImage,
-			backgroundX,
-			-1,
+			0,
+			0,
 			imageWidth,
 			canvas.height
 		);
+
 
 		this.drawFloor();
 	},
@@ -268,6 +263,7 @@ const game = {
 		// bg
 
 		backgroundX -= this.getSpeed();
+        backgroundX = Math.floor(backgroundX)
 
 		if (backgroundX <= -imageWidth) {
 			backgroundX = 0; // Reset to the starting position
@@ -332,6 +328,9 @@ const game = {
 				this.player.angle = 90;
 				this.draw();
 				this.stop();
+                setTimeout(() => {
+                    this.displayStats();
+                }, 1000)
 			}
 		}
 
@@ -352,11 +351,11 @@ const game = {
 		// distance
 		this.distance += (this.speed / 25) * this.mutlipliers.score;
 
-        console.log({current: this.frameCount, last: this.lastPowerup})
+
         // handle powerup
         function resetPowerups(){
             game.mutlipliers.speed = 1;
-            game.player.shield = false;
+            game.shield = false;
             game.mutlipliers.coins = 1;
             game.mutlipliers.score = 1;
             game.laserEnabled = true;
@@ -373,7 +372,7 @@ const game = {
                         this.mutlipliers.speed = 0.5;
                         break;
                     case "shield":
-                        this.player.shield = true;
+                        this.shield = true;
                         break;
                     case "coins":
                         this.mutlipliers.coins = 2;
@@ -391,7 +390,7 @@ const game = {
         }
         
 
-		if ((this.frameCount + 60) % 360 == 0) {
+		if (this.frameCount % 360 == 0) {
 			console.log("Creating row");
 			this.generateRandomCoinRow();
 		}
@@ -403,9 +402,13 @@ const game = {
             }
         }
 
-        if (this.frameCount % 150 == 0) {
+        if (this.frameCount % 150 == 0 && this.distance > 50) {
             this.generateObstacle();
-            this.lastObstacleDistance = Math.floor(this.distance / 50);
+        }
+
+        // generate rockets
+        if (this.frameCount % 400 == 0 && this.distance > 500) {
+            this.generateRockets();
         }
 
         if(this.frameCount % 500 == 0){
@@ -432,7 +435,7 @@ const game = {
 	generateObstacle: function (xPos = canvas.width) {
 		console.log("Generating new obstacle");
 		const width = 15; // Random width
-		const height = Math.random() * 100 + 250; // Random height
+		const height = Math.random() * 200 + 250; // Random height
 
 		const angle = Math.random() * 45 - 22.5; // Random angle between -22.5° and 22.5°
 		const vertical = Math.random() < 0.5; // Random boolean
@@ -455,6 +458,22 @@ const game = {
 			})
 		);
 	},
+
+    generateRockets: function(){
+        const rocketCount = Math.floor(Math.random() * 4) + 1;
+
+        for(let i = 0; i < rocketCount; i++){
+            this.obstacles.push(
+                new Collectable({
+                    position: { x: canvas.width, y: getRandomInteger(20, 580) },
+                    width: 48,
+                    height: 48,
+                    player: this.player,
+                    type: "rocket",
+                })
+            )
+        }
+    },
 
 	generateCoinRow: function (startY, spacing, rows, columns) {
 		for (let i = 0; i < columns; i++) {
@@ -569,7 +588,7 @@ const game = {
         this.powerup = null;
         this.currentPowerup = null;
         this.lastPowerup = 0;
-        this.lastObstacleDistance = 0;
+        this.shield = false;
 
         guiManager.display("start")
     }

@@ -81,6 +81,16 @@ class Player {
 			this.height,
 			this.angle
 		);
+
+        // render shield
+        if(game.shield){
+            
+            ctx.beginPath()
+            ctx.arc(this.position.x + this.width / 2, this.position.y + this.height / 2, this.width * 0.75, 0, 2 * Math.PI)
+            ctx.strokeStyle = "lightblue"
+            ctx.lineWidth = 5;
+            ctx.stroke()
+        }
 	}
 }
 
@@ -98,15 +108,18 @@ class Collectable {
 		this.player = player;
 		this.type = type;
 
+        this.img = new Image();
 		if (this.type == "coin") {
-			this.img = new Image();
-			this.img.src = "assets/coin.png";
+			this.img.src = "assets/images/coin.png";
 		}
 
         if (this.type == "powerup") {
-			this.img = new Image();
-			this.img.src = "assets/powerup.png";
+			this.img.src = "assets/images/powerup.png";
 		}
+
+        if(this.type == "rocket"){
+            this.img.src = "assets/images/rocket.png";
+        }
 
 		this.img.onload = () => {
 			this.ready = true;
@@ -115,7 +128,13 @@ class Collectable {
 
 	draw() {
 		if (this.ready) {
-			this.position.x -= game.getSpeed();
+			
+            if(this.type == "rocket"){
+                this.position.x -= 2*game.getSpeed();
+            } else{
+                this.position.x -= game.getSpeed()
+            }
+
 			ctx.drawImage(
 				this.img,
 				this.position.x,
@@ -139,6 +158,7 @@ class Obstacle {
 		height = 100,
 		player,
 		vertical = true,
+        type = "laser",
 	}) {
 		this.position = position;
 		this.color = color;
@@ -146,6 +166,7 @@ class Obstacle {
 		this.height = height;
 		this.player = player;
 		this.vertical = vertical;
+        this.type = type;
 
 		if (this.vertical) {
 			this.topImg = laser.top;
