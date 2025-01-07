@@ -123,6 +123,46 @@ body {
     transition: 0.3s left ease-in-out;
 }
 
+.gameGui-ended {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.gameGui-ended h1 {
+    font-family: "Jersey 20", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    position: absolute;
+    top: 10%;
+
+}
+
+.stats {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 300px;
+    border: 4px solid #fff;
+    border-bottom: 0px;
+    text-align: center;
+}
+
+.stats li:first-child {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.stats li {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    font-family: "Jersey 20", sans-serif;
+    padding: 10px;
+    border-bottom: 4px solid #fff; 
+}
+
+.gameGui-ended .mainButton {
+    top: 75%;
+}
+
 canvas {
     margin: auto;
     display: block;

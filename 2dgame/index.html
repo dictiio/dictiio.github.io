@@ -14,7 +14,7 @@
 	<body>
 		<div class="gameContainer">
 
-            <div class="gameGui gameGui-start">
+            <div class="gameGui gameGui-start ">
 				<h1>Endless Runner</h1>
 				<button class="mainButton" onclick="game.init()">Start</button>
 			</div>
@@ -29,9 +29,18 @@
 				<h1>Game Paused</h1>
 				<button class="mainButton" onclick="game.resume()">Resume</button>
 			</div>
+
+            <div class="gameGui gameGui-ended hidden">
+				<h1>Game Over</h1>
+                <ul class="stats">
+                    <li class="">Your Stats</li>
+                </ul>
+				<button class="mainButton" onclick="game.reset()">Play Again</button>
+			</div>
 		</div>
 
         <script src="classes.js"></script>
+        <script src="data/userData.js"></script>
 		<script src="main.js"></script>
 	</body>
 </html>

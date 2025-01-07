@@ -69,11 +69,30 @@ const guiManager = {
 		document.querySelector(`.gameGui-${id}`).classList.remove("hidden");
 		this.current = id;
 		console.log("Displaying " + id);
+
+        if(id == "start"){
+            game.drawIdleBackground();
+        }
 	},
 };
 
 function getRandomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+const stats = {
+    distance: {
+        value: 0,
+        name: "Distance",
+    },
+    coins: {
+        value: 0,
+        name: "Coins Earned",
+    },
+    highestDistance: { 
+        value: 0,
+        name: "Highest Distance",
+    }
 }
 
 const game = {
@@ -131,7 +150,8 @@ const game = {
 
 		this.active = false;
 		this.ended = true;
-		console.log("Game stopped");
+		
+        this.displayStats();
 	},
 
 	resume: function () {
@@ -276,7 +296,7 @@ const game = {
 			if (65 in keysDown) {
 				// A left
 				if (this.player.position.x > 0) {
-					this.player.velocity.x = -7;
+					this.player.velocity.x = -8;
 				}
 			}
 			if (68 in keysDown) {
@@ -497,6 +517,61 @@ const game = {
         setTimeout(() => {
             powerupText.style.left = "-100%";
         }, 3000)
+    },
+
+    displayStats: function(){
+
+        guiManager.display("ended");
+        // update stats
+        stats.distance.value = Math.round(this.distance);
+        stats.coins.value = this.coinCount;
+
+        // high score
+        if(this.distance > userData.info.highestDistance){
+            userDataManager.setHighestDistance(Math.round(this.distance));
+        }
+
+        stats.highestDistance.value = userData.info.highestDistance;
+
+        const statsElement = document.querySelector(".stats");
+        statsElement.innerHTML = "";
+
+        // title
+        const title = document.createElement("li");
+        title.textContent = "Your Stats";
+        statsElement.appendChild(title);
+
+        for(const stat in stats){
+            const element = document.createElement("li");
+            element.textContent = stats[stat].name + ": " + stats[stat].value;
+            statsElement.appendChild(element);
+        }
+
+    },
+
+    reset: function(){
+        this.frameCount = 0;
+        this.player = null;
+        this.speed = 5;
+        this.mutlipliers = {
+            speed: 1,
+            coins: 1,
+            score: 1,
+        };
+        this.laserEnabled = true;
+        this.obstacles = [];
+        this.coins = [];
+        this.coinCount = 0;
+        this.active = false;
+        this.ended = false;
+        this.distance = 0;
+        this.animCount = 0;
+        this.powerup = null;
+        this.currentPowerup = null;
+        this.lastPowerup = 0;
+        this.lastObstacleDistance = 0;
+
+        guiManager.display("start")
     }
 
 };
