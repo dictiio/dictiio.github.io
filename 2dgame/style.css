@@ -8,6 +8,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    user-select: none;
 }
 
 .gameContainer {
@@ -170,7 +171,7 @@ canvas {
 }
 
 .menuButton {
-    width: 130px;
+    width: 170px;
     height: 50px;
     background-color: #ffffff00;
     border: 4px solid #fff;
@@ -181,15 +182,25 @@ canvas {
     position: absolute;
     cursor: pointer;
     transition: 0.2s all ease-in-out;
-
-    bottom: 20px;
-    left: 20px;
     
 }
 
 .menuButton:active {
     background-color: #fff;
     color: #000;
+}
+
+.gameGui .menuButton {
+    
+    bottom: 20px;
+    left: 20px;
+}
+
+.gameGui-start .menuButton:last-of-type{
+    bottom: 20px;
+    left: auto;
+    right: 20px;
+    
 }
 
 /* Shop GUI */
@@ -342,8 +353,9 @@ canvas {
     border-top: 4px solid #fff;
     border-bottom: 4px solid #fff;
     padding: 8px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     letter-spacing: 2px;
+    text-align: justify;
 
 }
 
@@ -390,3 +402,63 @@ canvas {
     font-weight: 800;
     font-size: 1.2rem;
 }
+
+.gameGui-instructions {
+    background-color: rgba(0, 0, 0, 0.5);
+    flex-direction: row;
+}
+
+.gameGui-instructions h1 {
+    font-family: "Jersey 20", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    position: absolute;
+    top: 0;
+    
+}
+
+.howtoplay, .controls {
+    
+    position: absolute;
+    height: 85%;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.howtoplay {
+    width: 50%;
+    left: 0;
+    gap: 10px;
+}
+.controls {
+    width: 50%;
+    right: 0;
+}
+
+.controls h5 {
+    margin: 10px;;
+    height: 50px;
+    font-family: "Jersey 20", sans-serif;
+    font-size: 1em;
+}
+
+.howtoplay h3, .controls h3 {
+    font-family: "Jersey 20", sans-serif;
+    text-transform: uppercase;
+    font-size: 1.8em;
+    letter-spacing: 0.2em;
+    position: absolute;
+    top: 0;
+}
+
+.howtoplay p {
+    margin: 0;
+    font-family: "Jersey 20";
+    width: 90%;
+    text-align: justify;
+    font-size: 0.8em;
+}
+

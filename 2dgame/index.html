@@ -8,16 +8,37 @@
 			href="https://fonts.googleapis.com/css2?family=Jersey+20&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
 			rel="stylesheet"
 		/>
-		<title>Document</title>
+		<title>Dragon Rush</title>
 		<link rel="stylesheet" href="style.css">
+		<link rel="icon" type="image/x-icon" href="assets/images/icon.png">
 	</head>
 	<body>
 		<div class="gameContainer">
 
             <div class="gameGui gameGui-start ">
-				<h1>Endless Runner</h1>
+				<h1>Dragon Rush</h1>
 				<button class="mainButton" onclick="game.init()">Start</button>
+				<button class="menuButton" onclick="guiManager.display('instructions')">Instructions</button>
                 <button class="menuButton" onclick="shopManager.openShop()">Store</button>
+			</div>
+
+			<div class="gameGui gameGui-instructions hidden">
+				<h1>Instructions</h1>
+				<button id="menuButton" onclick="guiManager.display('start')"></button>
+				<div class="howtoplay">
+					<h3>Goal</h3>
+					<p>The goal is to fly as far as possible, dodging obstacles and collecting power-ups to boost your score. Watch out for lasers, which spawn randomly along your path—if they hit you, the game ends. As you progress, missiles will appear, moving faster and unpredictably, adding more challenge.</p>
+					<p>Power-ups will pop up throughout the game, granting abilities like speed boosts, shields, or coin multipliers. Collect them to extend your run!</p>
+					<p>Coins appear in rows and can be used to unlock skins in the store. Collect enough to customize your character and make your run more fun! The skins you purchase are saved to your local storage, so you can use them again anytime.</p>
+				</div>
+				<div class="controls">
+					<h3>Controls</h3>
+					<h5>Press W to move up</h5>
+					<h5>Press A to move left</h5>
+					<h5>Press S to move down</h5>
+					<h5>Press D to move right</h5>
+				</div>
+
 			</div>
 
             <div class="gameGui gameGui-shop hidden">

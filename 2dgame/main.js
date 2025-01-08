@@ -326,7 +326,6 @@ const game = {
 				this.player.angle += (10 - this.animCount) * 3; // Continue rotating if animCount is less than 5
 			} else {
 				this.speed = 0;
-				this.player.angle = 90;
 				this.draw();
 				this.stop();
                 this.displayStats();
@@ -338,7 +337,7 @@ const game = {
 		ctx.fillStyle = "white";
 		ctx.font = "24px Courier New";
 		ctx.fillText("Score: " + Math.round(this.distance), 10, 32);
-		ctx.fillText("Frame: " + this.frameCount, 1000, 32);
+		//ctx.fillText("Frame: " + this.frameCount, 1000, 32);
 		ctx.font = "24px Courier New";
 		ctx.fillText("Coins: " + this.coinCount, 10, 64);
 
@@ -401,7 +400,7 @@ const game = {
             }
         }
 
-        if (this.frameCount % 150 == 0 && this.distance > 50) {
+        if (this.frameCount % (200-this.speed*10) == 0 && this.distance > 50) {
             this.generateObstacle();
         }
 

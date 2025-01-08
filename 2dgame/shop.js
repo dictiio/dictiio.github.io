@@ -11,49 +11,49 @@ const shopItems = {
             name: "Aqua Drake",
             src: "assets/images/skins/AquaDrake.png",
             price: 0,
-            description: "The default, boring dragon.",
+            description: "The default dragon, simple and boring, with the essence of water and air combined.",
         },
         adultgreendragon: {
             name: "Adult Green Dragon",
             src: "assets/images/skins/AdultGreenDragon.png",
             price: 100,
-            description: "A green dragon in its prime.",
+            description: "A green dragon in its prime, with sharp intellect and unmatched power, fully matured and formidable.",
         },
         babybrassdragon: {
             name: "Baby Brass Dragon",
             src: "assets/images/skins/BabyBrassDragon.png",
             price: 200,
-            description: "A small brass dragon.",
+            description: "A small, adorable brass dragon, still learning the ways of the world with a playful spirit.",
         },
         babycopperdragon: {
             name: "Baby Copper Dragon",
             src: "assets/images/skins/BabyCopperDragon.png",
             price: 500,
-            description: "A small copper dragon.",
+            description: "A small copper dragon, curious and energetic, beginning to explore its powers and surroundings.",
         },
         mudwyvern: {
             name: "Mud Wyvern",
             src: "assets/images/skins/MudWyvern.png",
             price: 1000,
-            description: "A wyvern made of mud.",
+            description: "A wyvern composed of mud and earth, with the power to manipulate the terrain around it.",
         },
         poisondrake: {
             name: "Poison Drake",
             src: "assets/images/skins/PoisonDrake.png",
             price: 2500,
-            description: "A dragon made of poison.",
+            description: "A dragon made of toxic poison, with venomous breath that can corrupt anything it touches.",
         },
         viridiandrake: {
             name: "Viridian Drake",
             src: "assets/images/skins/ViridianDrake.png",
             price: 5000,
-            description: "A green dragon.",
+            description: "A majestic green dragon, connected to nature and known for its elegant flight and silent strength.",
         },
         youngbrassdragon: {
             name: "Young Brass Dragon",
             src: "assets/images/skins/YoungBrassDragon.png",
             price: 10000,
-            description: "A young brass dragon.",
+            description: "A young brass dragon, full of energy and a keen sense of humor, with the beginnings of its great potential.",
         }
         
 
