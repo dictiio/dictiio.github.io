@@ -5,6 +5,7 @@ let buyButton = document.getElementById("buy")
 const priceTag = document.getElementById("shopPrice")
 const playerCoins = document.getElementById("playerCoins")
 
+
 const shopItems = {
     skins: {
         default: {
