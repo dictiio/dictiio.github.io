@@ -22,37 +22,37 @@ const shopItems = {
         babybrassdragon: {
             name: "Baby Brass Dragon",
             src: "assets/images/skins/BabyBrassDragon.png",
-            price: 100,
+            price: 200,
             description: "A small brass dragon.",
         },
         babycopperdragon: {
             name: "Baby Copper Dragon",
             src: "assets/images/skins/BabyCopperDragon.png",
-            price: 100,
+            price: 500,
             description: "A small copper dragon.",
         },
         mudwyvern: {
             name: "Mud Wyvern",
             src: "assets/images/skins/MudWyvern.png",
-            price: 100,
+            price: 1000,
             description: "A wyvern made of mud.",
         },
         poisondrake: {
             name: "Poison Drake",
             src: "assets/images/skins/PoisonDrake.png",
-            price: 100,
+            price: 2500,
             description: "A dragon made of poison.",
         },
         viridiandrake: {
             name: "Viridian Drake",
             src: "assets/images/skins/ViridianDrake.png",
-            price: 100,
+            price: 5000,
             description: "A green dragon.",
         },
         youngbrassdragon: {
             name: "Young Brass Dragon",
             src: "assets/images/skins/YoungBrassDragon.png",
-            price: 100,
+            price: 10000,
             description: "A young brass dragon.",
         }
         

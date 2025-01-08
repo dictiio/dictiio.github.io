@@ -107,8 +107,9 @@ const game = {
 		this.active = true;
 		this.ended = false;
 
+        console.log(shopItems.skins[userData.info.activeSkin].src)
 		const playerSprite = new Sprite(
-			"assets/images/skins/AquaDrake.png", // Path to sprite sheet
+            shopItems.skins[userData.info.activeSkin].src, // Path to sprite sheet
 			64,
 			64, // Frame width and height
 			4, // Total frames
@@ -328,9 +329,7 @@ const game = {
 				this.player.angle = 90;
 				this.draw();
 				this.stop();
-                setTimeout(() => {
-                    this.displayStats();
-                }, 1000)
+                this.displayStats();
 			}
 		}
 
@@ -544,6 +543,8 @@ const game = {
         // update stats
         stats.distance.value = Math.round(this.distance);
         stats.coins.value = this.coinCount;
+
+        userDataManager.addCoins(this.coinCount)
 
         // high score
         if(this.distance > userData.info.highestDistance){

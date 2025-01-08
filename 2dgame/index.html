@@ -17,12 +17,13 @@
             <div class="gameGui gameGui-start ">
 				<h1>Endless Runner</h1>
 				<button class="mainButton" onclick="game.init()">Start</button>
+                <button class="menuButton" onclick="shopManager.openShop()">Store</button>
 			</div>
 
             <div class="gameGui gameGui-shop hidden">
 				<h1>Store</h1>
                 <div class="coins"><img src="assets/images/coin.png"><span id="playerCoins">x150</span></div>
-                <button id="menuButton"></button>
+                <button id="menuButton" onclick="guiManager.display('start')"></button>
 
                 <div class="shopContainer">
 
