@@ -1,12 +1,101 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-ctx.imageSmoothingEnabled = false;
-ctx.mozImageSmoothingEnabled = false;
-ctx.webkitImageSmoothingEnabled = false;
+
+// Background image variables
+let backgroundX = 0; // Starting x position of the background
+const backgroundImage = new Image();
+backgroundImage.src = "assets/images/background.png";
+const imageWidth = 1280 * 2; // Image width (make sure it's twice the canvas width)
+const canvasWidth = canvas.width;
 
 const keysDown = {};
 
+// Sound Manager
+const soundManager = {
+	audio: true,
+	file: "assets/sounds/",
+	backgroundMusic: null,
+	baseVolume: 1,
+	lastCoinSound: 0,
 
+	// Play audio file.
+	play: function (id, vol = 1) {
+		if (this.audio) {
+			const audio = new Audio(`${this.file}${id}.mp3`);
+			audio.volume = vol * 0.7;
+			audio.currentTime = 0;
+			audio.play();
+		}
+	},
+
+	// Mute all sounds.
+	mute: function () {
+		this.audio = false;
+		this.backgroundMusic.pause();
+	},
+
+	// Unmute sounds.
+	unmute: function () {
+		this.audio = true;
+		this.backgroundMusic.play(this.baseVolume);
+	},
+
+	// Play a background music track.
+	playBackgroundMusic: function (src, vol = 1) {
+		this.baseVolume = vol;
+
+		if (this.backgroundMusic) {
+			this.backgroundMusic.pause();
+			this.backgroundMusic.currentTime = 0;
+		}
+
+		this.backgroundMusic = new Audio(src);
+		this.backgroundMusic.volume = vol;
+
+		this.backgroundMusic.addEventListener("ended", () => {
+			this.backgroundMusic.currentTime = 0;
+			this.backgroundMusic
+				.play()
+				.catch((e) =>
+					console.error("Background music playback failed:", e)
+				);
+		});
+
+		this.backgroundMusic
+			.play()
+			.catch((e) =>
+				console.error("Background music playback failed:", e)
+			);
+	},
+
+	// Stop current background music
+	stopBackgroundMusic: function () {
+		this.backgroundMusic.pause();
+	},
+
+	// Play a coin sound of random pitch.
+	playCoinSound: function () {
+		if (Date.now() - this.lastCoinSound > 100) {
+			this.lastCoinSound = Date.now();
+			const coinSound = new Audio("assets/sounds/coin.mp3");
+			coinSound.volume = 0.5;
+			coinSound.currentTime = 0; // Reset sound
+			coinSound.playbackRate = 1 + (Math.random() * 0.4 - 0.2); // Small random pitch variation
+			coinSound.play();
+		}
+	},
+
+	// Play a flap sound of random pitch.
+	playFlapSound: function () {
+		const flapSound = new Audio("assets/sounds/flap.mp3");
+		flapSound.volume = 0.3;
+		flapSound.currentTime = 0; // Reset sound
+		flapSound.playbackRate = 1 + (Math.random() * 0.4 - 0.2); // Small random pitch variation
+		flapSound.play();
+	},
+};
+
+// Laser obstacles parameters (image and dimensions)
 const laser = {
 	width: 40,
 	height: 40,
@@ -15,6 +104,7 @@ const laser = {
 	left: new Image(),
 	right: new Image(),
 	loadImages: function (callback) {
+		// Image urls
 		const images = [
 			"assets/images/toplaser.png",
 			"assets/images/bottomlaser.png",
@@ -24,6 +114,7 @@ const laser = {
 		const imageElements = [this.top, this.bottom, this.left, this.right];
 		let loadedCount = 0;
 
+		// Load all images
 		images.forEach((src, index) => {
 			imageElements[index].src = src;
 			imageElements[index].onload = () => {
@@ -41,13 +132,7 @@ const laser = {
 	},
 };
 
-let backgroundX = 0; // Starting x position of the background
-const backgroundImage = new Image();
-backgroundImage.src = "assets/images/background.png";
-
-const imageWidth = 1280 * 2; // Image width (make sure it's twice the canvas width)
-const canvasWidth = canvas.width;
-
+// Check collision between two boxes.
 function collision({ box1, box2 }) {
 	return (
 		box1.position.x <= box2.position.x + box2.width && // collides on right side
@@ -57,37 +142,67 @@ function collision({ box1, box2 }) {
 	);
 }
 
-
-
+// Return a random integer between two values.
 function getRandomInteger(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// End screen stats values
 const stats = {
-    distance: {
-        value: 0,
-        name: "Distance",
-    },
-    coins: {
-        value: 0,
-        name: "Coins Earned",
-    },
-    highestDistance: { 
-        value: 0,
-        name: "Highest Distance",
-    }
-}
+	distance: {
+		value: 0,
+		name: "Distance",
+	},
+	coins: {
+		value: 0,
+		name: "Coins Earned",
+	},
+	highestDistance: {
+		value: 0,
+		name: "Highest Distance",
+	},
+};
 
+// Powerups text colors and names
+const powerups = {
+	speed: {
+		innerColor: "#73BAE6",
+		borderColor: "#55B5F0",
+		name: "2x Slow Down",
+	},
+	shield: {
+		innerColor: "#83f374",
+		borderColor: "#20db4f",
+		name: "Shield",
+	},
+	coins: {
+		innerColor: "#EEDE8B",
+		borderColor: "#E1CD69",
+		name: "2x Coins",
+	},
+	score: {
+		innerColor: "#E47BF0",
+		borderColor: "#D861E6",
+		name: "2x Score",
+	},
+	laser: {
+		innerColor: "#E66161",
+		borderColor: "#DF4C4C",
+		name: "No Lasers",
+	},
+};
+
+// Game object
 const game = {
 	frameCount: 0,
 	player: null,
 	speed: 5,
-    mutlipliers: {
-        speed: 1,
-        coins: 1,
-        score: 1,
-    },
-    laserEnabled: true,
+	mutlipliers: {
+		speed: 1,
+		coins: 1,
+		score: 1,
+	},
+	laserEnabled: true,
 	obstacles: [],
 	coins: [],
 	coinCount: 0,
@@ -96,26 +211,30 @@ const game = {
 	distance: 0,
 	animCount: 0,
 	powerup: null,
-    currentPowerup: null,
-    lastPowerup: 0,
-    shield: false,
+	currentPowerup: null,
+	lastPowerup: 0,
+	shield: false,
 
+	// Initialize game.
 	init: function () {
 		guiManager.display("active");
 
 		this.frameCount = 0;
 		this.active = true;
 		this.ended = false;
+		soundManager.play("start");
+		soundManager.playBackgroundMusic("assets/sounds/bgmusic.mp3", 0.1);
 
-        console.log(shopItems.skins[userData.info.activeSkin].src)
+		// Load player skin
 		const playerSprite = new Sprite(
-            shopItems.skins[userData.info.activeSkin].src, // Path to sprite sheet
+			shopItems.skins[userData.info.activeSkin].src, // Path to sprite sheet
 			64,
 			64, // Frame width and height
 			4, // Total frames
 			10 // Frame speed
 		);
 
+		// Detect when sprite is loaded then create player object
 		playerSprite.image.onload = () => {
 			laser.loadImages(() => {
 				console.log("All images loaded!");
@@ -124,19 +243,19 @@ const game = {
 					sprite: playerSprite,
 				});
 				this.loop();
-				
 			});
 		};
 	},
 
+	// Stop the game
 	stop: function () {
 		if (this.ended) return;
 
 		this.active = false;
 		this.ended = true;
-
 	},
 
+	// Resume the game
 	resume: function () {
 		console.log("Resuming game");
 		if (this.active) return;
@@ -147,6 +266,7 @@ const game = {
 		guiManager.display("active");
 	},
 
+	// Pause the game
 	pause: function () {
 		console.log("Pausing game");
 		if (!this.active) return;
@@ -155,6 +275,7 @@ const game = {
 		guiManager.display("pause");
 	},
 
+	// Draw all game objects.
 	draw: function () {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -174,8 +295,10 @@ const game = {
 			canvas.height
 		);
 
+		// Draw floor
 		this.drawFloor();
-		// draw obstacles
+
+		// draw obstacles and check for collisions
 		this.obstacles.forEach((obstacle, index) => {
 			obstacle.draw();
 			if (obstacle.isOffScreen()) {
@@ -183,26 +306,30 @@ const game = {
 				console.log("Deleting obstacle");
 				console.log(this.obstacles);
 			}
-			if (!this.shield && collision({ box1: this.player, box2: obstacle })) {
-                // obstacle is a rocket
-                if(obstacle.type == "rocket"){
-                    this.playDeathAnimation();
+			if (
+				!this.shield &&
+				collision({ box1: this.player, box2: obstacle })
+			) {
+				// obstacle is a rocket
+				if (obstacle.type == "rocket") {
+					this.playDeathAnimation();
 
-                // obstacle is a laser
-                } else if (obstacle.type === "laser") {
-                    // check if laser is enabled
-                    if (this.laserEnabled) {
-                        this.playDeathAnimation();
-                    }
-                } else {
-                    // Handle cases where the type is undefined or not recognized
-                    console.warn("Unknown obstacle type or type is undefined:", obstacle.type);
-                    // You can add additional handling here if needed
-                }
+					// obstacle is a laser
+				} else if (obstacle.type === "laser") {
+					// check if laser is enabled
+					if (this.laserEnabled) {
+						this.playDeathAnimation();
+					}
+				} else {
+					console.warn(
+						"Unknown obstacle type or type is undefined:",
+						obstacle.type
+					);
+				}
 			}
 		});
 
-		// draw coins
+		// Draw coins and check for collisions
 		this.coins.forEach((coin, index) => {
 			coin.draw();
 			if (coin.isOffScreen()) {
@@ -210,28 +337,28 @@ const game = {
 			}
 			if (collision({ box1: this.player, box2: coin })) {
 				this.coinCount += 1 * this.mutlipliers.coins;
+				soundManager.playCoinSound();
 				this.coins.splice(index, 1);
 			}
 		});
 
-		// draw powerup
+		// Draw powerup and check for collisions
 		if (this.powerup != null && !this.ended) {
 			this.powerup.draw();
-            if (collision({ box1: this.player, box2: this.powerup })) {
-                this.activateRandomPowerUp();
-                this.powerup = null;
-            } else if (this.powerup.isOffScreen()) {
+			if (collision({ box1: this.player, box2: this.powerup })) {
+				this.activateRandomPowerUp();
+				this.powerup = null;
+			} else if (this.powerup.isOffScreen()) {
 				this.powerup = null;
 			}
-            
 		}
 
-		//draw player
+		// Draw player
 		this.player.draw();
 	},
 
+	// Draw floor
 	drawFloor: function () {
-		// draw floor
 		ctx.fillStyle = "gray";
 		ctx.fillRect(0, 620, canvas.width, 100);
 
@@ -239,41 +366,39 @@ const game = {
 		ctx.fillRect(0, 620, canvas.width, 20);
 	},
 
+	// Draw idle background with no movement and floor (menu)
 	drawIdleBackground: function () {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-		ctx.drawImage(
-			backgroundImage,
-			0,
-			0,
-			imageWidth,
-			canvas.height
-		);
-
+		ctx.drawImage(backgroundImage, 0, 0, imageWidth, canvas.height);
 
 		this.drawFloor();
 	},
 
-    getSpeed: function() {
-        return this.speed * this.mutlipliers.speed;
-    },
+	// Return game speed with multipliers
+	getSpeed: function () {
+		return this.speed * this.mutlipliers.speed;
+	},
 
+	// Game loop
 	loop: function () {
-		this.draw();
+		this.draw(); // Draw all game objects
 
-		// bg
-
+		// bHandle background movement
 		backgroundX -= this.getSpeed();
-        backgroundX = Math.floor(backgroundX)
+		backgroundX = Math.floor(backgroundX);
 
 		if (backgroundX <= -imageWidth) {
 			backgroundX = 0; // Reset to the starting position
 		}
 
+		// Check if player is alive
 		if (this.player.canControl) {
-            this.player.velocity.x = 0;
+			this.player.velocity.x = 0; // Reset x velocity
 
-			this.player.velocity.y = 0;
+			this.player.velocity.y = 0; // Reset y velocity
+
+			// Check keys pressed and move player
 			if (87 in keysDown) {
 				// W up
 				if (this.player.position.y > 0) {
@@ -287,6 +412,7 @@ const game = {
 				}
 			}
 			if (87 in keysDown && 83 in keysDown) {
+				// If both W and S keys are pressed, stop moving
 				this.player.velocity.y = 0;
 			}
 
@@ -303,12 +429,14 @@ const game = {
 				}
 			}
 			if (65 in keysDown && 68 in keysDown) {
+				// If both A and D keys are pressed, stop moving
 				this.player.velocity.x = 0;
 			}
+
+			// If player is not alive (Death animation)
 		} else {
-			this.player.velocity.x = 0;
+			this.player.velocity.x = 0; // Reset velocity
 			if (this.player.position.y < 620 - this.player.height) {
-				console.log("FALLING");
 				this.player.velocity.y += 1; // Gravity effect
 			} else {
 				if (this.player.velocity.y > 0 && this.animCount < 10) {
@@ -316,6 +444,7 @@ const game = {
 					this.player.velocity.y = -this.player.velocity.y * 0.8; // Reverse and reduce the vertical velocity for rebound
 					this.speed *= 0.8;
 					this.animCount++;
+					soundManager.play("bodyfall", 0.4);
 					console.log("REBOUND");
 				} else {
 					this.player.velocity.y = 0; // Stop bouncing if moving upwards
@@ -325,97 +454,121 @@ const game = {
 			if (this.animCount < 10) {
 				this.player.angle += (10 - this.animCount) * 3; // Continue rotating if animCount is less than 5
 			} else {
+				// Stop animation after 10 bounces
 				this.speed = 0;
+				soundManager.play("crash");
 				this.draw();
 				this.stop();
-                this.displayStats();
+				this.displayStats();
 			}
 		}
 
-		// frame count
-		this.frameCount++;
+		this.frameCount++; // Update frame count
+		this.distance += (this.speed / 25) * this.mutlipliers.score; // Update distance
+
+		// Draw GUI (Score, Coins and Active Power up)
 		ctx.fillStyle = "white";
 		ctx.font = "24px Courier New";
 		ctx.fillText("Score: " + Math.round(this.distance), 10, 32);
-		//ctx.fillText("Frame: " + this.frameCount, 1000, 32);
-		ctx.font = "24px Courier New";
 		ctx.fillText("Coins: " + this.coinCount, 10, 64);
 
-        if(this.currentPowerup != null){
-            const percentage = Math.round(((1000-(this.frameCount - this.lastPowerup))/1000) * 1000) / 10
-            ctx.fillText("Current Powerup: " + powerups[this.currentPowerup].name + " (" + percentage + "%)", 10, 96);
-        }
+		if (this.currentPowerup != null) {
+			const percentage =
+				Math.round(
+					((1000 - (this.frameCount - this.lastPowerup)) / 1000) *
+						1000
+				) / 10;
+			ctx.fillText(
+				"Current Powerup: " +
+					powerups[this.currentPowerup].name +
+					" (" +
+					percentage +
+					"%)",
+				10,
+				96
+			);
+		}
 
-		// distance
-		this.distance += (this.speed / 25) * this.mutlipliers.score;
+		// Handle powerup
 
+		// Reset all power up values
+		function resetPowerups() {
+			game.mutlipliers.speed = 1;
+			game.shield = false;
+			game.mutlipliers.coins = 1;
+			game.mutlipliers.score = 1;
+			game.laserEnabled = true;
+		}
 
-        // handle powerup
-        function resetPowerups(){
-            game.mutlipliers.speed = 1;
-            game.shield = false;
-            game.mutlipliers.coins = 1;
-            game.mutlipliers.score = 1;
-            game.laserEnabled = true;
-            
-        }
+		resetPowerups();
 
-        resetPowerups()
-        if(this.currentPowerup != null && this.lastPowerup != 0){
-            if(this.frameCount - this.lastPowerup < 1000){
-                
-                const powerup = this.currentPowerup;
-                switch(powerup){
-                    case "speed":
-                        this.mutlipliers.speed = 0.5;
-                        break;
-                    case "shield":
-                        this.shield = true;
-                        break;
-                    case "coins":
-                        this.mutlipliers.coins = 2;
-                        break;
-                    case "score":
-                        this.mutlipliers.score = 2;
-                        break;
-                    case "laser":
-                        this.laserEnabled = false;
-                        break;
-                }
-            } else {
-                this.currentPowerup = null;
-            }
-        }
-        
+		// Check if powerup is active
+		if (this.currentPowerup != null && this.lastPowerup != 0) {
+			// Check if powerup is still active
+			if (this.frameCount - this.lastPowerup < 1000) {
+				const powerup = this.currentPowerup;
+				switch (powerup) {
+					case "speed":
+						this.mutlipliers.speed = 0.5;
+						break;
+					case "shield":
+						this.shield = true;
+						break;
+					case "coins":
+						this.mutlipliers.coins = 2;
+						break;
+					case "score":
+						this.mutlipliers.score = 2;
+						break;
+					case "laser":
+						this.laserEnabled = false;
+						break;
+				}
+			} else {
+				this.currentPowerup = null;
+			}
+		}
 
+		// Play flap sound every 75 frames
+		if (this.frameCount % 75 == 0) {
+			soundManager.playFlapSound();
+		}
+
+		// Create random coin row every 360 frames
 		if (this.frameCount % 360 == 0) {
 			console.log("Creating row");
 			this.generateRandomCoinRow();
 		}
 
-        // generate powerups
-        if(this.frameCount % 1500 == 0){
-            if(this.powerup == null){
-                this.generatePowerUp();
-            }
-        }
+		// Generate a powerup box every 1500 frames
+		if (this.frameCount % 1500 == 0) {
+			if (this.powerup == null) {
+				this.generatePowerUp();
+			}
+		}
 
-        if (this.frameCount % (200-this.speed*10) == 0 && this.distance > 50) {
-            this.generateObstacle();
-        }
+		// Generate obstacles every 200 frames, the amount of frames decreasing as speed increases (minimum 50 distance)
+		if (
+			this.frameCount % (200 - this.speed * 10) == 0 &&
+			this.distance > 50 &&
+			this.player.canControl
+		) {
+			this.generateObstacle();
+		}
 
-        // generate rockets
-        if (this.frameCount % 400 == 0 && this.distance > 500) {
-            this.generateRockets();
-        }
+		// Generate rockets every 400 frames (must be at least 500 distance)
+		if (this.frameCount % 400 == 0 && this.distance > 500) {
+			this.generateRockets();
+		}
 
-        if(this.frameCount % 500 == 0){
-            if(this.powerup == null){
-                this.speed += 0.5;
-            }
-        }
+		// Increase speed by 0.5 every 500 frames
+		if (this.frameCount % 500 == 0) {
+			if (this.powerup == null) {
+				this.speed += 0.5;
+			}
+		}
 
-
+		// Check if game is active and continue loop
 		if (this.active) {
 			requestAnimationFrame(() => {
 				this.loop();
@@ -423,22 +576,25 @@ const game = {
 		}
 	},
 
+	// Play death animation
 	playDeathAnimation: function () {
 		if (this.player.canControl) {
+			soundManager.play("laser");
+			soundManager.stopBackgroundMusic();
 			this.player.canControl = false;
 			this.speed *= 3;
 		}
 	},
 
+	// Generate a new obstacle
 	generateObstacle: function (xPos = canvas.width) {
-		console.log("Generating new obstacle");
 		const width = 15; // Random width
 		const height = Math.random() * 200 + 250; // Random height
 
 		const angle = Math.random() * 45 - 22.5; // Random angle between -22.5° and 22.5°
 		const vertical = Math.random() < 0.5; // Random boolean
 
-        const x = xPos;
+		const x = xPos;
 		let y = vertical
 			? Math.random() * (620 - height)
 			: Math.random() * (620 - width);
@@ -457,22 +613,25 @@ const game = {
 		);
 	},
 
-    generateRockets: function(){
-        const rocketCount = Math.floor(Math.random() * 4) + 1;
+	// Generate random rockets
+	generateRockets: function () {
+		const rocketCount = Math.floor(Math.random() * 4) + 1;
 
-        for(let i = 0; i < rocketCount; i++){
-            this.obstacles.push(
-                new Collectable({
-                    position: { x: canvas.width, y: getRandomInteger(20, 580) },
-                    width: 48,
-                    height: 48,
-                    player: this.player,
-                    type: "rocket",
-                })
-            )
-        }
-    },
+		for (let i = 0; i < rocketCount; i++) {
+			soundManager.play("missile", 0.5);
+			this.obstacles.push(
+				new Collectable({
+					position: { x: canvas.width, y: getRandomInteger(20, 580) },
+					width: 48,
+					height: 48,
+					player: this.player,
+					type: "rocket",
+				})
+			);
+		}
+	},
 
+	// Generate a row of coins with set parameters
 	generateCoinRow: function (startY, spacing, rows, columns) {
 		for (let i = 0; i < columns; i++) {
 			for (let j = 0; j < rows; j++) {
@@ -492,6 +651,7 @@ const game = {
 		}
 	},
 
+	// Generate a random row of coins
 	generateRandomCoinRow: function () {
 		const spacing = 40;
 		const rows = Math.ceil(Math.random() * 12);
@@ -501,6 +661,7 @@ const game = {
 		this.generateCoinRow(startY, spacing, rows, columns);
 	},
 
+	// Generate a powerup box
 	generatePowerUp: function () {
 		this.powerup = new Collectable({
 			position: { x: canvas.width, y: getRandomInteger(80, 520) },
@@ -511,118 +672,98 @@ const game = {
 		});
 	},
 
+	// Activate a random powerup
 	activateRandomPowerUp: function () {
-        const powerUpTypes = ["speed", "shield", "coins", "score", "laser"];
-        const powerUp = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
+		const powerUpTypes = ["speed", "shield", "coins", "score", "laser"];
+		const powerUp =
+			powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
 
-        this.currentPowerup = powerUp;
-        this.lastPowerup = this.frameCount;
-        console.log(this.lastPowerup)
+		this.currentPowerup = powerUp;
+		this.lastPowerup = this.frameCount;
+		console.log(this.lastPowerup);
 
-        this.displayPowerUp(powerUp);
-    },
+		soundManager.play("powerup");
 
-    displayPowerUp: function(powerup){
-        const powerupText = document.querySelector(".powerup");
+		this.displayPowerUp(powerUp);
+	},
 
-        
-        powerupText.style.left = 0;
-        powerupText.style.backgroundColor = powerups[powerup].innerColor;
-        powerupText.style.borderColor = powerups[powerup].borderColor;
-        powerupText.textContent = "Power Up: " + powerups[powerup].name;
+	// Display powerup text
+	displayPowerUp: function (powerup) {
+		const powerupText = document.querySelector(".powerup");
 
-        setTimeout(() => {
-            powerupText.style.left = "-100%";
-        }, 3000)
-    },
+		powerupText.style.left = 0;
+		powerupText.style.backgroundColor = powerups[powerup].innerColor;
+		powerupText.style.borderColor = powerups[powerup].borderColor;
+		powerupText.textContent = "Power Up: " + powerups[powerup].name;
 
-    displayStats: function(){
+		setTimeout(() => {
+			powerupText.style.left = "-100%";
+		}, 3000);
+	},
 
-        guiManager.display("ended");
-        // update stats
-        stats.distance.value = Math.round(this.distance);
-        stats.coins.value = this.coinCount;
+	// Display end screen stats
+	displayStats: function () {
+		guiManager.display("ended");
 
-        userDataManager.addCoins(this.coinCount)
+		// Game stats final update
+		stats.distance.value = Math.round(this.distance);
+		stats.coins.value = this.coinCount;
 
-        // high score
-        if(this.distance > userData.info.highestDistance){
-            userDataManager.setHighestDistance(Math.round(this.distance));
-        }
+		// add coins to user data
+		userDataManager.addCoins(this.coinCount);
 
-        stats.highestDistance.value = userData.info.highestDistance;
+		// Check for high score
+		if (this.distance > userData.info.highestDistance) {
+			userDataManager.setHighestDistance(Math.round(this.distance));
+		}
 
-        const statsElement = document.querySelector(".stats");
-        statsElement.innerHTML = "";
+		stats.highestDistance.value = userData.info.highestDistance;
+		const statsElement = document.querySelector(".stats");
+		statsElement.innerHTML = "";
 
-        // title
-        const title = document.createElement("li");
-        title.textContent = "Your Stats";
-        statsElement.appendChild(title);
+		// title
+		const title = document.createElement("li");
+		title.textContent = "Your Stats";
+		statsElement.appendChild(title);
 
-        for(const stat in stats){
-            const element = document.createElement("li");
-            element.textContent = stats[stat].name + ": " + stats[stat].value;
-            statsElement.appendChild(element);
-        }
+		// Create stat element for every stat
+		for (const stat in stats) {
+			const element = document.createElement("li");
+			element.textContent = stats[stat].name + ": " + stats[stat].value;
+			statsElement.appendChild(element);
+		}
+	},
 
-    },
+	// Reset all game parameters and display start screen
+	reset: function () {
+		this.frameCount = 0;
+		this.player = null;
+		this.speed = 5;
+		this.mutlipliers = {
+			speed: 1,
+			coins: 1,
+			score: 1,
+		};
+		this.laserEnabled = true;
+		this.obstacles = [];
+		this.coins = [];
+		this.coinCount = 0;
+		this.active = false;
+		this.ended = false;
+		this.distance = 0;
+		this.animCount = 0;
+		this.powerup = null;
+		this.currentPowerup = null;
+		this.lastPowerup = 0;
+		this.shield = false;
 
-    reset: function(){
-        this.frameCount = 0;
-        this.player = null;
-        this.speed = 5;
-        this.mutlipliers = {
-            speed: 1,
-            coins: 1,
-            score: 1,
-        };
-        this.laserEnabled = true;
-        this.obstacles = [];
-        this.coins = [];
-        this.coinCount = 0;
-        this.active = false;
-        this.ended = false;
-        this.distance = 0;
-        this.animCount = 0;
-        this.powerup = null;
-        this.currentPowerup = null;
-        this.lastPowerup = 0;
-        this.shield = false;
-
-        guiManager.display("start")
-    }
-
+		guiManager.display("start");
+	},
 };
 
-const powerups = {
-    speed: {
-        innerColor: "#73BAE6",
-        borderColor: "#55B5F0",
-        name: "2x Slow Down"
-    },
-    shield: {
-        innerColor: "#83f374",
-        borderColor: "#20db4f",
-        name: "Shield"
-    },
-    coins: {
-        innerColor: "#EEDE8B",
-        borderColor: "#E1CD69",
-        name: "2x Coins"
-    },
-    score: {
-        innerColor: "#E47BF0",
-        borderColor: "#D861E6",
-        name: "2x Score"
-    },
-    laser: {
-        innerColor: "#E66161",
-        borderColor: "#DF4C4C",
-        name: "No Lasers"
-    }
-}
 
+
+// Check keys pressed
 document.addEventListener("keydown", (e) => {
 	console.log(e.keyCode);
 	keysDown[e.keyCode] = true;
@@ -637,10 +778,12 @@ document.addEventListener("keydown", (e) => {
 	}
 });
 
+// Check keys released
 document.addEventListener("keyup", (e) => {
 	delete keysDown[e.keyCode];
 });
 
+// Draw idle background when image loads
 backgroundImage.onload = () => {
 	game.drawIdleBackground();
 };

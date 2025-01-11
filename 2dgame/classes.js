@@ -69,10 +69,7 @@ class Player {
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
 
-		// render
-
-		//ctx.fillStyle = this.color
-		//ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+		// render sprite
 
 		this.sprite.draw(
 			this.position.x,
@@ -82,15 +79,20 @@ class Player {
 			this.angle
 		);
 
-        // render shield
-        if(game.shield){
-            
-            ctx.beginPath()
-            ctx.arc(this.position.x + this.width / 2, this.position.y + this.height / 2, this.width * 0.75, 0, 2 * Math.PI)
-            ctx.strokeStyle = "lightblue"
-            ctx.lineWidth = 5;
-            ctx.stroke()
-        }
+		// render shield
+		if (game.shield) {
+			ctx.beginPath();
+			ctx.arc(
+				this.position.x + this.width / 2,
+				this.position.y + this.height / 2,
+				this.width * 0.75,
+				0,
+				2 * Math.PI
+			);
+			ctx.strokeStyle = "lightblue";
+			ctx.lineWidth = 5;
+			ctx.stroke();
+		}
 	}
 }
 
@@ -108,19 +110,22 @@ class Collectable {
 		this.player = player;
 		this.type = type;
 
-        this.img = new Image();
+		this.img = new Image();
+
+		// Load image based on type
 		if (this.type == "coin") {
 			this.img.src = "assets/images/coin.png";
 		}
 
-        if (this.type == "powerup") {
+		if (this.type == "powerup") {
 			this.img.src = "assets/images/powerup.png";
 		}
 
-        if(this.type == "rocket"){
-            this.img.src = "assets/images/rocket.png";
-        }
+		if (this.type == "rocket") {
+			this.img.src = "assets/images/rocket.png";
+		}
 
+		// Ready once image has loaded
 		this.img.onload = () => {
 			this.ready = true;
 		};
@@ -128,12 +133,12 @@ class Collectable {
 
 	draw() {
 		if (this.ready) {
-			
-            if(this.type == "rocket"){
-                this.position.x -= 2*game.getSpeed();
-            } else{
-                this.position.x -= game.getSpeed()
-            }
+			// Increase speed if type is a rocket
+			if (this.type == "rocket") {
+				this.position.x -= 2 * game.getSpeed();
+			} else {
+				this.position.x -= game.getSpeed();
+			}
 
 			ctx.drawImage(
 				this.img,
@@ -158,7 +163,7 @@ class Obstacle {
 		height = 100,
 		player,
 		vertical = true,
-        type = "laser",
+		type = "laser",
 	}) {
 		this.position = position;
 		this.color = color;
@@ -166,7 +171,7 @@ class Obstacle {
 		this.height = height;
 		this.player = player;
 		this.vertical = vertical;
-        this.type = type;
+		this.type = type;
 
 		if (this.vertical) {
 			this.topImg = laser.top;
@@ -182,9 +187,11 @@ class Obstacle {
 	draw() {
 		this.position.x -= game.getSpeed();
 
+		// Vertical lasers
 		if (this.vertical) {
 			const offsetX = (this.width - laser.width) / 2;
-			// draw top laser
+
+			// Draw top laser
 			ctx.drawImage(
 				this.topImg,
 				this.position.x + offsetX,
@@ -193,6 +200,7 @@ class Obstacle {
 				laser.height
 			);
 
+			// Draw bottom laser
 			ctx.drawImage(
 				this.bottomImg,
 				this.position.x + offsetX,
@@ -201,8 +209,9 @@ class Obstacle {
 				laser.height
 			);
 
+			// Check if player is alive and lasers are active
 			if (this.player.canControl && game.laserEnabled) {
-				// draw laser
+				// draw laser outer line
 				ctx.fillStyle = "#ff6666";
 				ctx.fillRect(
 					this.position.x,
@@ -210,6 +219,8 @@ class Obstacle {
 					this.width,
 					this.height - laser.height * 2
 				);
+
+				// draw laser inner line
 
 				const innerWidth = this.width * 0.5; // Inner rectangle is 50% of the width
 				const innerX = this.position.x + (this.width - innerWidth) / 2;
@@ -222,9 +233,10 @@ class Obstacle {
 					this.height - laser.height * 2
 				);
 			}
+			// Horizontal lasers
 		} else {
 			const offsetY = (this.height - laser.height) / 2;
-			// draw top laser
+			// Draw top laser
 			ctx.drawImage(
 				this.topImg,
 				this.position.x,
@@ -233,6 +245,7 @@ class Obstacle {
 				laser.height
 			);
 
+			// Draw bottom laser
 			ctx.drawImage(
 				this.bottomImg,
 				this.position.x + this.width - laser.width,
@@ -241,8 +254,9 @@ class Obstacle {
 				laser.height
 			);
 
+			// Check if player is alive and lasers are active
 			if (this.player.canControl && game.laserEnabled) {
-				// draw laser
+				// draw laser outer line
 				ctx.fillStyle = "#ff6666";
 				ctx.fillRect(
 					this.position.x + laser.height,
@@ -251,6 +265,7 @@ class Obstacle {
 					this.height
 				);
 
+				// draw laser inner line
 				const innerHeight = this.height * 0.5; // Inner rectangle is 50% of the width
 				const innerY =
 					this.position.y + (this.height - innerHeight) / 2;

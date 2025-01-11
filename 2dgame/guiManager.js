@@ -1,6 +1,6 @@
 const guiManager = {
 	current: "start",
-	// Afficher le menu et cacher le menu actuel
+	// Display selected GUI and hide current GUI.
 	display: function (id) {
 		document
 			.querySelector(`.gameGui-${this.current}`)
@@ -8,7 +8,9 @@ const guiManager = {
 		document.querySelector(`.gameGui-${id}`).classList.remove("hidden");
 		this.current = id;
 		console.log("Displaying " + id);
+        soundManager.play("click")
 
+        // Draw background if needed
         if(id == "start"){
             game.drawIdleBackground();
         }
