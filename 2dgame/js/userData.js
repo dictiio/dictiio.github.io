@@ -58,5 +58,4 @@ const userDataManager = {
     }
 }
 
-userDataManager.reset()
 userDataManager.retrieve()

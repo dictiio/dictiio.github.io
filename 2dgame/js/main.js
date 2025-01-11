@@ -237,7 +237,6 @@ const game = {
 		// Detect when sprite is loaded then create player object
 		playerSprite.image.onload = () => {
 			laser.loadImages(() => {
-				console.log("All images loaded!");
 				this.player = new Player({
 					position: { x: 100, y: 500 },
 					sprite: playerSprite,
@@ -257,7 +256,6 @@ const game = {
 
 	// Resume the game
 	resume: function () {
-		console.log("Resuming game");
 		if (this.active) return;
 
 		this.active = true;
@@ -268,7 +266,6 @@ const game = {
 
 	// Pause the game
 	pause: function () {
-		console.log("Pausing game");
 		if (!this.active) return;
 
 		this.active = false;
@@ -303,8 +300,6 @@ const game = {
 			obstacle.draw();
 			if (obstacle.isOffScreen()) {
 				this.obstacles.splice(index, 1); // Remove off-screen obstacle
-				console.log("Deleting obstacle");
-				console.log(this.obstacles);
 			}
 			if (
 				!this.shield &&
@@ -445,7 +440,6 @@ const game = {
 					this.speed *= 0.8;
 					this.animCount++;
 					soundManager.play("bodyfall", 0.4);
-					console.log("REBOUND");
 				} else {
 					this.player.velocity.y = 0; // Stop bouncing if moving upwards
 				}
@@ -536,7 +530,6 @@ const game = {
 
 		// Create random coin row every 360 frames
 		if (this.frameCount % 360 == 0) {
-			console.log("Creating row");
 			this.generateRandomCoinRow();
 		}
 
@@ -680,7 +673,6 @@ const game = {
 
 		this.currentPowerup = powerUp;
 		this.lastPowerup = this.frameCount;
-		console.log(this.lastPowerup);
 
 		soundManager.play("powerup");
 
@@ -765,7 +757,6 @@ const game = {
 
 // Check keys pressed
 document.addEventListener("keydown", (e) => {
-	console.log(e.keyCode);
 	keysDown[e.keyCode] = true;
 
 	// Check for ESC Key
