@@ -78,7 +78,7 @@ const soundManager = {
 		if (Date.now() - this.lastCoinSound > 100) {
 			this.lastCoinSound = Date.now();
 			const coinSound = new Audio("assets/sounds/coin.mp3");
-			coinSound.volume = 0.5;
+			coinSound.volume = 0.3;
 			coinSound.currentTime = 0; // Reset sound
 			coinSound.playbackRate = 1 + (Math.random() * 0.4 - 0.2); // Small random pitch variation
 			coinSound.play();
