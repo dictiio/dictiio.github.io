@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Animation</title>
+		<style>
+			body {
+				background-color: rgb(127, 225, 250);
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+
+		<script>
+			const canvas = document.getElementById("canvas");
+			const ctx = canvas.getContext("2d");
+
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+
+			let isMouseDown = false;
+			const particles = [];
+
+			const gravity = 0.2; // Gravity effect
+			const wind = 0.2; // Horizontal wind effect
+
+			const flower = new Image();
+			flower.src = "assets/images/flower.png";
+
+			const game = {
+				time: 0,
+			};
+
+			class Plant {
+				constructor(x, y) {
+					this.position = { x, y }; // Where the plant grows (where the raindrop landed)
+					this.size = 25; // Starting size of the plant
+					this.growthRate = 1; // How fast the plant grows
+					this.growing = true; // Flag to track whether the plant is growing
+					this.lastCollisionTime = 0;
+                    this.hatchTime;
+				}
+
+				// Method to update plant growth (only grows if it's still growing)
+				grow() {
+					if (this.growing && this.size < 50) {
+						// Limit the plant size to 100
+						this.size += Math.random() * this.growthRate; // Increase the plant size gradually
+                    }
+					if (this.size >= 50 && this.growing) {
+						this.growing = false;
+                        this.hatchTime = Date.now()
+					}
+				}
+
+				// Method to draw the plant
+				draw() {
+					if (this.growing) {
+						ctx.fillStyle = "green"; // Color of the plant
+						ctx.beginPath();
+						ctx.arc(
+							this.position.x,
+							this.position.y - this.size / 2,
+							this.size,
+							0,
+							Math.PI * 2
+						); // Growing circle
+						ctx.fill();
+					} else {
+						ctx.drawImage(
+							flower,
+							this.position.x - this.size / 2,
+							house.y + house.height - this.size * 3,
+							this.size * 3,
+							this.size * 3
+						);
+					}
+				}
+			}
+
+            class Cloud {
+        constructor(x, y, vx, vy, width, height, color = 'white') {
+            this.x = x;
+            this.y = y;
+            this.vx = vx;
+            this.vy = vy;
+            this.width = width;
+            this.height = height;
+            this.color = color;
+        }
+
+        draw() {
+            ctx.save();
+
+            this.x += this.vx;
+            this.y += this.vy;
+            // Add a shadow for a more realistic look
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
+
+            // Set the fill color for the cloud
+            ctx.fillStyle = this.color;
+
+            // Draw the cloud using a series of overlapping circles
+            ctx.beginPath();
+            ctx.arc(this.x + this.width * 0.3, this.y + this.height * 0.6, this.height * 0.4, 0, Math.PI * 2, false);
+            ctx.arc(this.x + this.width * 0.6, this.y + this.height * 0.5, this.height * 0.5, 0, Math.PI * 2, false);
+            ctx.arc(this.x + this.width * 0.8, this.y + this.height * 0.6, this.height * 0.4, 0, Math.PI * 2, false);
+            ctx.arc(this.x + this.width * 0.5, this.y + this.height * 0.3, this.height * 0.4, 0, Math.PI * 2, false);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+    
+    }
+
+
+			class Particle {
+				constructor({
+					position = { x: 100, y: 100 },
+					velocity = { x: 0, y: 0 },
+					radius = 25,
+					color = "white",
+					trail = {
+						enabled: true,
+						gap: 20,
+						count: 8,
+					},
+				} = {}) {
+					this.position = position;
+					this.velocity = velocity;
+					this.radius = radius;
+					this.color = color;
+					this.trail = trail;
+				}
+
+				draw() {
+					this.velocity.y += gravity;
+					this.velocity.x += wind * (Math.random() - 0.5); // Slight wind variation
+					// update position
+					this.position.x += this.velocity.x;
+					this.position.y += this.velocity.y;
+
+					if (this.trail.enabled) {
+						for (let i = 0; i < this.trail.count; i++) {
+							let time = i * 0.1; // Simulated time step for trail effect
+
+							// Horizontal position prediction with wind
+							let predictedX =
+								this.position.x +
+								this.velocity.x * time +
+								0.5 * wind * time * time;
+
+							// Vertical position prediction with gravity
+							let predictedY =
+								this.position.y +
+								this.velocity.y * time +
+								0.5 * gravity * time * time;
+
+							ctx.fillStyle = this.color;
+							ctx.globalAlpha = 1 - i / this.trail.count; // Fading effect
+
+							// Draw the predicted trail dot
+							ctx.beginPath();
+							ctx.arc(
+								predictedX,
+								predictedY,
+								this.radius,
+								0,
+								2 * Math.PI
+							);
+							ctx.fill();
+						}
+						ctx.globalAlpha = 1.0; // Reset alpha to avoid affecting other drawings
+					}
+
+					// Set the fill color (optional)
+					ctx.fillStyle = this.color;
+
+					// Draw a circle (circle(x, y, radius))
+					ctx.beginPath();
+					ctx.arc(
+						this.position.x,
+						this.position.y,
+						this.radius,
+						0,
+						2 * Math.PI
+					); // x=250, y=250, radius=100
+					ctx.fill(); // Fill the circle with the chosen color
+				}
+
+				isOffScreen() {
+					return this.position.y > canvas.height;
+				}
+			}
+
+			class House {
+				constructor(x, y, width, height, ctx) {
+					this.x = x;
+					this.y = y;
+					this.width = width;
+					this.height = height;
+					this.ctx = ctx;
+				}
+
+				draw() {
+					// Draw house body
+					ctx.fillStyle = "#FFF2C7"; // Brown color
+					ctx.fillRect(this.x, this.y, this.width, this.height);
+
+					// Draw larger roof
+					ctx.fillStyle = "#FF7171"; // Dark red
+					ctx.beginPath();
+					ctx.moveTo(this.x - this.width * 0.2, this.y);
+					ctx.lineTo(
+						this.x + this.width / 2,
+						this.y - this.height / 2
+					);
+					ctx.lineTo(this.x + this.width * 1.2, this.y);
+					ctx.closePath();
+					ctx.fill();
+
+					// Draw door
+					ctx.fillStyle = "#C9A389"; // Dark brown
+					ctx.fillRect(
+						this.x + this.width / 7,
+						this.y + this.height / 3,
+						this.width / 3,
+						this.height / 1.5
+					);
+
+					// Draw windows
+					ctx.clearRect(
+						this.x + this.width * 0.57,
+						this.y + this.height * 0.34,
+						this.width * 0.35,
+						this.height * 0.35
+					);
+				}
+			}
+
+			const house = new House(
+				canvas.width * 0.6,
+				canvas.height * 0.65,
+				250,
+				250
+			);
+
+			const plants = [];
+
+			function getRandomInteger(min, max, zero = true) {
+				let num = Math.floor(Math.random() * (max - min + 1)) + min;
+				if (num == 0) {
+					num += 1;
+				}
+				return num;
+			}
+
+			// Function to check if a raindrop (particle) collides with a plant
+			function checkCollision(particle, plant) {
+				// Calculate the distance between the raindrop and the plant
+				let dx = particle.position.x - plant.position.x;
+				let dy =
+					particle.position.y - (plant.position.y - plant.size / 2);
+				let distance = Math.sqrt(dx * dx + dy * dy); // Euclidean distance
+
+				// Check if the distance is less than the sum of their radii
+				return distance < particle.radius + plant.size;
+			}
+
+			document.addEventListener("mousedown", () => {
+				isMouseDown = true;
+			});
+			document.addEventListener("mouseup", () => {
+				isMouseDown = false;
+			});
+
+			function init() {
+
+				document.addEventListener("mousemove", (event) => {
+					if (isMouseDown) {
+						let randomBlue = Math.floor(Math.random() * 56) + 200; // Range between 150 and 255 for blue
+
+						// Keep the red and green values similar to the current #007FFF
+						let color = `rgb(0, 127, ${randomBlue})`;
+						for (let i = 0; i < 5; i++) {
+							// Generate 5 raindrops at once
+							particles.push(
+								new Particle({
+									position: {
+										x:
+											event.clientX +
+											Math.random() * 50 -
+											25,
+										y: event.clientY,
+									}, // Spread droplets
+									velocity: {
+										x: Math.random() * 4 - 2,
+										y: Math.random() * 5 + 2,
+									}, // Random initial velocity
+									radius: Math.random() * 3 + 2, // Random size
+									color: color,
+									trail: { enabled: true, gap: 10, count: 8 },
+								})
+							);
+						}
+					}
+				});
+
+                document.addEventListener("keydown", (event) => {
+                console.log(event);
+                
+                // Check for Space key to add a plant
+                if (event.code === "Space") {
+                    plants.push(
+                        new Plant(
+                            getRandomInteger(50, canvas.width - 50),
+                            house.y + house.height
+                        )
+                    );
+                }
+                
+                // Check for ArrowLeft key to move the house and plants
+                if (event.code === "ArrowLeft") {
+                    console.log("a");
+                    house.x -= 10;
+                    plants.forEach(plant => {
+                        plant.position.x -= 10;
+                    });
+                }
+
+                if (event.code === "ArrowRight") {
+                    console.log("a");
+                    house.x += 10;
+                    plants.forEach(plant => {
+                        plant.position.x += 10;
+                    });
+                }
+            });
+				loop();
+			}
+
+            const clouds = []
+
+			function lerp(start, end, t) {
+				return start + (end - start) * t;
+			}
+
+			function loop() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+				// game time
+				game.time += 1;
+
+				// Normalize game time to a 0-1 range for smooth transitions (this assumes 1000 frames for a full cycle)
+				let timeOfDay = (game.time % 10000) / 10000;
+
+				// Define color ranges for different parts of the day
+				let dayColor = { r: 135, g: 206, b: 235 }; // Bright sky blue (noon)
+				let eveningColor = { r: 255, g: 140, b: 50 }; // Orange (evening)
+				let nightColor = { r: 25, g: 25, b: 112 }; // Dark blue (night)
+				let morningColor = { r: 255, g: 223, b: 100 }; // Light yellow (morning)
+
+				// Smooth color transitions throughout the day-night cycle
+				let startColor, endColor;
+
+				if (timeOfDay < 0.25) {
+					// Transition from morning to day
+					startColor = morningColor;
+					endColor = dayColor;
+				} else if (timeOfDay < 0.5) {
+					// Day (Bright sky blue)
+					startColor = dayColor;
+					endColor = dayColor;
+				} else if (timeOfDay < 0.75) {
+					// Transition from day to evening
+					startColor = dayColor;
+					endColor = eveningColor;
+				} else if (timeOfDay < 1) {
+					// Evening (Orange)
+					startColor = eveningColor;
+					endColor = nightColor;
+				} else {
+					// Transition from night to morning
+					startColor = nightColor;
+					endColor = morningColor;
+				}
+
+				// Interpolate between the colors
+				let r = lerp(
+					startColor.r,
+					endColor.r,
+					(timeOfDay % 0.25) / 0.25
+				);
+				let g = lerp(
+					startColor.g,
+					endColor.g,
+					(timeOfDay % 0.25) / 0.25
+				);
+				let b = lerp(
+					startColor.b,
+					endColor.b,
+					(timeOfDay % 0.25) / 0.25
+				);
+
+				// Set the background color of the canvas
+				ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // draw clouds
+                if (game.time % 100 == 0) {
+                    let cloud = new Cloud(
+                        -200,
+                        getRandomInteger(50, 200),
+                        getRandomInteger(2, 4),
+                        0,
+                        getRandomInteger(150, 250),
+                        getRandomInteger(70, 100),
+
+
+                    );
+                    clouds.push(cloud)
+                }
+
+				house.draw();
+
+				// Optimize the collision check to use a bounding box approach
+				particles.forEach((particle) => {
+					if (!particle.isOffScreen()) {
+						particle.draw(); // Draw the raindrop
+
+						plants.forEach((plant) => {
+							if (plant.growing) {
+								// Only check for collisions if the particle is within the plant's bounding box
+								if (
+									particle.position.y >=
+										plant.position.y - plant.size &&
+									particle.position.y <=
+										plant.position.y + plant.size
+								) {
+									// Further check if the particle is close enough to the plant
+									if (checkCollision(particle, plant)) {
+										// Add cooldown logic to avoid instant multiple growth
+										if (
+											plant.lastCollisionTime + 50 <
+											Date.now()
+										) {
+											// 100ms cooldown
+											plant.grow(); // Grow the plant
+											plant.lastCollisionTime =
+												Date.now(); // Update last collision time
+											console.log("collision"); // Log collision for debugging
+										}
+									}
+								}
+                            }
+						});
+					}
+				});
+
+                clouds.forEach(cloud => {
+                    cloud.draw()
+                })
+
+				plants.forEach((plant) => {
+					plant.draw();
+				});
+
+				ctx.fillStyle = "#268b07";
+				ctx.fillRect(
+					0,
+					house.y + house.height,
+					canvas.width,
+					canvas.height - house.y - house.height
+				);
+
+				requestAnimationFrame(loop);
+			}
+
+			init();
+		</script>
+	</body>
+</html>
