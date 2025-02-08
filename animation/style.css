@@ -1,0 +1,149 @@
+body {
+    background-color: rgb(106, 178, 196);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    cursor: url("assets/images/cursor.png");
+    font-family: 'Poppins';
+    user-select: none;
+}
+
+/* General game gui */
+.gameGui {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+}
+.hidden {
+    visibility: hidden;
+    display: none;
+}
+
+/* Pregame GUI */
+.gameGui-pregame h1 {
+    font-size: 5rem;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 0; 
+    letter-spacing: 0.5rem;               
+}
+
+.gameGui-pregame h3{
+    font-size: 1.5rem;
+    color: white;
+    margin-top: 0;
+}
+
+.gameGui-pregame, .gameGui-menu {
+    background-image: url(assets/images/background.gif);
+    background-size: cover;
+}
+
+/* Menu GUI */
+.gameGui-menu h1 {
+    font-size: 5rem;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 0; 
+    letter-spacing: 0.5rem;
+    position: absolute;
+    top: 10%;               
+}
+
+.gameGui-menu h3{
+    font-size: 1.5rem;
+    color: rgb(223, 223, 223);
+    margin-top: 0;
+    position: absolute;
+    top: 26%;
+}
+
+.mainButton {
+    font-family: "Poppins";
+    font-weight: bold;
+    background-color: #ffffff00;
+    text-transform: uppercase;
+    width: 350px;
+    height: 75px;
+    border: 4px solid #fff;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 2em;
+    position: absolute;
+    transition: 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.mainButton::before {
+    content: "→"; /* Arrow character */
+    position: absolute;
+    right: -60px; /* Position it outside the button initially */
+    transition: right 0.1s ease-in-out;
+    font-size: 0.8em; /* Adjust the size of the arrow */
+}
+
+.mainButton:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+.mainButton:hover::before {
+    right: 10px; /* Move the arrow inside the button */
+}
+
+.mainButton:active {
+    background-color: #ffffff00;
+    color: #fff;
+}
+
+.mainButton:active::before {
+    right: -60px;
+}
+
+#play {
+    top: 45%;
+}
+
+#instructions{
+    top: 55%;
+}
+
+
+/* Instructions GUI */
+.gameGui-instructions{
+    background-image: url(assets/images/background.gif);
+    background-size: cover;
+}
+
+.gameGui p {
+    font-size: 2rem;
+    color: #fff;
+    width: 50%;
+    text-align: center;
+}
+
+#menuButton {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 4px solid #ffffff00;
+    border-radius: 50%;
+    background-image: url(assets/images/cross.png);
+    background-size: 110%;
+    background-position: 50%;
+    background-color: #00000000;
+    cursor: pointer;
+    top: 20px;
+    left: 20px;
+    transition: transform 0.3s, filter 0.1s;
+}
+
+#menuButton:active {
+    filter: brightness(0.7);
+    transform: translate(1px, 1px);
+}
