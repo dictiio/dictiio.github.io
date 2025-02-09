@@ -127,7 +127,7 @@ class Plant {
 		if (this.size >= 50 && this.growing) {
 			this.growing = false;
 			this.hatchTime = Date.now();
-			soundManager.play("pop");
+			soundManager.play("pop", 0.3);
 		}
 	}
 
