@@ -117,7 +117,7 @@ const game = {
     draw: function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-        if(this.lanes[this.player.currentLane].y <= canvas.height - 144){
+        if(this.lanes[this.player.currentLane].y < canvas.height - 144){
             this.player.position.y += 1
             this.lanes.forEach((lane, index) => {
                 lane.y += 1
