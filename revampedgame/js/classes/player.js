@@ -1,4 +1,4 @@
-import { playerWidth, playerHeight, gameHeight } from "../settings.js"
+import { playerWidth, playerHeight, gameHeight, gameWidth } from "../settings.js"
 import { keysDown } from "../main.js"
 
 class Player {
@@ -33,28 +33,42 @@ class Player {
             
             
             if (37 in keysDown) { // Left
-                this.position.x -= playerWidth;
-                this.cooldown = Date.now();
-                this.angle = 180; // Face left
+                if(this.position.x - playerWidth >= 0){
+                    this.position.x -= playerWidth;
+                    this.cooldown = Date.now();
+                    this.angle = 180; // Face left
+                }
             }
             else if (39 in keysDown) { // Right
-                this.position.x += playerWidth;
-                this.cooldown = Date.now();
-                this.angle = 0; // Face right
+                if(this.position.x + this.width + playerWidth <= gameWidth){
+
+                    this.position.x += playerWidth;
+                    this.cooldown = Date.now();
+                    this.angle = 0; // Face right
+                }
             }
             else if (40 in keysDown) { // Down
-                this.position.y += playerHeight;
-                this.addLane(-1);
-                this.cooldown = Date.now();
-                this.angle = 90; // Face down
+                if(this.position.y + this.height + playerHeight <= gameHeight){
+                    this.position.y += playerHeight;
+                    this.addLane(-1);
+                    this.cooldown = Date.now();
+                    this.angle = 90; // Face down
+                }
             }
             else if (38 in keysDown) { // Up
-                this.position.y -= playerHeight;
-                this.addLane(1);
-                this.cooldown = Date.now();
-                this.angle = 270; // Face up
+                if(this.position.y - playerHeight >= 0){
+                    this.position.y -= playerHeight;
+                    this.addLane(1);
+                    this.cooldown = Date.now();
+                    this.angle = 270; // Face up
+                }
             }
         }
+
+        // Check if player is out of bounds
+        if(this.position.x+this.width <= 0 || this.position.x > gameWidth){
+            this.game.endGame()
+        } 
     
         this.ctx.fillStyle= "rgba(0,0,0, 0.5)"
         this.ctx.beginPath();
