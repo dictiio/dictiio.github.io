@@ -8,6 +8,7 @@ class Player {
         width = playerWidth,
         height = playerHeight,
         ctx,
+        game,
     }){
         this.position = position;
         this.skin = skin;
@@ -19,6 +20,7 @@ class Player {
         this.vx = 0;
         this.safeTile = true;
         this.angle = -90;
+        this.game = game;
 
         this.cooldown = 0;
     }
@@ -27,7 +29,7 @@ class Player {
 
         this.position.x += this.vx
         // 38 up, 37 left, 40 down, 39 right
-        if (Date.now() - this.cooldown > 200) {
+        if (Date.now() - this.cooldown > 200 && this.game.playable) {
             
             
             if (37 in keysDown) { // Left

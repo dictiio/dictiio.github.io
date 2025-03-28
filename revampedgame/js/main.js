@@ -48,26 +48,34 @@ const game = {
     player: null,
     lanes: [],
     currentLane: 0,
-    frames: 0,
     active: false,
+    playable: false,
     init: function(){
-        sceneManager.display("active")
-        this.player = new Player({ctx: ctx, skin: images.player})
+        
+        this.currentLane = 0;
+        this.lanes = []
+        this.active = false;
+        this.playable = false;
+
+        this.player = new Player({ctx: ctx, skin: images.player, game: this})
         
 
-        this.lanes.push(new Lane({laneType: "grass", ctx: ctx}))
-        this.lanes.push(new Lane({laneType: "grass", ctx: ctx}))
-        this.lanes.push(new Lane({laneType: "grass", ctx: ctx}))
+        
         this.generateLanes(10000)
-
-        this.lanes.forEach((lane, index) => {
-            lane.y = gameHeight-48*(index+1)
-        })
 
         this.loop()
 
     },
+    start: function(){
+        sceneManager.display("active")
+        this.playable = true;
+    },
+
     generateLanes: function(n) {
+        this.lanes.push(new Lane({laneType: "grass", ctx: ctx}))
+        this.lanes.push(new Lane({laneType: "grass", ctx: ctx}))
+        this.lanes.push(new Lane({laneType: "grass", ctx: ctx}))
+
         const minClusterSize = 2;     // Minimum consecutive lanes of the same type
         const maxClusterSize = 4;     // Maximum consecutive lanes of the same type
         const laneTypes = ["grass", "road", "water"];
@@ -98,7 +106,13 @@ const game = {
             this.lanes.push(new Lane({ laneType: currentType, ctx: ctx }));
     
             clusterSize--;  // Decrease the remaining lanes in the cluster
+
+            
         }
+
+        this.lanes.forEach((lane, index) => {
+            lane.y = gameHeight-48*(index+1)
+        })
     },
     draw: function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -127,16 +141,14 @@ const game = {
         // check collisions
         if(this.lanes[this.player.currentLane].vehicles != null) {
             this.lanes[this.player.currentLane].vehicles.forEach(vehicle => {
-                if(vehicle.checkCollision(this.player)){
-                    console.log("collision")
-                }
+                vehicle.checkCollision(this.player)
             })
         }
 
         if(!this.player.safeTile){
             let lane = this.lanes[this.player.currentLane]
             if(lane.laneType == "water"){
-                console.log("game lost")
+                this.endGame()
             }
         }
 
@@ -162,34 +174,42 @@ const game = {
         const excessTime = msPassed % msPerFrame
         msPrev = msNow - excessTime
 
-        game.frames++
     },
 
     endGame: function(){
         this.active = false;
         sceneManager.display("ended")
+        document.getElementById("finalScore").innerText = "Final Score: " + this.player.highestLane
     },
 
     pause: function(){
+        if(sceneManager.current == "active"){
+            this.active = false;
+            sceneManager.display("pause")
+        } else if (sceneManager.current == "pause"){
+            game.active = true;
+            sceneManager.display("active")
+            game.loop()
+        }
+    },
+
+    reset: function(){
         this.active = false;
-        sceneManager.display("pause")
+        this.playable = false;
+        this.player = new Player({ctx: ctx, skin: images.player, game: this})
+        this.lanes = []
+        this.generateLanes(10000)
+        this.currentLane = 0;
+        this.init()
     }
 }
 
-setInterval(() => {
-    console.log(game.frames)
-  }, 1000)
 
 document.addEventListener("keydown", (e) => {
     keysDown[e.keyCode] = true;
     console.log(e.keyCode)
     if(e.keyCode == 27){
-        if(game.active){
-            game.pause()
-        } else {
-            sceneManager.display("active")
-            game.loop()
-        }
+        game.pause()
         
     }
 })
@@ -198,5 +218,43 @@ document.addEventListener("keyup", (e) => {
     delete keysDown[e.keyCode];
 })
 
+document.getElementById("start").addEventListener("click", (e) => {
+    game.start()
+})
+
+document.getElementById("resume").addEventListener("click", (e) => {
+    game.pause()
+})
+
+document.getElementById("playAgain").addEventListener("click", (e) => {
+    game.init()
+    sceneManager.display("menu")
+})
+
+document.getElementById("restart").addEventListener("click", (e) => {
+    game.init()
+    sceneManager.display("menu")
+})
+
+function resizeCanvas() {
+    const aspectRatio = canvas.width / canvas.height;
+    const windowRatio = window.innerWidth / window.innerHeight;
+
+    let scale;
+    
+    if (windowRatio > aspectRatio) {
+      // Window is wider → scale based on height
+      scale = window.innerHeight / canvas.height;
+    } else {
+      // Window is taller → scale based on width
+      scale = window.innerWidth / canvas.width;
+    }
+
+    canvas.style.width = `${canvas.width * scale}px`;
+    canvas.style.height = `${canvas.height * scale}px`;
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
 
 game.init()

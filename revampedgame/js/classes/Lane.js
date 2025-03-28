@@ -20,7 +20,7 @@ class Lane {
     }
 
     spawnVehicles(){
-        let amount = Math.ceil(Math.random()*6)
+        let amount = Math.ceil(Math.random()*8)
         let randomSpeed = Math.random()*2+1
         if(Math.random() > 0.5){
             randomSpeed *= -1

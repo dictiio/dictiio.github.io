@@ -30,12 +30,12 @@ class Vehicle {
         // if so, reset vehicle position
 
         // vehicle goes left
-        if(this.x+this.width < 0 && this.vx < 0){
+        if(this.x+this.width < 0-gameWidth && this.vx < 0){
             this.x = gameWidth
         }
 
         // vehicle goes right
-        if(this.x > gameWidth && this.vx > 0){
+        if(this.x > gameWidth*2 && this.vx > 0){
             this.x = -this.width
         }
 
@@ -94,7 +94,7 @@ class Vehicle {
                 player.position.y < this.lane.y + this.height &&
                 player.position.y + player.height > this.lane.y
             ){
-                
+                player.game.endGame()
                 return true
             }
         }
