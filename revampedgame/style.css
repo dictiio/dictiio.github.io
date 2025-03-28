@@ -1,0 +1,99 @@
+@font-face {
+    font-family: "Crossy Road";
+    src: url("assets/fonts/crossy.TTF");
+}
+* {
+    font-family: "Crossy Road"
+}
+
+.container {
+    position: absolute;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: lightblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+canvas {
+    border: 2px solid black
+}
+
+.gameGui {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+#score {
+    font-size: 3em;
+    color: #fff;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
+    position: absolute;
+    top: 0px;
+    left: 30px;
+    line-height: 0;
+}
+
+.gameGui-pause, .gameGui-ended {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+}
+
+#paused {
+    font-size: 3rem;
+    position: absolute;
+    top: 20%;
+}
+
+.gameGui-pause button, .gameGui-ended button {
+    background-color: #71cbe2; /* Green */
+    border: 4px solid white;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.gameGui-pause button:active, .gameGui-ended button:active {
+    transform: scale(0.95)
+}
+
+#gameOver {
+    font-size: 3rem;
+    position: absolute;
+    top: 15%;
+}
+
+#finalScore {
+    font-size: 1.5rem;
+    position: absolute;
+    top: 40%;
+}
+
+#playAgain {
+    position: absolute;
+    top: 70%;
+}
+
