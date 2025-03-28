@@ -7,6 +7,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    user-select: none;
 }
 
 .container {
@@ -17,7 +18,7 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background-color: lightblue;
+    background-color: rgb(0, 0, 0);
     display: flex;
     align-items: center;
     justify-content: center;
