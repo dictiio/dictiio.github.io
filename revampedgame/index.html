@@ -10,9 +10,12 @@
 	</head>
 	<body>
 		<div class="container">
+            <!-- Pre-menu screen -->
             <div class="gameGui gameGui-premenu">
                 <h1>Press any key to start</h1>
             </div>
+
+            <!-- Main menu -->
 			<div class="gameGui gameGui-menu hidden">
 				<h1 id="title">Crossy Road</h1>
 				<h3 id="subtitle">2D AND Revamped</h3>
@@ -22,6 +25,7 @@
 				<button id="instructions">Instructions</button>
 			</div>
 
+            <!-- Settings menu -->
             <div class="gameGui gameGui-settings hidden">
                 <h1>Settings</h1>
                 <div class="settingsContainer">
@@ -44,15 +48,14 @@
                 <button id="back">Back</button>
             </div>
 
+            <!-- Shop menu -->
 			<div class="gameGui gameGui-shop hidden">
 				<h1>Store</h1>
 				<div class="coins">
 					<span id="playerCoins">150</span
 					><img src="assets/images/collectables/coin.png" />
 				</div>
-				<button
-					id="menuButton"
-				></button>
+					<button id="menuButton"></button>
 
 				<div class="shopContainer">
 					<div class="select">
@@ -73,6 +76,7 @@
 				</div>
 			</div>
 
+            <!-- Instructions menu -->
 			<div class="gameGui gameGui-instructions hidden">
 				<h3>Instructions</h3>
 				<p>
@@ -91,6 +95,7 @@
 				<button id="backButton">Back</button>
 			</div>
 
+            <!-- Active game screen -->
 			<div class="gameGui gameGui-active hidden">
 				<h3 id="score">0</h3>
                 <h3 id="highScore">Top 0</h3>
@@ -102,18 +107,21 @@
 				<div class="powerup">Power Up: 2x Score</div>
 			</div>
 
+            <!-- Pause menu -->
 			<div class="gameGui gameGui-pause hidden">
 				<h3 id="paused">Game Paused</h3>
 				<button id="resume">Resume</button>
 				<button id="restart">Back to Menu</button>
 			</div>
 
+            <!-- Game over menu -->
 			<div class="gameGui gameGui-ended hidden">
 				<h3 id="gameOver">Game Over</h3>
 				<h3 id="finalScore">Final Score: 0</h3>
 				<button id="playAgain">Play Again</button>
 			</div>
 
+            <!-- Game canvas -->
 			<canvas id="game"></canvas>
 		</div>
 

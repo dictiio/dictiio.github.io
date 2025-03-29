@@ -5,8 +5,8 @@ import { Player } from "./classes/Player.js";
 import { Lane } from "./classes/Lane.js";
 import { Vehicle } from "./classes/Vehicle.js";
 import { SceneManager } from "./sceneManager.js";
-import {UserDataManager} from "./userData.js";
-import { SoundManager  } from "./SoundManager.js";
+import { UserDataManager } from "./userData.js";
+import { SoundManager } from "./SoundManager.js";
 import { ShopManager } from "./shopManager.js";
 
 const canvas = document.getElementById("game");
@@ -15,22 +15,16 @@ const ctx = canvas.getContext("2d");
 canvas.width = gameWidth;
 canvas.height = gameHeight;
 
-const fps = 60;
-const msPerFrame = 1000 / fps;
-let msPrev = window.performance.now();
-
+// managers
 export const userDataManager = new UserDataManager();
-
-userDataManager.retrieve()
-
+userDataManager.retrieve();
 export const sceneManager = new SceneManager();
 export const soundManager = new SoundManager();
 export const shopManager = new ShopManager();
 
-
-
 export const keysDown = [];
 
+// images
 export const images = {
 	vehicles: {
 		log: {
@@ -43,12 +37,12 @@ export const images = {
 			two: new Image(),
 		},
 	},
-    collectables: {
-        coin: new Image(),
-        powerup: new Image(),
-    },
+	collectables: {
+		coin: new Image(),
+		powerup: new Image(),
+	},
 	player: new Image(),
-    shield: new Image(),
+	shield: new Image(),
 };
 
 images.vehicles.log.left.src = "assets/images/vehicles/log/left_log.png";
@@ -64,7 +58,6 @@ images.collectables.coin.src = "assets/images/collectables/coin.png";
 images.collectables.powerup.src = "assets/images/collectables/powerup.png";
 
 images.shield.src = "assets/images/player/shield.png";
-
 
 // Powerups text colors and names
 const powerups = {
@@ -90,37 +83,45 @@ const powerups = {
 	},
 };
 
+// game
 const game = {
 	player: null,
 	lanes: [],
 	currentLane: 0,
-    coins: 0,
+	coins: 0,
 	active: false,
 	playable: false,
-    currentPowerup: null,
-    lastPowerup: null,
-    powerups: {
-        traffic: false,
-        shield: false,
-        coins: false,
-    },
-    frameCount: 0,
+	currentPowerup: null,
+	lastPowerup: null,
+	powerups: {
+		traffic: false,
+		shield: false,
+		coins: false,
+	},
+	frameCount: 0,
+
+	// Initialize the game object and set up the player, lanes, and power-ups
 	init: function () {
 		this.currentLane = 0;
 		this.lanes = [];
 		this.active = false;
 		this.playable = false;
-        this.frameCount = 0;
-        this.lastPowerup = 0;
-        this.currentPowerup = null;
-        document.getElementById("score").innerText = "0";
-        document.getElementById("highScore").innerText = "Top " + userDataManager.getUserData().info.highestDistance;
-        this.resetPowerUps()
-        this.coins = 0;
-        document.getElementById("coins").innerText = userDataManager.getUserData().info.coins
-        document.getElementById("speed").innerText = "Speed 1"
+		this.frameCount = 0;
+		this.lastPowerup = 0;
+		this.currentPowerup = null;
+		document.getElementById("score").innerText = "0";
+		document.getElementById("highScore").innerText =
+			"Top " + userDataManager.getUserData().info.highestDistance;
+		this.resetPowerUps();
+		this.coins = 0;
+		document.getElementById("coins").innerText =
+			userDataManager.getUserData().info.coins;
+		document.getElementById("speed").innerText = "Speed 1";
 
-        images.player.src = shopManager.shopItems.skins[shopManager.userDataManager.getUserData().info.activeSkin].src
+		images.player.src =
+			shopManager.shopItems.skins[
+				shopManager.userDataManager.getUserData().info.activeSkin
+			].src;
 		this.player = new Player({ ctx: ctx, skin: images.player, game: this });
 
 		this.generateLanes(10000);
@@ -128,13 +129,18 @@ const game = {
 		this.loop();
 	},
 
+	// Start the game by displaying the active scene and enabling player controls
 	start: function () {
 		sceneManager.display("active");
-        soundManager.play("start")
+		soundManager.play("start");
 		this.playable = true;
-        this.player.skin.src = shopManager.shopItems.skins[shopManager.userDataManager.getUserData().info.activeSkin].src;
+		this.player.skin.src =
+			shopManager.shopItems.skins[
+				shopManager.userDataManager.getUserData().info.activeSkin
+			].src;
 	},
 
+	// Generate lanes for the game, ensuring variety and clustering
 	generateLanes: function (n) {
 		this.lanes.push(new Lane({ laneType: "grass", ctx: ctx, game: this }));
 		this.lanes.push(new Lane({ laneType: "grass", ctx: ctx, game: this }));
@@ -171,7 +177,9 @@ const game = {
 			}
 
 			// Add the current lane
-			this.lanes.push(new Lane({ laneType: currentType, ctx: ctx, game:this }));
+			this.lanes.push(
+				new Lane({ laneType: currentType, ctx: ctx, game: this })
+			);
 
 			clusterSize--; // Decrease the remaining lanes in the cluster
 		}
@@ -180,6 +188,8 @@ const game = {
 			lane.y = gameHeight - 48 * (index + 1);
 		});
 	},
+
+	// Draw the game elements, including lanes and the player
 	draw: function () {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -191,7 +201,6 @@ const game = {
 		}
 
 		this.lanes.forEach((lane, index) => {
-            
 			if (
 				index >= this.currentLane - 20 &&
 				index <= this.currentLane + 40
@@ -200,40 +209,43 @@ const game = {
 			}
 		});
 
-        if(document.getElementById("difficulty").checked && this.playable){
-            if(this.frameCount % 5 == 0){
-                this.lanes.forEach((lane, index) => {
-                    lane.y += 1
-                })
-                this.player.position.y += 1
-                
-            }
-        }
+		if (document.getElementById("difficulty").checked && this.playable) {
+			if (this.frameCount % 5 == 0) {
+				this.lanes.forEach((lane, index) => {
+					lane.y += 1;
+				});
+				this.player.position.y += 1;
+			}
+		}
 
 		this.player.draw();
 	},
+
+	// Main game loop to update and render the game state
 	loop: function () {
 		this.active = true;
 		this.player.vx = 0;
 		this.player.safeTile = false;
-		// check collisions
+		// Check collisions
 		if (this.lanes[this.player.currentLane].vehicles != null) {
 			this.lanes[this.player.currentLane].vehicles.forEach((vehicle) => {
 				vehicle.checkCollision(this.player);
 			});
 		}
 
-        if (this.lanes[this.player.currentLane].collectables != null) {
-            this.lanes[this.player.currentLane].collectables.forEach((collectable) => {
-                collectable.checkCollision(this.player);
-            });
-        }
+		if (this.lanes[this.player.currentLane].collectables != null) {
+			this.lanes[this.player.currentLane].collectables.forEach(
+				(collectable) => {
+					collectable.checkCollision(this.player);
+				}
+			);
+		}
 
 		if (!this.player.safeTile) {
 			let lane = this.lanes[this.player.currentLane];
 			if (lane.laneType == "water") {
 				this.endGame();
-                soundManager.play("splash")
+				soundManager.play("splash");
 			}
 		}
 
@@ -241,19 +253,20 @@ const game = {
 			this.currentLane = this.player.currentLane;
 		}
 
-        if(document.getElementById("difficulty").checked){
-            if(this.frameCount % 10 == 0){
-                if(this.powerups.traffic){
-                    document.getElementById("speed").innerText = "Speed " + ((0.5+this.player.highestLane*10/20)/2)
-                } else {
-                    document.getElementById("speed").innerText = "Speed " + (0.5+this.player.highestLane*10/20)
-                }
-                
-            }
-        }
-        
+		if (document.getElementById("difficulty").checked) {
+			if (this.frameCount % 10 == 0) {
+				if (this.powerups.traffic) {
+					document.getElementById("speed").innerText =
+						"Speed " +
+						(0.5 + (this.player.highestLane * 10) / 20) / 2;
+				} else {
+					document.getElementById("speed").innerText =
+						"Speed " + (0.5 + (this.player.highestLane * 10) / 20);
+				}
+			}
+		}
 
-		// display lane
+		// Display lane
 		this.draw();
 
 		requestAnimationFrame(() => {
@@ -263,23 +276,28 @@ const game = {
 		});
 
 		this.frameCount++;
-        if (this.frameCount - this.lastPowerup > 900) {
-            if(this.currentPowerup != null){
-                this.resetPowerUps()
-            }
-        }
+		if (this.frameCount - this.lastPowerup > 900) {
+			if (this.currentPowerup != null) {
+				this.resetPowerUps();
+			}
+		}
 	},
 
+	// End the game and display the final score
 	endGame: function () {
 		this.active = false;
 		sceneManager.display("ended");
 		document.getElementById("finalScore").innerText =
-			"Final Score: " + (this.player.highestLane-1);
-        if(this.player.highestLane-1 > userDataManager.getUserData().info.highestDistance){
-            userDataManager.setHighestDistance(this.player.highestLane-1)
-        }
+			"Final Score: " + (this.player.highestLane - 1);
+		if (
+			this.player.highestLane - 1 >
+			userDataManager.getUserData().info.highestDistance
+		) {
+			userDataManager.setHighestDistance(this.player.highestLane - 1);
+		}
 	},
 
+	// Pause or resume the game based on the current state
 	pause: function () {
 		if (sceneManager.current == "active") {
 			this.active = false;
@@ -290,42 +308,45 @@ const game = {
 			game.loop();
 		}
 	},
-    addCoin: function (amount) {
-        if(this.powerups.coins){
-            amount *= 2
-        }
-        soundManager.play("coin")
-        userDataManager.addCoins(amount)
-        document.getElementById("coins").innerText = userDataManager.getUserData().info.coins
-    },
 
-    // Activate a random powerup
+	// Add coins to the player's total, applying power-up effects if active
+	addCoin: function (amount) {
+		if (this.powerups.coins) {
+			amount *= 2;
+		}
+		soundManager.play("coin");
+		userDataManager.addCoins(amount);
+		document.getElementById("coins").innerText =
+			userDataManager.getUserData().info.coins;
+	},
+
+	// Activate a random power-up and apply its effects
 	activateRandomPowerUp: function () {
-        
 		const powerUpTypes = ["traffic", "coins", "shield", "cars"];
 		const powerUp =
 			powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
 
-        if(powerUp == "cars"){
-            for(let i = 0; i < 20; i++){
-                if(this.lanes[this.player.currentLane+i].laneType == "road"){
-                    this.lanes[this.player.currentLane+i].vehicles = []
-                }
-            }
-        } else {
-            this.resetPowerUps()
-            this.currentPowerup = powerUp;
-            this.powerups[powerUp] = true;
-		    this.lastPowerup = this.frameCount;
-        }
-		
+		if (powerUp == "cars") {
+			for (let i = 0; i < 20; i++) {
+				if (
+					this.lanes[this.player.currentLane + i].laneType == "road"
+				) {
+					this.lanes[this.player.currentLane + i].vehicles = [];
+				}
+			}
+		} else {
+			this.resetPowerUps();
+			this.currentPowerup = powerUp;
+			this.powerups[powerUp] = true;
+			this.lastPowerup = this.frameCount;
+		}
 
 		soundManager.play("powerup");
 
 		this.displayPowerUp(powerUp);
 	},
 
-	// Display powerup text
+	// Display the active power-up on the screen
 	displayPowerUp: function (powerup) {
 		const powerupText = document.querySelector(".powerup");
 
@@ -339,13 +360,16 @@ const game = {
 		}, 3000);
 	},
 
-    resetPowerUps: function () {
-        this.currentPowerup = null;
-        this.powerups.traffic = false;
-        this.powerups.shield = false;
-        this.powerups.coins = false;
-    }
+	// Reset all active power-ups
+	resetPowerUps: function () {
+		this.currentPowerup = null;
+		this.powerups.traffic = false;
+		this.powerups.shield = false;
+		this.powerups.coins = false;
+	},
 };
+
+// BUTTON LISTENERS
 
 document.addEventListener("keydown", (e) => {
 	keysDown[e.keyCode] = true;
@@ -354,16 +378,16 @@ document.addEventListener("keydown", (e) => {
 		game.pause();
 	}
 
-    if(sceneManager.current == "premenu"){
-        sceneManager.display("menu")
-        soundManager.playBackgroundMusic("assets/sounds/bgmusic.mp3")
-    }
+	if (sceneManager.current == "premenu") {
+		sceneManager.display("menu");
+		soundManager.playBackgroundMusic("assets/sounds/bgmusic.mp3");
+	}
 });
 
 document.getElementById("music").addEventListener("input", (e) => {
-    const value = e.target.value
-    soundManager.backgroundMusic.volume = value/100
-})
+	const value = e.target.value;
+	soundManager.backgroundMusic.volume = value / 100;
+});
 
 document.addEventListener("keyup", (e) => {
 	delete keysDown[e.keyCode];
@@ -404,12 +428,14 @@ document.getElementById("menuButton").addEventListener("click", (e) => {
 });
 
 document.getElementById("shop").addEventListener("click", (e) => {
-    shopManager.openShop()
-})
+	shopManager.openShop();
+});
 
 document.getElementById("settings").addEventListener("click", (e) => {
-    sceneManager.display("settings")
-})
+	sceneManager.display("settings");
+});
+
+/* CANVAS RESIZE */
 
 function resizeCanvas() {
 	const aspectRatio = canvas.width / canvas.height;

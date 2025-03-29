@@ -1,0 +1,16 @@
+Ce jeu est une amélioration du jeu Crossy Road. Le jeu de base disponible sur téléphone est plutôt compliqué, donc j'ai recréé et amélioré une version 2D du jeu déjà existante.
+Le jeu est disponible via ce lien: https://openprocessing.org/sketch/571637/
+
+Le but du jeu est donc de traverser la carte (route, eau, terrain) en évitant les obstacles. Pour bouger, on utilise les flèches ou WASD.
+Le jeu est infini et il faut donc atteindre la plus grande distance possible.
+
+Les améliorations au jeu incluent:
+- L'ajout de pièces à collecter
+- L'ajout d'une boutique customisable. On peut y acheter des personnages différents (il y en a 3) avec des pièces. Les achats sont sauvegardés, même si on quitte la page.
+- L'ajout de 4 différents Power-ups : réduction de la vitesse des voitures, suppression des voitures dans les 20 lignes suivantes, bouclier d'invincibilité et multiplicateur de pièces.
+- L'ajout d'un menu pour modifier les paramètres.
+- Trame sonore complète (musique de fond, bruits pour les boutons, bruits différents dépendamment de la façon dont le personnage est mort, etc)
+- Mode difficile: Augmentation du niveau de difficulté au fur et à mesure que le personnage se rend loin. L'arrière-plan défile automatiquement et les véhicules sont de plus en plus rapides.
+
+** Note: À noter que l'arrière plan a été réalisé avec des rectangles canvas et non des images pour des raisons d'esthétiques. Non seulement je souhaitais garder l'aspect simpliste du jeu, mais
+il était aussi préférable d'utiliser ces rectangles, car ces lignes sont infinies et leur déplacement progressif créerait des petits espaces entre les images. 

@@ -25,7 +25,7 @@ body {
 }
 
 canvas {
-    image-rendering: pixelated
+    image-rendering: pixelated;
 }
 
 .gameGui {
@@ -74,7 +74,7 @@ canvas {
 }
 
 .gameGui-menu button {
-    background-color: #71cbe2; /* Green */
+    background-color: #71cbe2; /* Light blue */
     border: 0.5vw solid white;
     width: 25%;
     height: 10%;
@@ -82,19 +82,18 @@ canvas {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 1.5vw;;
+    font-size: 1.5vw;
     cursor: pointer;
     border-radius: 1vw;
     transition: 0.3s all;
-
 }
 
-.gameGui-menu button:hover{
-    background-color: #7abadd; /* Darker Green */
+.gameGui-menu button:hover {
+    background-color: #7abadd; /* Darker blue */
 }
 
-.gameGui-menu button:active{
-    transform: translateY(0.4vw)
+.gameGui-menu button:active {
+    transform: translateY(0.4vw);
 }
 
 .gameGui-instructions {
@@ -118,7 +117,7 @@ canvas {
 }
 
 .gameGui-instructions button {
-    background-color: #71cbe2; /* Green */
+    background-color: #71cbe2; /* Light blue */
     border: 0.5vw solid white;
     color: white;
     width: 30%;
@@ -130,14 +129,13 @@ canvas {
     top: 80%;
 }
 
-.gameGui-instructions button:active {
-    transform: translateY(0.4vw)
-}
-
 .gameGui-instructions button:hover {
-    background-color: #7abadd; /* Darker Green */
+    background-color: #7abadd; /* Darker blue */
 }
 
+.gameGui-instructions button:active {
+    transform: translateY(0.4vw);
+}
 
 #score {
     font-size: 3vw;
@@ -223,7 +221,7 @@ canvas {
 }
 
 .toggle input:checked + .slider {
-    background-color: #4caf50;
+    background-color: #4caf50; /* Green when active */
 }
 
 .slider:before {
@@ -249,34 +247,23 @@ canvas {
     cursor: pointer;
 }
 
-
-
-
-
-
-
 /* Power up text */
 .powerup {
-	position: absolute;
-	width: 60vw;
-	height: 7vw;
-	background-color: #83f374;
-	border-top: 0.5vw solid #20db4f;
-	border-bottom: 0.51vw solid #20db4f;
-	clip-path: polygon(
-		0% 0%,
-		100% 0%,
-		90% 100%,
-		0% 100%
-	); /* Define the trapezoid shape */
-	left: -100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 2vw;
-	color: #000;
-	text-transform: uppercase;
-	transition: 0.3s left ease-in-out;
+    position: absolute;
+    width: 60vw;
+    height: 7vw;
+    background-color: #83f374; /* Green */
+    border-top: 0.5vw solid #20db4f;
+    border-bottom: 0.51vw solid #20db4f;
+    clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 0% 100%); /* Define the trapezoid shape */
+    left: -100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2vw;
+    color: #000;
+    text-transform: uppercase;
+    transition: 0.3s left ease-in-out;
 }
 
 .gameGui-pause, .gameGui-ended {
@@ -319,17 +306,15 @@ canvas {
     font-size: 1.5vw;
     cursor: pointer;
     border-radius: 1vw;
-    
 }
 
 .gameGui-pause button:active, .gameGui-ended button:active, .gameGui-settings button {
-    transform: translateY(0.4vw)
+    transform: translateY(0.4vw);
 }
 
-.gameGui-pause button:hover , .gameGui-pause button:hover, .gameGui-settings button{
+.gameGui-pause button:hover, .gameGui-ended button:hover, .gameGui-settings button:hover {
     background-color: #7abadd; /* Darker Green */
 }
-
 
 #gameOver {
     font-size: 4vw;
@@ -351,196 +336,196 @@ canvas {
 /* store */
 
 .gameGui-shop {
-	background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .gameGui-shop h1 {
-	font-size: 3vw;
-	color: #fff;
-	text-transform: uppercase;
-	position: absolute;
-	padding: 0;
-	top: 5%;
+    font-size: 3vw;
+    color: #fff;
+    text-transform: uppercase;
+    position: absolute;
+    padding: 0;
+    top: 5%;
 }
 
 .coins {
-	display: flex;
-	align-items: center;
-	position: absolute;
-	justify-content: center;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    justify-content: center;
     top: 1vw;
     right: 1vw;
     padding: 1vw;
-	color: #fffb18;
+    color: #fffb18;
     font-size: 3vw;
     -webkit-text-stroke-width: 0.1vw;
     -webkit-text-stroke-color: black;
 }
 
 .coins img {
-	width: 3vw;
-	height: 3vw;
+    width: 3vw;
+    height: 3vw;
 }
 
 .coins span {
-	font-size: 2vw;
+    font-size: 2vw;
 }
 
 #menuButton {
-	position: absolute;
-	width: 5vw;
-	height: 5vw;
+    position: absolute;
+    width: 5vw;
+    height: 5vw;
     border: none;
-	background-image: url(assets/images/cross.png);
-	background-size: 110%;
-	background-position: 50%;
-	background-color: #00000000;
-	cursor: pointer;
-	top: 1vw;
-	left: 1vw;
-	transition: transform 0.3s, filter 0.1s;
+    background-image: url(assets/images/cross.png);
+    background-size: 110%;
+    background-position: 50%;
+    background-color: #00000000;
+    cursor: pointer;
+    top: 1vw;
+    left: 1vw;
+    transition: transform 0.3s, filter 0.1s;
 }
 
 #menuButton:active {
-	filter: brightness(0.7);
-	transform: translate(0.2vw, 0.2vw);
+    filter: brightness(0.7);
+    transform: translate(0.2vw, 0.2vw);
 }
 
 .shopContainer {
-	position: absolute;
-	display: flex;
-	bottom: 0;
-	width: 100%;
-	height: 84%;
-	border-top: 0.5vw solid #fff;
-	align-items: center;
-	justify-content: center;
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    width: 100%;
+    height: 84%;
+    border-top: 0.5vw solid #fff;
+    align-items: center;
+    justify-content: center;
 }
 
 .select {
-	position: absolute;
-	width: 30vw;
-	height: 30vw;
-	margin: 0;
-	padding: 0;
-	border: 0.5vw solid #fff;
+    position: absolute;
+    width: 30vw;
+    height: 30vw;
+    margin: 0;
+    padding: 0;
+    border: 0.5vw solid #fff;
     left: 10vw;
-	background-color: #00000000;
+    background-color: #00000000;
 }
 
 .showcase {
-	width: 20vw;
-	height: 30vw;;
-	border: 0.5vw solid #fff;
-	position: absolute;
-	right: 10vw;
+    width: 20vw;
+    height: 30vw;
+    border: 0.5vw solid #fff;
+    position: absolute;
+    right: 10vw;
 }
 
 .category {
-	width: 100%;
-	height: 15%;
-	background-color: #00000000;
-	color: #fff;
-	font-weight: 800;
-	font-size: 2vw;
-	text-transform: uppercase;
-	border-bottom: 0.2vw solid #fff;
-	text-align: center;
-	line-height: 4vw;
-	letter-spacing: 1vw;
+    width: 100%;
+    height: 15%;
+    background-color: #00000000;
+    color: #fff;
+    font-weight: 800;
+    font-size: 2vw;
+    text-transform: uppercase;
+    border-bottom: 0.2vw solid #fff;
+    text-align: center;
+    line-height: 4vw;
+    letter-spacing: 1vw;
 }
 
 .itemsContainer {
-	list-style-type: none;
-	font-size: 1vw;
-	overflow: hidden;
-	padding: 0;
-	margin: 0;
-	image-rendering: pixelated;
+    list-style-type: none;
+    font-size: 1vw;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    image-rendering: pixelated;
     color: #fff;
 }
 
 .itemsContainer li {
-	width: 100%;
-	height: 2vw;
-	text-transform: uppercase;
-	font-size: 1vw;
-	letter-spacing: 0.1vw;
-	line-height: 2vw;
-	padding-left: 1vw;
-	transition: 0.5s all;
-	cursor: pointer;
+    width: 100%;
+    height: 2vw;
+    text-transform: uppercase;
+    font-size: 1vw;
+    letter-spacing: 0.1vw;
+    line-height: 2vw;
+    padding-left: 1vw;
+    transition: 0.5s all;
+    cursor: pointer;
 }
 
 .itemsContainer li:active,
 .itemsContainer li.active {
-	color: #000;
-	background-color: #fff;
-	font-weight: 800;
-	transform: translateX(2vw);
+    color: #000;
+    background-color: #fff;
+    font-weight: 800;
+    transform: translateX(2vw);
 }
 
 .preview {
-	width: 20vw;
-	height: 20vw;
-	visibility: hidden;
+    width: 20vw;
+    height: 20vw;
+    visibility: hidden;
     background-repeat: no-repeat;
     background-size: 50%;
     image-rendering: pixelated;
-	background-position: center;
-	position: relative;
+    background-position: center;
+    position: relative;
 }
 
 .description {
-	width: 19.5vw;
-	height: 5vw;
-	margin: 0;
-	border-top: 0.5vw solid #fff;
-	border-bottom: 0.5vw solid #fff;
+    width: 19.5vw;
+    height: 5vw;
+    margin: 0;
+    border-top: 0.5vw solid #fff;
+    border-bottom: 0.5vw solid #fff;
     color: #fff;
-	padding: 0.5vw;
-	font-size: 0.7vw;
-	letter-spacing: 0.1vw;
-	text-align: justify;
+    padding: 0.5vw;
+    font-size: 0.7vw;
+    letter-spacing: 0.1vw;
+    text-align: justify;
 }
 
 #buy {
-	width: 100%;
-	height: 4.1vw;;
-	background-color: #00000000;
-	text-transform: uppercase;
-	font-size: 2vw;
-	font-weight: 800;
-	color: #fff;
-	border: none;
-	transition: all 0.2s;
-	cursor: pointer;
-	letter-spacing: 0.1vw;
+    width: 100%;
+    height: 4.1vw;
+    background-color: #00000000;
+    text-transform: uppercase;
+    font-size: 2vw;
+    font-weight: 800;
+    color: #fff;
+    border: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    letter-spacing: 0.1vw;
 }
 
 #buy:active {
-	background-color: #fff;
-	color: #000;
+    background-color: #fff;
+    color: #000;
 }
 
 .price {
     color: #fffb18;
     -webkit-text-stroke: #000 0.05vw;
-	position: absolute;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     top: 0.5vw;
     right: 1vw;
-	background-color: #00000000;
+    background-color: #00000000;
 }
 
 .price img {
-	width: 2vw;
-	height: 2vw;
+    width: 2vw;
+    height: 2vw;
 }
 
 .price span {
-	font-weight: 800;
-	font-size: 1.5vw;
+    font-weight: 800;
+    font-size: 1.5vw;
 }
