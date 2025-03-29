@@ -1,5 +1,6 @@
 import { laneHeight, gameWidth, gameHeight } from "../settings.js"
 import { images } from "../main.js"
+import { soundManager } from "../main.js";
 
 
 class Vehicle {
@@ -24,7 +25,13 @@ class Vehicle {
 
     draw(){
         // update velocity
-        this.x += this.vx;
+        if(this.lane.laneType == "road" && this.lane.game.powerups.traffic){
+            this.x += this.vx/2;
+        } else {
+            this.x += this.vx;
+        }
+
+        
 
         // check if vehicle is out of bounds
         // if so, reset vehicle position
@@ -94,7 +101,11 @@ class Vehicle {
                 player.position.y < this.lane.y + this.height &&
                 player.position.y + player.height > this.lane.y
             ){
+                if(this.lane.game.powerups.shield){
+                    return false
+                }
                 player.game.endGame()
+                soundManager.play("hit")
                 return true
             }
         }

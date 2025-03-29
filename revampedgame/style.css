@@ -43,6 +43,14 @@ canvas {
     visibility: hidden;
 }
 
+/* PRE MENU */ 
+.gameGui-premenu {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    text-align: center;
+    font-size: 2vw;
+}
+
 /* MENU */
 .gameGui-menu {
     background-color: rgba(0, 0, 0, 0.5);
@@ -65,7 +73,7 @@ canvas {
     position: absolute;
 }
 
-#start, #settings {
+.gameGui-menu button {
     background-color: #71cbe2; /* Green */
     border: 0.5vw solid white;
     width: 25%;
@@ -81,12 +89,53 @@ canvas {
 
 }
 
-#start:hover , #settings:hover{
+.gameGui-menu button:hover{
     background-color: #7abadd; /* Darker Green */
 }
 
-#start:active , #settings:active{
+.gameGui-menu button:active{
     transform: translateY(0.4vw)
+}
+
+.gameGui-instructions {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    gap: 2%;
+}
+
+.gameGui-instructions h3 {
+    font-size: 4vw;
+    color: #fff;
+    position: absolute;
+    top: 15%;
+    line-height: 0;
+}
+
+.gameGui-instructions p {
+    font-size: 1.3vw;
+    width: 60%;
+}
+
+.gameGui-instructions button {
+    background-color: #71cbe2; /* Green */
+    border: 0.5vw solid white;
+    color: white;
+    width: 30%;
+    height: 10%;
+    font-size: 1.5vw;
+    cursor: pointer;
+    border-radius: 1vw;
+    position: absolute;
+    top: 80%;
+}
+
+.gameGui-instructions button:active {
+    transform: translateY(0.4vw)
+}
+
+.gameGui-instructions button:hover {
+    background-color: #7abadd; /* Darker Green */
 }
 
 
@@ -99,6 +148,135 @@ canvas {
     top: 2vw;
     left: 2vw;
     line-height: 0;
+}
+
+#highScore {
+    font-size: 1.3vw;
+    color: #fff;
+    -webkit-text-stroke-width: 0.07vw;
+    -webkit-text-stroke-color: black;
+    position: absolute;
+    top: 4.5vw;
+    left: 2vw;
+    line-height: 0;
+}
+
+#speed {
+    font-size: 1.3vw;
+    color: #fff;
+    -webkit-text-stroke-width: 0.07vw;
+    -webkit-text-stroke-color: black;
+    position: absolute;
+    top: 6vw;
+    left: 2vw;
+    line-height: 0;
+}
+
+/* SETTINGS */
+
+.gameGui-settings {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    gap: 2%;
+}
+
+.gameGui-settings h1 {
+    font-size: 4vw;
+    color: #fff;
+    position: absolute;
+    top: 15%;
+    line-height: 0;
+}
+
+.setting {
+    font-size: 2vw;
+    padding: 1vw;
+    width: 50vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 4vw;
+    height: 2vw;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 2vw;
+}
+
+.toggle input:checked + .slider {
+    background-color: #4caf50;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.5vw;
+    width: 1.5vw;
+    left: 0.25vw;
+    bottom: 0.25vw;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+.toggle input:checked + .slider:before {
+    transform: translateX(2vw);
+}
+
+.range {
+    width: 10vw;
+    opacity: 0.8;
+    height: 2vw;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+/* Power up text */
+.powerup {
+	position: absolute;
+	width: 60vw;
+	height: 7vw;
+	background-color: #83f374;
+	border-top: 0.5vw solid #20db4f;
+	border-bottom: 0.51vw solid #20db4f;
+	clip-path: polygon(
+		0% 0%,
+		100% 0%,
+		90% 100%,
+		0% 100%
+	); /* Define the trapezoid shape */
+	left: -100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2vw;
+	color: #000;
+	text-transform: uppercase;
+	transition: 0.3s left ease-in-out;
 }
 
 .gameGui-pause, .gameGui-ended {
@@ -114,7 +292,25 @@ canvas {
     top: 15%;
 }
 
-.gameGui-pause button, .gameGui-ended button {
+#coinCounter {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    image-rendering: pixelated;
+    color: #fffb18;
+    font-size: 3vw;
+    -webkit-text-stroke-width: 0.1vw;
+    -webkit-text-stroke-color: black;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#coinCounter img {
+    width: 5vw;
+    height: 5vw;
+}
+.gameGui-pause button, .gameGui-ended button, .gameGui-settings button {
     background-color: #71cbe2; /* Green */
     border: 0.5vw solid white;
     color: white;
@@ -123,13 +319,14 @@ canvas {
     font-size: 1.5vw;
     cursor: pointer;
     border-radius: 1vw;
+    
 }
 
-.gameGui-pause button:active, .gameGui-ended button:active {
+.gameGui-pause button:active, .gameGui-ended button:active, .gameGui-settings button {
     transform: translateY(0.4vw)
 }
 
-.gameGui-pause button:hover , .gameGui-pause button:hover{
+.gameGui-pause button:hover , .gameGui-pause button:hover, .gameGui-settings button{
     background-color: #7abadd; /* Darker Green */
 }
 
@@ -151,3 +348,199 @@ canvas {
     top: 70%;
 }
 
+/* store */
+
+.gameGui-shop {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.gameGui-shop h1 {
+	font-size: 3vw;
+	color: #fff;
+	text-transform: uppercase;
+	position: absolute;
+	padding: 0;
+	top: 5%;
+}
+
+.coins {
+	display: flex;
+	align-items: center;
+	position: absolute;
+	justify-content: center;
+    top: 1vw;
+    right: 1vw;
+    padding: 1vw;
+	color: #fffb18;
+    font-size: 3vw;
+    -webkit-text-stroke-width: 0.1vw;
+    -webkit-text-stroke-color: black;
+}
+
+.coins img {
+	width: 3vw;
+	height: 3vw;
+}
+
+.coins span {
+	font-size: 2vw;
+}
+
+#menuButton {
+	position: absolute;
+	width: 5vw;
+	height: 5vw;
+    border: none;
+	background-image: url(assets/images/cross.png);
+	background-size: 110%;
+	background-position: 50%;
+	background-color: #00000000;
+	cursor: pointer;
+	top: 1vw;
+	left: 1vw;
+	transition: transform 0.3s, filter 0.1s;
+}
+
+#menuButton:active {
+	filter: brightness(0.7);
+	transform: translate(0.2vw, 0.2vw);
+}
+
+.shopContainer {
+	position: absolute;
+	display: flex;
+	bottom: 0;
+	width: 100%;
+	height: 84%;
+	border-top: 0.5vw solid #fff;
+	align-items: center;
+	justify-content: center;
+}
+
+.select {
+	position: absolute;
+	width: 30vw;
+	height: 30vw;
+	margin: 0;
+	padding: 0;
+	border: 0.5vw solid #fff;
+    left: 10vw;
+	background-color: #00000000;
+}
+
+.showcase {
+	width: 20vw;
+	height: 30vw;;
+	border: 0.5vw solid #fff;
+	position: absolute;
+	right: 10vw;
+}
+
+.category {
+	width: 100%;
+	height: 15%;
+	background-color: #00000000;
+	color: #fff;
+	font-weight: 800;
+	font-size: 2vw;
+	text-transform: uppercase;
+	border-bottom: 0.2vw solid #fff;
+	text-align: center;
+	line-height: 4vw;
+	letter-spacing: 1vw;
+}
+
+.itemsContainer {
+	list-style-type: none;
+	font-size: 1vw;
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
+	image-rendering: pixelated;
+    color: #fff;
+}
+
+.itemsContainer li {
+	width: 100%;
+	height: 2vw;
+	text-transform: uppercase;
+	font-size: 1vw;
+	letter-spacing: 0.1vw;
+	line-height: 2vw;
+	padding-left: 1vw;
+	transition: 0.5s all;
+	cursor: pointer;
+}
+
+.itemsContainer li:active,
+.itemsContainer li.active {
+	color: #000;
+	background-color: #fff;
+	font-weight: 800;
+	transform: translateX(2vw);
+}
+
+.preview {
+	width: 20vw;
+	height: 20vw;
+	visibility: hidden;
+    background-repeat: no-repeat;
+    background-size: 50%;
+    image-rendering: pixelated;
+	background-position: center;
+	position: relative;
+}
+
+.description {
+	width: 19.5vw;
+	height: 5vw;
+	margin: 0;
+	border-top: 0.5vw solid #fff;
+	border-bottom: 0.5vw solid #fff;
+    color: #fff;
+	padding: 0.5vw;
+	font-size: 0.7vw;
+	letter-spacing: 0.1vw;
+	text-align: justify;
+}
+
+#buy {
+	width: 100%;
+	height: 4.1vw;;
+	background-color: #00000000;
+	text-transform: uppercase;
+	font-size: 2vw;
+	font-weight: 800;
+	color: #fff;
+	border: none;
+	transition: all 0.2s;
+	cursor: pointer;
+	letter-spacing: 0.1vw;
+}
+
+#buy:active {
+	background-color: #fff;
+	color: #000;
+}
+
+.price {
+    color: #fffb18;
+    -webkit-text-stroke: #000 0.05vw;
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    top: 0.5vw;
+    right: 1vw;
+	background-color: #00000000;
+}
+
+.price img {
+	width: 2vw;
+	height: 2vw;
+}
+
+.price span {
+	font-weight: 800;
+	font-size: 1.5vw;
+}
