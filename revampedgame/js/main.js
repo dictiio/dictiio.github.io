@@ -116,10 +116,15 @@ const game = {
 			userDataManager.getUserData().info.coins;
 		document.getElementById("speed").innerText = "Speed 1";
 
-		images.player.src =
+        if(shopManager.shopItems.skins[
+            shopManager.userDataManager.getUserData().info.activeSkin
+        ] != null){
+            images.player.src =
 			shopManager.shopItems.skins[
 				shopManager.userDataManager.getUserData().info.activeSkin
 			].src;
+        }
+		
 		this.player = new Player({ ctx: ctx, skin: images.player, game: this });
 
 		this.generateLanes(10000);
