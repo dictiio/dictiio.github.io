@@ -295,7 +295,7 @@ const game = {
 		if (
 			this.player.highestLane - 1 >
 			userDataManager.getUserData().info.highestDistance
-		) {
+            || userDataManager.getUserData().info.highestDistance == null){
 			userDataManager.setHighestDistance(this.player.highestLane - 1);
 		}
 	},
