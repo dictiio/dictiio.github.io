@@ -12,7 +12,9 @@ class SoundManager {
     play(id, vol = 1) {
         if (this.audio) {
             const audio = new Audio(`${this.file}${id}.mp3`);
-            audio.volume = vol * document.getElementById("volume").value/100;
+            const sliderVolume = document.getElementById("volume").value / 100; // Normalize to 0-1
+            const finalVolume = Math.min(Math.max(vol * sliderVolume, 0), 1); // Clamp to 0-1
+            audio.volume = finalVolume
             audio.currentTime = 0;
             audio.play();
         }
