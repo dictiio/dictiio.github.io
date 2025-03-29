@@ -1,5 +1,3 @@
-// inclure un moyen de revoir le jeu (lien, vidéo...)
-// texte descriptif des modifications et du jeu (3 lignes environ)
 import { gameWidth, gameHeight } from "./settings.js";
 import { Player } from "./classes/Player.js";
 import { Lane } from "./classes/Lane.js";
@@ -7,7 +5,7 @@ import { Vehicle } from "./classes/Vehicle.js";
 import { SceneManager } from "./sceneManager.js";
 import { UserDataManager } from "./userData.js";
 import { SoundManager } from "./SoundManager.js";
-import { ShopManager } from "./shopManager.js";
+import { ShopManager } from "./ShopManager.js";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
