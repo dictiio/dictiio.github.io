@@ -12,6 +12,11 @@ export class Display {
         
     }
 
+    renderPlayer(player){
+        this.ctx.fillStyle = player.color
+        this.ctx.fillRect(player.x, player.y, player.w, player.h)
+    }
+
     renderColor(color){
         this.ctx.fillStyle = color
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)

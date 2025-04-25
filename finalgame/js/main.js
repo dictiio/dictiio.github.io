@@ -9,6 +9,7 @@ const display = new Display(document.getElementById("game"))
 
 const render = () => {
     display.renderColor(game.world.bgColor)
+    display.renderPlayer(game.world.player)
     display.render()
 }
 
