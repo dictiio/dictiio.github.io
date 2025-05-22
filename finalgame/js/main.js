@@ -10,14 +10,20 @@ const display = new Display(document.getElementById("game"))
 const render = () => {
     display.renderColor(game.world.bgColor)
     display.renderPlayer(game.world.player)
+    display.renderPlatforms(game.world.platforms)
     display.render()
 }
 
 const update = () => {
+
+    if(controller.keys.left.isPressed) game.world.player.moveLeft()
+    if(controller.keys.right.isPressed) game.world.player.moveRight()
+    if(controller.keys.space.isPressed) game.world.player.jump()
+
     game.update()
 }
 
-const engine = new Engine(1000/30, update, render)
+const engine = new Engine(1000/75, update, render)
 engine.start()
 
 controller.handleKeyDownUp()

@@ -21,4 +21,15 @@ export class Display {
         this.ctx.fillStyle = color
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
+
+    renderPlatforms(platforms){
+        platforms.forEach(platform => {
+            if(platform.y < 0 || platform.y > 720) return;
+
+            this.ctx.fillStyle = platform.color
+            this.ctx.fillRect(platform.x, platform.y, platform.w, platform.h)
+
+
+        });
+    }
 }
