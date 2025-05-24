@@ -1,13 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <canvas id="game"></canvas>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div class="gameContainer">
+			<!-- Pre-menu screen -->
+			<div class="gameGui gameGui-premenu">
+				<h1>Appuyez sur une touche pour commencer</h1>
+			</div>
 
-    <script type="module" src="js/main.js"></script>
-</body>
+			<!-- Main menu -->
+			<div class="gameGui gameGui-menu hidden">
+				<h1 id="title">Cyberbond</h1>
+				<h3 id="subtitle">Sautez à l'infini.</h3>
+				<button id="start">Commencer</button>
+				<button id="shop">Boutique</button>
+				<button id="settings">Paramètres</button>
+				<button id="instructions">Instructions</button>
+			</div>
+
+			<!-- Settings menu -->
+			<div class="gameGui gameGui-settings hidden">
+				<h1>Settings</h1>
+				<div class="settingsContainer">
+					<div class="setting">
+						<label for="volume">Volume</label>
+						<input
+							class="range"
+							type="range"
+							id="volume"
+							min="0"
+							max="100"
+							value="50"
+						/>
+					</div>
+					<div class="setting">
+						<label for="music">Musique</label>
+						<input
+							class="range"
+							type="range"
+							id="music"
+							min="0"
+							max="100"
+							value="50"
+						/>
+					</div>
+					<div class="setting">
+						<label for="difficulty">Mode Difficile</label>
+						<label class="toggle">
+							<input type="checkbox" id="difficulty" />
+							<span class="slider"></span>
+						</label>
+					</div>
+				</div>
+				<button id="back">Retour</button>
+			</div>
+
+			<!-- Shop menu -->
+			<div class="gameGui gameGui-shop hidden">
+				<h1>Boutique</h1>
+				<div class="coins">
+					<span id="playerCoins">150</span
+					><img src="assets/images/collectables/coin.png" />
+				</div>
+				<button id="menuButton"></button>
+
+				<div class="shopContainer">
+					<div class="select">
+						<div class="category">Skins</div>
+						<ul class="itemsContainer"></ul>
+					</div>
+
+					<div class="showcase">
+						<div class="preview">
+							<div class="price">
+								<span id="shopPrice">150</span
+								><img
+									src="assets/images/collectables/coin.png"
+								/>
+							</div>
+						</div>
+						<div class="description"></div>
+						<button id="buy">Acheter</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Instructions menu -->
+			<div class="gameGui gameGui-instructions hidden">
+				<h3>Instructions</h3>
+				<p>
+					This game is an improved version of the legendary Crossy
+					Road.
+				</p>
+				<p>
+					The improvements include the addition of four unique
+					power-ups, collectible coins, and purchasable skins. These
+					skins are permanently kept upon purchase.
+				</p>
+				<p>
+					Additionally, if you crave a greater challenge, you can
+					switch to hard mode. In this mode, you must be quick—you
+					won't have time to think! As the game goes on, cars and logs
+					become faster!
+				</p>
+				<p>
+					Your goal is to avoid obstacles and cross the road! Use the
+					arrow keys or WASD to move around the map.
+				</p>
+				<button id="backButton">Back</button>
+			</div>
+
+			<!-- Active game screen -->
+			<div class="gameGui gameGui-active hidden">
+				<h3 id="score">0</h3>
+				<h3 id="highScore">Top 0</h3>
+				<h3 id="speed">Speed 0</h3>
+				<h3 id="coinCounter">
+					<span id="coins">0</span
+					><img src="assets/images/collectables/coin.png" />
+				</h3>
+				<div class="powerup">Pouvoir: 2x Score</div>
+			</div>
+
+			<!-- Pause menu -->
+			<div class="gameGui gameGui-pause hidden">
+				<h3 id="paused">Pause</h3>
+				<button id="resume">Reprendre</button>
+				<button id="restart">Retour au menu</button>
+			</div>
+
+			<!-- Game over menu -->
+			<div class="gameGui gameGui-ended hidden">
+				<h3 id="gameOver">Partie terminée</h3>
+				<h3 id="finalScore">Score final: 0</h3>
+				<button id="playAgain">Rejouer</button>
+			</div>
+
+			<canvas id="game"></canvas>
+		</div>
+
+		<script type="module" src="js/main.js"></script>
+	</body>
 </html>
